@@ -31,8 +31,14 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 }
-ol, ul {
+ol, ul{
 	list-style: none;
+}
+ol.simple{
+	list-style: decimal;
+}
+ul.simple {
+	list-style: square;
 }
 blockquote, q {
 	quotes: none;
@@ -61,6 +67,15 @@ body {
 	padding: 0 20px;
 	}
 
+em {
+  font-style: italic;
+}
+strong {
+  font-weight: bold;
+}
+tt {
+  font-family: monospace;
+}
 a {
 	text-decoration: none;
 	color: #000;

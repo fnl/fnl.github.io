@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>fnl.es &middot; Projects</title>
+        <link rel="shortcut icon" href="http://fnl.github.io/favicon.ico" />
+        <link href="http://fnl.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
+                        <link href="http://fnl.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+        
+        <link rel="stylesheet" href="http://fnl.github.io/theme/css/screen.css" type="text/css" />
+        <link rel="stylesheet" href="http://fnl.github.io/theme/css/pygments.css" type="text/css" />
+    </head>
+    <body>
+        <div id="header">
+            <ul id="nav">
+                <li><a class="flagred" href="http://fnl.github.io">Home</a></li>
+                <li><a class="flagyellow" href="http://fnl.github.io/pages/about.html">About</a></li>
+                  <li class="selected"><a class="flagyellow" href="http://fnl.github.io/pages/projects.html">Projects</a></li>
+                  <li><a class="flagred" href="http://fnl.github.io/archives.html">Archives</a></li>
+            </ul>
+            <div class="header_box">
+                <h1><a href="http://fnl.github.io">fnl.es</a></h1>
+                <h2>fnl en España</h2>
+            </div>
+        </div>
+        <div id="wrapper">
+            <div id="content">
+                <div class="page">
+                    <h1>Projects</h1>
+                    <p><strong>Text Mining in Biomedicine</strong></p>
+<p><a class="reference external" href="https://github.com/fnl/txtfnnl">txtfnnl</a></p>
+<blockquote>
+My current main project, a modular text mining pipeline for biomedicine using the UIMA framework.
+It provides a set of Annotation Engine (AE) modules that can be combined to run more complex text
+mining tasks such as Gene Normalization (assigning DB IDs to gene symbols) or mining for
+biological events (e.g., transcription regulation interactions). My framework adds a special
+builder pattern implementation to make UIMA/uimaFIT AEs and Resources less of a chore to develop,
+maintain, and configure. In addition, my framework provides a &quot;type-free&quot; &quot;one-model-fits-all&quot;
+type system, that is a single text annotation type with an <tt class="docutils literal">annotator&#64;namespace:identifier</tt>
+schema to make any kind of annotations on a UIMA SOFA. Last it has special wrappers for the
+Apache Tika project (a libary to extract text content from many different file-types) that add
+functionality beyond the raw extraction alone.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a></p>
+<blockquote>
+My continuous Python library for supporting all types of BioNLP tasks I am interested in:
+<tt class="docutils literal">gnmaed</tt> is a library to import gene and protein symbols, names, keywords, and references into
+a unified PostgreSQL repository. <tt class="docutils literal">medline</tt> is a tool to maintain a on-site instance of the
+NLM MEDLINE database. Several other minor tools and libraries are available, such as annotator
+evaluation or interfacing to CouchDB with my own Python 3k client (written a few years ago when
+there was no other Py3k CouchDB client around).</blockquote>
+<p><a class="reference external" href="http://www.biocreative.org">BioCreative</a></p>
+<blockquote>
+An international project organizing community challenges in text mining for molecular biology.
+I have in particular been the main organizer of one of these challenges, BioCreative II.5, and
+have developed a Django-based website to manage these events and their participants.
+Also part of this project is my <a class="reference external" href="https://github.com/fnl/bceval">bceval</a> evaluation script to evaluate the perfomance of text
+mining systems.</blockquote>
+<p><strong>Sidekicks and Minor Projects</strong></p>
+<p><a class="reference external" href="https://github.com/fnl/couchdb_client">couchdb_client</a></p>
+<blockquote>
+A tiny and efficient JavaScript/Node.js client for CouchDB.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/libfsmg">libfsmg</a></p>
+<blockquote>
+A generic finite state machine library in Java.
+Design your own grammar to quickly build generic pattern matching engines.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/sentence_splitter">sentence_splitter</a></p>
+<blockquote>
+A simple command-line tool to quickly split sentences based on regular patterns.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/tred">tred</a></p>
+<blockquote>
+Load (parts of) the <a class="reference external" href="http://rulai.cshl.edu/cgi-bin/TRED/tred.cgi?process=home">Transcriptional Regulatory Element Database</a> into a PostgreSQL DB.</blockquote>
+
+                </div>
+
+                <div class="clear"></div>
+                <div id="footer">
+                    <p>
+                    Mockingbird theme by <a href="http://nevanscott.com/">Nevan Scott</a>
+                    &middot;
+                    <a class="atom" href="http://fnl.github.io/feeds/all.atom.xml">Feed</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>

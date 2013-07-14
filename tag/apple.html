@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>fnl.es &middot; articles tagged "Apple"</title>
+        <link rel="shortcut icon" href="http://fnl.github.io/favicon.ico" />
+        <link href="http://fnl.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
+                        <link href="http://fnl.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+        
+        <link rel="stylesheet" href="http://fnl.github.io/theme/css/screen.css" type="text/css" />
+        <link rel="stylesheet" href="http://fnl.github.io/theme/css/pygments.css" type="text/css" />
+    </head>
+    <body>
+        <div id="header">
+            <ul id="nav">
+                <li class="ephemeral selected"><a href="http://fnl.github.io/tag/apple.html">Apple</a></li>
+                <li><a class="flagred" href="http://fnl.github.io">Home</a></li>
+                <li><a class="flagyellow" href="http://fnl.github.io/pages/about.html">About</a></li>
+                  <li><a class="flagyellow" href="http://fnl.github.io/pages/projects.html">Projects</a></li>
+                  <li><a class="flagred" href="http://fnl.github.io/archives.html">Archives</a></li>
+            </ul>
+            <div class="header_box">
+                <h1><a href="http://fnl.github.io">fnl.es</a></h1>
+                <h2>fnl en España</h2>
+            </div>
+        </div>
+        <div id="wrapper">
+            <div id="content">
+                <h4 class="date">Feb 11,  2013</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://fnl.github.io/installing-a-full-stack-python-data-analysis-environment-on-osx.html" rel="bookmark" title="Permanent Link to &quot;Installing a full stack Python data analysis environment on OSX&quot;">Installing a full stack Python data analysis environment on OSX</a>
+                    </h2>
+                    
+                    <p>It is a bit of an effort to install the latest <strong>numpy</strong> and <strong>scipy</strong>
+libraries due to their dependencies on Fortran libraries, while Apple is
+(was? ...) mostly neglecting all Fortran issues. Furthermore, when
+trying to compile a collection of these libraries for Python 3k and 64
+bit, all these headaches seem to magnify enough so that attempting to
+use them with Py3k on OSX has to be very much discouraged by the author.
+Getting NumPy to work on 64 bit with Py3k and playing nicely the various
+&quot;high-level&quot; libraries and the R environment can become a nightmare on a
+Mac. If you really need to use Py3k, but are married to OSX, you are
+probably better off installing a virtual machine with your favorite
+Linux distro than trying to get this ensemble to work natively. In other
+words, OSX is not a good platform for scientific computing, and you are
+living easier with what is available - unless you prefer spending your
+time on tinkering over productivity. You have been warned…</p>
+<p>This guide will outline how to install the following Python software
+stack:</p>
+<ul class="simple">
+<li>NumPy (1.6.2)</li>
+<li>SciPy (0.10.1)</li>
+<li>MatPlotLib (1.2.0)</li>
+<li>IPython (0.13.2)</li>
+<li>Scikit-Learn (0.13)</li>
+<li>RPy2 (2.3.2)</li>
+</ul>
+<p>Optional instructions to install the two &quot;new kids on the block&quot;,
+Pandas and StatsModels, are provided, too. To get a 64 bit version of
+all this software installed on OSX 10.6 through 10.8 that does work &quot;out
+of the box&quot; (although admittedly not optimally due to the Fortran
+issues!) without too much of a hassle, follow these steps:</p>
+<div class="section" id="preparatory-setup">
+<h2>Preparatory Setup</h2>
+<p>It is assumed you are using <strong>distribute</strong> and <strong>pip</strong> to install
+Python packages. This means, you need to have the following setup done
+already:</p>
+<pre class="literal-block">
+curl -O http://python-distribute.org/distribute\_setup.py
+sudop python distribute\_setup.py
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+sudo python get-pip.py
+</pre>
+<p>Furthermore, we are assuming a 64 bit build of Python 2.7 as the
+target environment. If you only need/want to use a stack compiled for a
+32 bit architecture, simpler paths than the one laid out here might work
+as well.</p>
+</div>
+<div class="section" id="numpy">
+<h2><a class="reference external" href="http://www.numpy.org/">NumPy</a></h2>
+<p><a class="reference external" href="http://sourceforge.net/projects/numpy/files/NumPy/">Download and install</a> a version of numpy that is not too new
+(currently, 1.6 worked, while numpy-dev is at 1.8) for the latest
+version of OSX and the oldest still supported version of Python
+(currently, 2.7) to have any chance of success.</p>
+<p>The &quot;newest&quot; NumPy package that was found to work was the numpy-1.6.2
+package for Python 2.7, while when using any newer package, the
+post-installation check in the Python interpreter:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import numpy; numpy.test('full')
+</pre>
+<p>did not pass without errors. What you never want to be seeing are
+errors directly related to the Fortran compiler. This would probably
+mean that you have your own version of Fortran installed; The best
+remedy in that case is to remove it and the tests should pass.</p>
+</div>
+<div class="section" id="scipy">
+<h2><a class="reference external" href="http://www.scipy.org/SciPy">SciPy</a></h2>
+<p>Again, <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">fetch a version</a> where not too many tests fail (and even on
+Ubuntu LTS 12.04, the tests &quot;test_io.test_imread&quot; and &quot;test_expon&quot;
+are known too fail and are considered to be a non-issue). On OSX 10.7
+with Python 2.7, it is possible to install the 0.10.1 package and the
+final:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import scipy; scipy.test()
+</pre>
+<p>check passes with &quot;only&quot; 9 failures. If you use newer versions, more
+tests will fail. In general, these two core libraries are the hardest
+part and it is essential to get particularly NumPy installed correctly
+for everything else to work.</p>
+</div>
+<div class="section" id="matplotlib">
+<h2><a class="reference external" href="http://matplotlib.org/">MatPlotLib</a></h2>
+<p>The next step is the installation of matplotlib; There are
+<a class="reference external" href="http://matplotlib.org/downloads.html">pre-compiled OSX packages</a> for Python 2.7 available, and the latest
+version (1.2.0 at the time of this writing) should work without any
+trouble. To ensure the installation worked, try this in the Python
+interpreter:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; from pylab import \*; plot([1,2,3]); show()
+</pre>
+<p>and you should see a plot with a straight diagonal. To ensure you have
+the right library, also check:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import matlpotlib; matplotlib.\_\_version\_\_
+</pre>
+<p>And you should see the desired version number you were trying to
+install.</p>
+</div>
+<div class="section" id="ipython">
+<h2><a class="reference external" href="http://ipython.org/">IPython</a></h2>
+<p>First of all, a different readline installation is necessary:</p>
+<pre class="literal-block">
+sudo easy\_install-2.7 readline
+</pre>
+<p>Note that readline has to be installed using easy_install, not pip!</p>
+<p>Now, the default installation way should work and we can simply do:</p>
+<pre class="literal-block">
+sudo pip install ipython[zmq,qtconsole,notebook,test]
+</pre>
+<p>To make sure the installation worked, execute the newly installed
+iptest script.</p>
+</div>
+<div class="section" id="scikit-learn">
+<h2><a class="reference external" href="http://scikit-learn.org/stable/">Scikit-Learn</a></h2>
+<p>This again is pretty straightforward; Do:</p>
+<pre class="literal-block">
+sudo pip install scikit-learn
+nosetests sklearn --exe
+</pre>
+<p>This nosetest will produce one (and only one) error: &quot;Split arrays or
+matrices into random train and test subsets&quot;. But <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/1648">according to the
+developer</a>, this is a non-issue and can be ignored.</p>
+<p>Last, if you are interested in using two more experimental and novel
+libraries on Python that are attempting to rid the requirement of using
+R (and/or rpy), you might want to install Pandas and StatsModels. If you
+prefer non-experimental, production stable libraries, you are probably
+advised to use R and RPy2, as RPy (&quot;version 1&quot;) often tends to have
+issues.</p>
+</div>
+<div class="section" id="pandas">
+<h2><a class="reference external" href="http://pandas.pydata.org/">Pandas</a></h2>
+<p>(Python Data Analysis Library) Again, the default installation route
+should work:</p>
+<pre class="literal-block">
+sudo pip install pandas
+</pre>
+<p>To ensure the library is operational, run (should not produce any
+errors):</p>
+<pre class="literal-block">
+nosetests pandas
+</pre>
+</div>
+<div class="section" id="statsmodels">
+<h2><a class="reference external" href="http://statsmodels.sourceforge.net/">StatsModels</a></h2>
+<p>As with Pandas, we can use the &quot;default installation pathway&quot;, but
+need to first install an undocumented dependency for this module
+(patsy):</p>
+<pre class="literal-block">
+sudo pip install patsy
+sudo pip install statsmodels
+</pre>
+<p>To check the installation worked, open a Python interpreter session
+and do:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import statsmodels.api as sm
+&gt;&gt;&gt; sm.test()
+</pre>
+<p>Here, several tests seem to be failing and it is not clear at all if
+this is expected or not. StatsModels has several hundreds of open issues
+and should probably be considered very experimental at this stage.</p>
+</div>
+<div class="section" id="rpy2">
+<h2><a class="reference external" href="http://rpy.sourceforge.net/">RPy2</a></h2>
+<p>Again, the standard installation works (assuming you have R itself
+installed already, at least!):</p>
+<pre class="literal-block">
+sudo pip install rpy2
+</pre>
+<p>To ensure the install worked, run the tests as:</p>
+<pre class="literal-block">
+python -m 'rpy2.tests'
+</pre>
+<p>You should not be seeing any problems.</p>
+<p><em>E voilà</em> - you now have a fully functioning environment for running
+all kinds and sorts of statistical data analyses and machine learning
+algorithms!</p>
+</div>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://fnl.github.io/installing-a-full-stack-python-data-analysis-environment-on-osx.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.github.io/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://fnl.github.io/tag/python.html">Python</a>
+                            <a href="http://fnl.github.io/tag/apple.html" class="selected">Apple</a>
+                            <a href="http://fnl.github.io/tag/data-mining.html">data-mining</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h4 class="date">May 26,  2009</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://fnl.github.io/mobileme-vs-sugarsync-vs-dropbox.html" rel="bookmark" title="Permanent Link to &quot;MobileMe vs. SugarSync vs. DropBox&quot;">MobileMe vs. SugarSync vs. DropBox</a>
+                    </h2>
+                    
+                    <p>I now have tested MobileMe, SugarSync, and DropBox for quite a while to
+decide which service to buy for syncing my “electronic life” between my
+Macs (soon I’ll be managing two OSX Server blades, one Mini, and two
+MBPs!). After this period, there is no doubt to me: I’m syncing my iCal
+calendars and Address Book content via Google, my bookmarks with XMarks,
+and everything else via DropBox.</p>
+<p>MobileMe’s iDisk is nothing more than a pain and a piece of junk, which
+I honestly did not expect. After all the problems they had last year
+launching Me.com, I thought they would have by now created a working
+service. But the iDisk and syncing my PIM (Personal Information Manager
+- I still use Yojimbo, as Evernote’s and Together’s handling of
+encryption are pure patched add-ons) was just a [bad] joke: You even
+need to buy extra software if you want to do file syncing, as iDisk’s
+“offline” sync is so slow and error prone I could not believe Apple
+dares to offer something like that. So you need to either use Lingon and
+rsync to sync to your online mode iDisk which doesn’t win a medal for
+simplicity, or buy something like ChronoSync - and that takes hours
+(!!!) to ensure 10 GB of data in about 30-40k Files are synced, <strong>every
+time</strong>. All the more, ChronoSync may be the fastest and safest syncer in
+the wild! What finally got me mad was the sync agent using 90% CPU all
+of the time, at times virtually locking you out of your own machine,
+while performing almost nothing. Finally, if you ever try to navigate
+that online iDisk, get yourself a cup of tea, you will have plenty of
+time to drink it up until that file is open…</p>
+<p>Compared to SugarSync, DropBox with its simplicity and real versioning
+of files is significantly better performing than SugarSync, espcially if
+we talk upload and real volume, and if you ever tried SugarSync, it is a
+resource hugger (not as bad as iDisk, but it will stop your workflow).
+So in the end the choice for me was based on “mutual exclusion”, there
+is simply still no service that can hold the candle to DropBox - and
+just got me Pro account. As I am writing this, I am syncing up dozens of
+gigs of data to my 50 GB DropBox, and I hardly notice it happening!</p>
+<p>Oh, if you get yourself an account for DropBox, either the free 2 GB or
+a full Pro account, I would appreciate if you register via <a class="reference external" href="https://www.getdropbox.com/referrals/NTE0NTA0OTk">this link</a>,
+as it creates me some 500 MB extra space for referring you :o).</p>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://fnl.github.io/mobileme-vs-sugarsync-vs-dropbox.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.github.io/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://fnl.github.io/tag/apple.html" class="selected">Apple</a>
+                            <a href="http://fnl.github.io/tag/cloud.html">Cloud</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h4 class="date">Apr  6,  2007</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://fnl.github.io/must-have-apps-for-osx.html" rel="bookmark" title="Permanent Link to &quot;Must have apps for OSX&quot;">Must have apps for OSX</a>
+                    </h2>
+                    
+                    <p>As everyone has one, I just thought I might as well also put together
+my personal list of the most useful applications for your nifty Mac
+running the one and only truly user-friendly, working windowed OS: X!
+The lists are ordered by importance, some apps are non-free, but I
+explain why I use them and why you might want to as well.</p>
+<div class="section" id="system-tools">
+<h2>System Tools</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://quicksilver.blacktree.com/">Quicksilver</a> - application launcher, action and command window -
+THE most important app to have on any Mac, just get it (and learn to
+use it...).</li>
+<li><a class="reference external" href="http://free.abracode.com/cmworkshop/">OnMyCommand</a> - custom right click context menus. Great tool, I use
+it for a tons of stuff from SVN repository interaction, file settings
+and archiving, to things like &quot;select a Madrid address to
+automatically open the location in Google maps&quot; or &quot;translate the
+selected text to English/Spanish.&quot;</li>
+<li><a class="reference external" href="http://cyberduck.ch/">Cyberduck</a> - is a great FTP/SFTP client, if you need one - and
+definitely more elegant than using Finder...</li>
+</ul>
+</div>
+<div class="section" id="editors">
+<h2>Editors</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://aquamacs.org/">Aquamacs</a> - is the one-in-all solution and my favorite emacs port
+for the Mac. Although, I only use it for LisP and C programming now,
+as I have TextMate (see below) for my Python and web development as
+well as simple text editing.</li>
+<li><a class="reference external" href="http://www.uoregon.edu/%7Ekoch/texshop/">TexShop</a> - is the most comfortable WYSINWYG (what you see is NOT
+what you get...) editor for LaTeX, which is the most reliable and
+stable environment to write books and papers. Yet, you naturally just
+can keep editing your TeX in emacs/Aquamacs...</li>
+<li><a class="reference external" href="http://www.macromates.com/">TextMate</a> - editor is kinda cool in some senses, but has some
+drawbacks: first, it ain't free - I have it because my research
+institute bought a license for me without even asking. It doesn't
+know LisP and C. Most features it has you can have with emacs or (if
+things would come to worst) write them with ELisP for emacs instead
+of learning the TM macro commands. Yet, some things are kinda cool,
+especially the filebrowser and codebrowser I prefer over the emacs
+Speedbar. It is great for Python, Ruby, XML, Perl, JavaScript and SVN
+interaction (if you are damned to program Java, use Eclipse...). So
+that, incredibly fast startup, and decent column selection (you can
+have that in emacs with a plug, too!) are my reasons for using it. If
+you are willing to spend the bucks, get it. If you want an all-in-one
+solution stick with some emacs.</li>
+</ul>
+</div>
+<div class="section" id="getting-things-done">
+<h2>Getting Things Done</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.barebones.com/products/yojimbo/">Yojimbo</a> - if you are only willing to spend money on just one
+single application, this is it. This is sort of a multi-functional
+archiver: it stores your serial numbers, passwords, credit card
+details, invoices, interesting documents, webpages and pdfs, the
+metro plan of your city - whatever, you name it. Stuff is properly
+encrypted using AES for protection. You can sort, tag, file your
+content in a very decent way and you actually get to immediately find
+the information again. This thing should be standard in any OS X
+distribution, makes life so much simpler.</li>
+<li><a class="reference external" href="http://journler.com/">Journler</a> - is a nice diary to keep track of what you are doing and
+your ideas about it. I use it as my development diary (&quot;lab journal&quot;
+would be the term, I guess...). You can add all sorts of media to
+your entries (videos, sound (voice recordings!), images) and even
+upload your entries to your blog. Cool!</li>
+<li><a class="reference external" href="http://bargiel.home.pl/iGTD/">iGTD</a> - yet another GettingThingsDone client - if you are in a
+situation like me and have 10k things in your head and another 10k
+todos, this is what helps you keeping track of what's next.</li>
+<li><a class="reference external" href="http://www.apple.com/iwork/keynote/">Keynote</a> - from the iWork package; if you need to do presentations:
+please do not try to infest your gorgeous Mac with crap software from
+Redmond. Do your presentations with Keynote - their just better,
+nicer and more aesthetic.</li>
+</ul>
+</div>
+<div class="section" id="media">
+<h2>Media</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.videolan.org/vlc/">VideoLANClient (VLC)</a> - the media player for the Mac: no more
+problems with missing audio/video codes, plays (almost) everything
+and allows full screen for free (a two thumbs down on QuickTime for
+this one!).</li>
+<li><a class="reference external" href="http://www.getdemocracy.com/">Democracy</a> - player, the most fun way to handle, download and
+archive your video collection from YouTube, Yahoo! and Google Video,
+Blogdigger, et al. as well as any clips, vids and movies you have
+locally. Supports full screen viewing for free (as opposed to
+QuickTime...), but ain't as versatile with codecs as VLC - but you
+can teach Democracy to launch those vids in VLC.</li>
+<li><a class="reference external" href="http://www.apple.com/itunes/download/">iTunes</a> - is a must have if you own an iPod (or, eventually, an
+iPhone...). If not, it is still the coolest way to keep track of your
+podcasts, radio stations and browse your local MP3s (covers).</li>
+<li><a class="reference external" href="http://www.apple.com/ilife/iphoto/">iPhoto</a> - should come with your Mac anyway AFAIK. The most
+practical way of staying on top of your ever-growing picture and
+image collection while integrating nicely with other apps (like
+Keynote, Journler and many others).</li>
+</ul>
+</div>
+<div class="section" id="safari-plugins">
+<h2>Safari Plugins</h2>
+<p>If you are just such a Cocoa-fan as me, and prefer browsing with
+Safari over Firefox (yes, OK, decent web development can only be done
+with the fox, so you do need it anyway in this case...) here are some
+plugs. There are some reasons to use Safari: integrates websites from
+your Address Book into your Bookmarks, your bookmarks are system-wide
+searchable, you can aggregate feeds very nicely, pushing URLs (weblocs)
+to other apps is easy are just some. UPDATE: now back to the Fox again,
+the plugins for it just rule! UPDATE (2008): and to Safari - high-speed,
+nicest rendering of all browsers and WebKit rule even more!</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.kottke.org/05/02/saft-safari-plugin">Saft</a> - is the only plugin I can recommend to buy. And if only for
+the full screen mode. This is just so much cooler than even the
+crappy IExploder 7 full screen mode, as it actually intelligently
+hides what you do not want to see currently (status bar, booksmarks,
+URL bar). Naturally, it has tons of other features, too - check it
+out.</li>
+<li><a class="reference external" href="http://www.inquisitorx.com/safari/">Inquisitor</a> - is the coolest enhancement for the (Google) search
+box and possibly the best free plugin. Just get it.</li>
+<li><a class="reference external" href="http://pimpmysafari.com/plugins/safariblock-112">SafariBlock</a> - is a good way to block images, popups and frames you
+don't wanna see. Not as powerful as Pith or Saft, but a free
+alternative.</li>
+</ul>
+</div>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://fnl.github.io/must-have-apps-for-osx.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.github.io/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://fnl.github.io/tag/apple.html" class="selected">Apple</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="clear"></div>
+                <div id="footer">
+                    <p>
+                    Mockingbird theme by <a href="http://nevanscott.com/">Nevan Scott</a>
+                    &middot;
+                    <a class="atom" href="http://fnl.github.io/feeds/all.atom.xml">Feed</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>
