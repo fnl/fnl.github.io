@@ -25,6 +25,84 @@
         </div>
         <div id="wrapper">
             <div id="content">
+                <h4 class="date">Mar 12,  2010</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://fnl.es/rails-rspecing-controllers-with-declarative-authorization-and-authlogic.html" rel="bookmark" title="Permanent Link to &quot;Rails: RSpec'ing controllers with declarative authorization AND AuthLogic&quot;">Rails: RSpec'ing controllers with declarative authorization AND AuthLogic</a>
+                    </h2>
+                    
+                    <p>I just had a rough time figuring out how to bypass all the security
+features of the Rails project I am developing to write decent controller
+specs with RSpec. I am using AuthLogic as authentication module and
+declarative authorization (DA) for exactly that. However, when I started
+to write controller specs that would simulate (HTTP) GET requests, I ran
+into a wall: I simply could not digg what the cleanest way would be to
+bypass both AuthLogic and DA. Finally, after finding the right queries
+in Google, I managed to get the necessary snippets. To avoid that the
+same tedious task might befall you, here's what you need to add, e.g.,
+to your spec_helpers directory - I called the file
+&quot;controller_helpers.rb&quot;:</p>
+<pre class="literal-block">
+module SessionHelper
+  def current_user(stubs = {})
+    &#64;current_user ||= mock_model(User, stubs)
+  end
+
+  def user_session(stubs = {}, user_stubs = {})
+    &#64;current_user_session ||= mock_model(
+      UserSession, { :user =&gt; current_user(user_stubs) }.merge(stubs)
+    )
+  end
+
+  def login(session_stubs = {}, user_stubs = {})
+    UserSession.stub!(:find).and_return(
+      user_session(session_stubs, user_stubs)
+    )
+  end
+
+  def logout()
+    &#64;user_session = nil
+  end
+
+  def disable_authorization()
+    Authorization.ignore_access_control(true)
+  end
+end
+</pre>
+<p>The trick is that, for AuthLogic, you can now &quot;authenticate&quot; the user
+by the stubbed UserSession that returns a mocked User model. DA is less
+complicated: the <tt class="docutils literal">disable_authorization()</tt> method is all that is
+needed. Now, in your &quot;spec_helper.rb&quot;, you add this line to the top:</p>
+<pre class="literal-block">
+require File.dirname(__FILE__) + '/spec_helpers/controller_helpers'
+</pre>
+<p>And this line somewhere in the <tt class="docutils literal"><span class="pre">Spec::Runner.configure</span></tt> loop:</p>
+<pre class="literal-block">
+config.include(SessionHelper)
+</pre>
+<p>Now, in your controller specs, it is more than trivial to disable
+authorization and authentication at once - simply add the following
+line, e.g., to your <tt class="docutils literal"><span class="pre">before(:each)</span></tt> definitions:</p>
+<pre class="literal-block">
+disable_authorization &amp;&amp; login
+</pre>
+<p>Voila - your GET requests pass; and you can even add stubs to your
+User model, if needed, by adding them as key-value pairs to the
+<tt class="docutils literal">login()</tt> call above! So now you can get back to make your specs
+pass...</p>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://fnl.es/rails-rspecing-controllers-with-declarative-authorization-and-authlogic.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://fnl.es/tag/rspec.html">rspec</a>
+                            <a href="http://fnl.es/tag/rails.html">rails</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
                 <h4 class="date">May 26,  2009</h4>
                 <div class="post">
                     <h2 class="title">
@@ -141,148 +219,11 @@ long time!</p>
                     <div class="clear"></div>
                 </div>
 
-                <h4 class="date">Apr 30,  2009</h4>
-                <div class="post">
-                    <h2 class="title">
-                        <a href="http://fnl.es/news-swines-pigs.html" rel="bookmark" title="Permanent Link to &quot;News, Swines &amp; Pigs&quot;">News, Swines &amp; Pigs</a>
-                    </h2>
-                    
-                    <p>Usually, I prefer to steer free from the day-to-day mainstream news, yet
-even I have to accept a low level of &quot;noise&quot; if I want to know at least
-something about the most significant things going on. However, currently
-I get the overwhelming feeling that the whole news world is grunting and
-snorting like a pigsty. You guessed it, I am concerned about all this
-&quot;swine flu&quot; reporting going on. As can be easily demonstrated, this
-whole &quot;pandemic alert&quot; and panic-making has gone completely out of
-proportion. It is yet another example of how ridiculous news agencies
-exaggerate or even blur the facts, and this attitude might be much more
-lethal than most biological illnesses if measured by its indirect
-impact.</p>
-<p>First of, some flu virus classification: There are three types of
-influenza virus: A, B, and C. B and C play only very minor roles as they
-mutate slower, are less virulent, and affect far less species. Usually,
-when talking about a flu virus, type A is implied. Type A influenza then
-is further categorized by the HxNx nomenclature. The H refers to the
-hemagglutinin (HA) lectin and the N to the neuroaminidase (NA)
-glycoprotein. Both are found on the outside coat of the virus particle.
-HA mediates the virus' binding to target cells, while NA is responsible
-for the release of progeny virus from infected host cells. The numbers
-denote the antibody response of the virus, ordered by historic discovery
-- meaning, a virus with the same H/N number is identified by the same
-<em>type</em> of antibodies, which form part of your immune system/defense. HA
-and NA are essential for the virulence (the relative ability to cause
-disease) in terms of infectiveness and the epidemic capabilities of the
-strain. H1N1 denotes the class of flu virus HA/NA proteins that is the
-most commonly found form in human influenza. Our immune system defends
-us by recognizing mainly those two proteins (the &quot;antigenes&quot;) through
-our antibodies. This means, from a pure immuno-defense point of view,
-this kind of strain is the most well known to the human body and immune
-system. This is one of the reasons why the new Hong Kong avian flu, with
-its H5N1 composition, is much more virulent than the current H1N1 swine
-flu or any other &quot;regular&quot; flu.</p>
-<p>Endemic states and lethal properties: H1N1 most deadly appearance and
-the worst pandemic in modern human history was what we now know as the
-&quot;Spanish Flu&quot; in 1918; This specific influenza virus transformed its
-endemic properties (the ability to propagate within one kind of species,
-in this case birds) to a panzootic state (affecting animals including
-humans - epizootic would be the intermediate state that does not affect
-humans). Note that this pandemic occurred during WW I, largely
-facilitating its spread. In general, any kind of virus capable of
-overcoming the species barrier is potentially more dangerous, as it is
-likely to carry genetic material and protein structures the newly
-infected species has never seen before, therefor being much more
-virulent and lethal than the existing endemic strains. However, the
-Spanish Flu killed somewhere around 20 million people (taking
-conservative, low estimates), and its symptoms were so strong it was
-often misdiagnosed as some much more severe infection. Apart from the
-HA/NA properties already mentioned, there is the actual RNA (viruses
-commonly use RNA instead of DNA to carry their genetic information) that
-a virus uses to encode its proteins and other functions that are
-important to the survival and impact of a virus. Our immune defense
-looks for RNA sequences those are different to any sequence found in our
-body and &quot;destroys&quot; those foreign sequences by cleaving the strands into
-non-functional pieces with the help of so-called RNases. For this to
-work, the immune system therefor has to identify the RNA [as foreign].
-But a strand of RNA coming from another species might actually contain
-nucleotide base sequences our immune system does not recognize (because
-it only recognizes already <em>known</em> foreign sequences), making the virus
-much more lethal. This process of changing the RNA and protein
-configuration is amplified by two related mechanisms called &quot;genetic
-drift&quot; and &quot;antigenic shift&quot;. In the case of the Spanish flu, the RNA
-was very &quot;new&quot; to the human's immune system and had a very high mutation
-rate: how often the RNA sequence changes, roughly the meaning of the
-aforementioned genetic drift and antigenic shift. On the contrary, the
-new &quot;Mexican&quot; swine flu virus has a very similar RNA composition to
-regular virus strains found in humans, i.e. it does not appear to be
-significantly more leathal than any other flu. The only known difference
-to the regular flu circulating in humans is that it seems to affect more
-younger than older people, possibly due to the fact that older people's
-immune systems already have &quot;seen&quot; a similar version of this virus some
-time ago and therefor have antibodies that recognize the HA/NA
-glycoproteins.</p>
-<p>Now compare this swine flu against any regular flu by numbers: The
-regular flu kills about 250,000 to <em>half a million</em> people <em>per year</em>.
-This overhyped swine flu managed to kill <em>eight</em> (8!) humans so far and
-it has been confirmed to have infected about 150 people worldwide (WHO
-data, 29th of April, 2009). I.e., on a daily average about a
-<strong>thousand times more</strong> people die from the regular flu than this new
-strain. Regular flu is almost continuously spreading somewhere in the
-world, i.e., if the WHO took this into account, we would be living in a
-nearly constant influenza pandemic. The swine flu just now made it to
-the last stage before <em>even being defined</em> as a WHO &quot;pandemic&quot;: There
-must be a few known infections in at least two countries. Recall this
-definition and check the real numbers when somebody is talking about a
-new &quot;pandemic&quot;. The infection with swine flu seems to be no more lethal
-than with any other flu, so your chances of dying from the swine flu
-outside of Mexico are so marginal it makes no sense to take them into
-account, while if you do go to Mexico, all you seriously need to do is
-make sure your current health state is good enough to survive any flu
-anywhere, which is much more prevalent and 1,000 times more likely to
-kill you by a global statistic<em>.</em> But the main point is: there is
-nothing dangerous or wrong about going to Mexico, at least concerning
-the flu. I would be much more worried about drug gangsters and hijackers
-there if I were you: They managed to kill several thousands of people
-this year alone already. In other words, the WHO rulings and
-suggestions, that are close to ridiculous given the circumstances,
-combined with the media hype are about to isolate Mexico from the world,
-which leads me to my final and most important point.</p>
-<p>In general, this &quot;pig-hyped&quot; flu without any review of its background,
-no factual content, and exclusively based on beliefs and propaganda has
-only one really worrisome influence: it is weakening and isolating
-Mexico, both socially and economically. Our ignorance to real facts are
-estimated to cost Mexico <em>City</em> (&quot;D.F.&quot;) alone around $88 million <em>per
-day</em>, and this figure will need huge updates for the crash Mexico's main
-(legal) economic sector, tourism, will suffer, plus the costs incurred
-on the country as a whole. This number will be similar to or more likely
-even exceed the daily cost of the U.S. oil war in Irak (estimated to
-about $250 million, in case you didn't know) - the only good news being
-that instead of about 100 (direct, not counting the indirect toll, which
-is estimated to be around five times higher) deaths per day, the swine
-flu's daily death toll is still below one. In other words, the combined
-direct and indirect negative impact of this insubstantial media hype on
-a close to imaginary &quot;Mexican Flu&quot; will cost and destroy much more lives
-than the virus itself most likely ever will have been capable of. Media
-propaganda crusades against a country nowadays have the same
-socioeconomic impact as the largest &quot;real&quot; war in decades if measured by
-the daily cost. Keep this in mind the next time you read news about
-swines from pigs.</p>
-
-
-                    <div class="clear"></div>
-                    <div class="info">
-                        <a href="http://fnl.es/news-swines-pigs.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>                        
-                        <div class="tags">
-                            <a href="http://fnl.es/tag/swine-flu.html">swine-flu</a>
-                        </div>                        
-                    </div>
-                    <div class="clear"></div>
-                </div>
-
                 <div class="clear"></div>
                 <div class="pages">                
                     <a href="http://fnl.es/index.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/index3.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 2 of 6</span>
+                    <span>Page 2 of 7</span>
                 </div>
 
                 <div class="clear"></div>
