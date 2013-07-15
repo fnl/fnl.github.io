@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>fnl.es</title>
+        <link rel="shortcut icon" href="http://www.fnl.es/favicon.ico" />
+        <link href="http://www.fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
+                        <link href="http://www.fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+        
+        <link rel="stylesheet" href="http://www.fnl.es/theme/css/screen.css" type="text/css" />
+        <link rel="stylesheet" href="http://www.fnl.es/theme/css/pygments.css" type="text/css" />
+    </head>
+    <body>
+        <div id="header">
+            <ul id="nav">
+                <li class="selected"><a class="flagred" href="http://www.fnl.es">Home</a></li>
+                <li><a class="flagyellow" href="http://www.fnl.es/pages/about.html">About</a></li>
+                  <li><a class="flagyellow" href="http://www.fnl.es/pages/projects.html">Projects</a></li>
+                  <li><a class="flagred" href="http://www.fnl.es/archives.html">Archives</a></li>
+            </ul>
+            <div class="header_box">
+                <h1><a href="http://www.fnl.es">fnl.es</a></h1>
+                <h2>fnl en España</h2>
+            </div>
+        </div>
+        <div id="wrapper">
+            <div id="content">
+                <h4 class="date">Apr 27,  2009</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://www.fnl.es/why-i-love-python-30-unicode-utf-8.html" rel="bookmark" title="Permanent Link to &quot;Why I love Python 3.0: Unicode + UTF-8&quot;">Why I love Python 3.0: Unicode + UTF-8</a>
+                    </h2>
+                    
+                    <p>This change in Python 3.0 might be more than useful for
+anybody intending to write programs that use more than the ASCII
+characters (A-z, 0-9, and some symbols), which, given how i18n'ed most
+applications are today, is rather the norm than the exception. I also
+hope to encourage my fellow Pythoneers to update to 3.0 as soon as
+humanly possible, not only because of this change, but because of the
+general advantages of Python 3.0 (aka &quot;no-where near 3000&quot;...).</p>
+<p>In case you do not understand the difference between Unicode and String
+arrays, here is a short paragraph to get you started. A String (str in
+pre-3.0 Python, bytes/bytearray in Python 3.x+) is a byte-array already
+<em>bound</em> to a specific character-lookup table (e.g. ASCII, Latin-1,
+UTF-8, etc.) to find the correct representation for that String. Note
+that this is not the <em>glyph</em> itself you see on-screen, as this depends
+on, e.g., what font you are using, and is handled by the GUI toolkit or
+the terminal. A Unicode array (unicode in pre-3.0, str in 3.x+) on the
+other hand is an array of &quot;universal&quot; bytes, so-called <strong>code-points</strong>
+usually managed as two-byte arrays, but has no native representation.
+Therefore, to create something readable from an Unicode object, you have
+to <em>encode</em> its bytes by using a codetable, such as ASCII or UTF-16, to
+the correct String representation (&quot;<em>bind</em> the Unicode array to a code
+table&quot;). On the contrary, to create a Unicode array from a String array,
+you need to <em>decode</em> (&quot;unbind&quot;) the String's coding to get the
+&quot;universal&quot; (in quotation marks as not all programming langues have to
+use base 16 integers (aka hex, or two bytes)) Unicode. If you are not
+used to thinking in these terms, a general tip for pre-3.0 Python: your
+program should, when handling String input (SAX parsers for example
+already do the conversion for you), convert it to Unicode (decode the
+Strings), and when outputing your Unicode arrays, convert them back to
+the desired String representation (encode them) - while working with
+Unicode internally to avoid bugs and possible exploits. A (rather
+stupid, but you can interpolate the danger, I hope) snippet from
+Python's Unicode HOWTO might exemplify this:</p>
+<pre class="literal-block">
+def read_file(filename, encoding):
+    if '/' in filename:
+        raise ValueError(u&quot;'/' not allowed in filename&quot;)
+    else:
+        return open(filename.decode(encoding), 'r')
+</pre>
+<p>Looks good at first, but what about sending that function a String not
+in any standard encoding? For example, the UTF-7 encoding for
+u&quot;/etc/passwd&quot; is &quot;+AC8-etc+AC8-passwd&quot; - a nasty mistake if that file
+is presented to a user... (the work-around in this trivial example is
+obvious: just decode before the if-clause - or, even better, when the
+string enters your program - and compare to u'/'). To summarize, in
+Python (not so in C, for example!) a Unicode array consists of two-byte
+elements (base 16 integers) called code-points, Strings are arrays of
+bytes which are bound to a codetable that helps the Python interpreter
+look up the bytes' character representations and send them to your
+terminal or GUI. Unicode to String conversion is called encoding
+(&quot;binding&quot;), String to Unicode conversion is decoding (&quot;unbinding&quot;). The
+fact that, when using the Python shell, you see &quot;real&quot; characters for a
+String or Unicode object is pure convenience and should not distract you
+from how they truly work internally.</p>
+<p>After this lengthy Unicode vs. String intro, the best news first: if you
+can allow yourself the luxury to program with any Python version and are
+not dependent on external libraries, Python 3.0 is just made for you:
+The new native String object is always a Unicode representation, and the
+default encoding chosen for representing your strings is UTF-8. In other
+words, if you use Python 3.0 and are happy with UTF-8, you no longer
+have to worry about decoding your (byte) strings to Unicode arrays or
+binding your Unicode code-points to the right (byte-) string
+representations. While this might seem like something that should have
+been done long ago, for historic reasons older programming languages
+(plus Python pre-3.0) use ASCII as the default encoding, meaning you had
+to look after de-/encoding the whole time when working with input/output
+functionality of your programs and using most other languages other than
+English - and even there you might want to have special characters
+(don't be so naïve...). Sad side to this: what I am talking about here
+is standard in Java...</p>
+<p>However, you no longer need to worry with 3.0: First, the totally
+useless old String object (str) has been removed (to be exact, it could
+be said it is now &quot;integrated&quot; into the bytes and bytearray objects),
+including the even more ridiculous &quot;encode&quot; method for old str objects:
+bytes and bytearray only support a &quot;decode&quot; message (to the new Unicode
+str objects), while the intended use of str.encode, transforming Byte
+objects that were represented as str objects in pre-3.0, like zip or
+base64, now has to be done through a new method called &quot;translate&quot; on
+the new bytes and bytearray objects in 3.0, or via encode on the new str
+object. This was a dangerous duck typing strategy to have str.encode in
+pre-3.0: as Unicode objects can and should have this method, too, but as
+you could not tell if you were calling encode on a Unicode object or a
+String object (without something like writing:</p>
+<pre class="literal-block">
+assert isinstance(my_obj, unicode)
+</pre>
+<p>before every call to encode, at least), you could have been decoding
+Unicode and encoding Strings - and because Python was (yes, was (!) -
+see below) as &quot;nice&quot; as to do auto-coercion for you, without very
+thorough testing libraries such a bug could go unnoticed for a long time
+in pre-3.0. So, my praise to whomever was responsible for that decision!</p>
+<p>On the other hand, the unicode object is now the new str object, sans
+the even more useless and dangerous &quot;decode&quot; functionality: the new
+(Unicode) str object only supports str.encode (for cases where you want
+something else than UTF-8), while str.decode is finally dropped from the
+Python Standarad Library. Obviously, you might have a system that does
+not want UTF-8, and encoding your Unicode str to whatever schema you
+need with str.encode the whole time would be a pain; To define a
+different encoding globally, Python uses your &quot;coding&quot; declaration in
+the first lines of your program as the default encoding schema for all
+your new, shiny Unicode str objects. I.e., writing:</p>
+<pre class="literal-block">
+# -*- coding: funny-arab-dialect -*-
+</pre>
+<p>will be enough if you have some strange language sporting glyphs that
+require characters not found in the Unicode consortium's codetables, or
+you might want to set it back to ASCII (the default in pre-3.0) if you
+really need to ensure nothing other than good, old &quot;7-bit&quot; is output by
+your program. On a side note: UTF-8 is compatible with ASCII, while
+UTF-16 is not; i.e., an ASCII string encoded using the UTF-8 codetable
+still gives the right characters, trying this with UTF-16 encoding does
+not - and a good explanation why we have still not moved to UTF-16 in
+general.</p>
+<p>Finally, the really dangerous auto-coercion of Python between Strings,
+Unicode representations, and Byte arrays is gone for good. Your
+message's argument types must now match the receiving object's type and
+comparisons between the different types always evaluate to false. This
+last change might sound drastic if seen from a purely rapid prototyping
+view, but everybody with some intent on not going crazy while
+programming will greatly appreciate this change. The bugs and exploits
+stemming from wrong (en/de-) coding, or, let's say, too much duck typing
+the str and unicode objects in pre-3.0 Python (yeah, I love to put the
+fault on somebody else...) are finally gone! Also, as all Strings are
+now represented as Unicode str objects, you no longer need to worry if,
+while comparing two str objects, they are using the same encoding -
+which was another fountain of bugs in pre-3.0 Python - as any String is
+internally managed as universal Unicode.</p>
+<p>What is left to say? These changes are dramatic (even if they should
+have been made already long ago with 2.0), and it will take a while
+until Python 3.0 will have replaced 2.7 (the final, upcoming stable 2.x
+release, which will warn you about code that will break with 3.0). But
+the message should be clear: the effort of converting your libraries to
+the next generation of Python is more than worth it, and the 2to3
+converter should help if you had your encoding/decoding correct. If not,
+converting to 3.0 might help you uncover some nasty bugs you were not
+even aware of! Other reasons to &quot;convert&quot; would be:</p>
+<ul class="simple">
+<li>no more longs, which are now ints and unlimited in size (think of
+what happend when reaching maxint before...),</li>
+<li>generator/views from most operations formerly returning lists (think:
+time used for creating and garbage collecting those temporary lists),</li>
+<li>function annotations for metaclassing and advanced decorators,</li>
+<li>nonlocal scope (similar to LISPs lexical scope),</li>
+<li>dictionary comprehensions (&quot;{k: v for k, v in my_dict}&quot;) and set
+literals (&quot;my_set = {1, 2}&quot;),</li>
+<li>and tons of streamlining the syntax and Standard Library.</li>
+</ul>
+<div class="section" id="tl-dr-summary">
+<h2>tl;dr summary</h2>
+<table> <tbody>
+<tr> <th align="left"> <strong>Python pre-3.0</strong> </th>
+     <th align="left"> <strong>Python post-3.0</strong> </th> </tr>
+<tr> <td> str.encode </td> <td> bytes.translate or (new) str.encode </td> </tr>
+<tr> <td> str.decode </td> <td> bytes.decode </td> </tr>
+<tr> <td> unicode </td> <td> str </td> </tr>
+<tr> <td> unicode.encode </td> <td> str.encode </td> </tr>
+<tr> <td> unicode.decode </td> <td> *n/a* </td> </tr>
+<tr> <td> str("x") == unicode("x") &nbsp;&nbsp; </td> <td> bytes("x") != str("x") </td> </tr>
+</tbody> </table></div>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://www.fnl.es/why-i-love-python-30-unicode-utf-8.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://www.fnl.es/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://www.fnl.es/tag/unicode.html">unicode</a>
+                            <a href="http://www.fnl.es/tag/python.html">python</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h4 class="date">Oct  5,  2008</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://www.fnl.es/zeitgeist-addendum-the-venus-project.html" rel="bookmark" title="Permanent Link to &quot;Zeitgeist Addendum: The Venus Project&quot;">Zeitgeist Addendum: The Venus Project</a>
+                    </h2>
+                    
+                    <p>I just sent a mail to some of my friends of whom I hope they might be
+interested in this subject. I am sure this will be a very hot topic in
+certain circles very soon; So I was giving this some thought if I should
+publish this entry on my blog or not. My final conclusion is that I give
+a damn if anybody can, will, must, etc. associate me with the content of
+this documentary I am describing and linking to here. I just think it is
+to important for humanity - and much more than 10to100 if you allow me
+this joke and understand it because you followed the news lately - than
+that it should be a question of my personal integrity needing
+protection, as the content is <strong>highly controversial</strong> and more
+anarchistic in its nature than anything I have encountered in my life so
+far.</p>
+<p>However, before reading on, I want to remind you that you are a free
+person and as such are free to stop reading this blog or watching the
+documentary to which I will be linking you at any time - I think it is
+awesome, but I can well imagine you may not. Also, I saw the first
+Zeitgeist movie and thought it was rather extreme and not offering any
+solutions, just another of these “everything is bad” documentaries we
+have out there already, but no real content. Well, this second release
+just starts out the same again, and in the first twenty minutes (sorry,
+it will take two hours of your time, but if you like what I write here,
+I promise you, it’s worth every second) I was very tempted to turn it
+down had there not been the financial disaster in the US and my feeling
+that this documentary might give me some answers. I promise you,
+watching this movie will do way more than letting you understand what
+just has happened the last two weeks. Enough bla-bla, let’s see what you
+might be into and if you want to see it.</p>
+<p>First, Zeitgeist: Addendum (which I think should be called
+Revelation…) will explain the current situation of the world and how
+things tie up to the situation we are in. If you do not understand this
+part, you might want to look at the first Zeitgeist, but it is actually
+irrelevant to the cause. The second part speaks straight from my heart,
+and what I, too, believe is true: we - as in humanity - now have the
+technology to create a self-sustainable, free, and, most importantly,
+equal society. It will also explain you why there is no long-term need
+for the military, the police, the government, laws, economy, and many
+other things we were trained/taught to believe are unrelenting
+(de:unbeugsam, es:irreductible), essential, and necessary elements of
+human society. This leads into the third part, showing you something I
+have never seen before: a possible future, and - this is why I stated
+that I have never seen this before - as a more beautiful vision than I
+had imagined even in my wildest dreams. This is probably the most
+crucial part of the whole movie: you can accept it or not, and I -
+obviously - cannot promise you (for now) that it all will become reality
+one day. But allow me to dream… Finally, and this is what makes this
+movie so exceptional, it explains you something I was missing in all
+these documentaries I have watched so far, even better than just a
+possible future: it gives you five very simple tasks to accomplish which
+will be more than sufficient to make this future our reality if we reach
+a, what they call, “critical mass” - although I still believe it is not
+a question of if we do it, just when (as in before we eradicate
+ourselves from this universe). OK, enough from me, I think the movie
+will either disgust you or whatever, or you will have the feeling I am
+just now having: my eyes were never that wide open (and no, yours truly
+is not on any drugs as in a similarly named movie ;-)).</p>
+<p><a class="reference external" href="http://www.zeitgeistmovie.com/">Zeitgeist Movie Site</a> (download and/or contribute)</p>
+<p>The second and maybe much more important link is the one to the Venus
+Project itself, which is the core element of this movie. You will much
+better understand its implications after watching the movie, but feel
+free to give it a look right away. Essentially, TVP is implementing a
+post-scarcity economy where transparent, public technology and resource
+exchanges have replaced the monetary system and the current market
+economy while preserving productivity through cultural and social status
+incentives.</p>
+<p><a class="reference external" href="http://www.thevenusproject.com/">The Venus Project</a></p>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://www.fnl.es/zeitgeist-addendum-the-venus-project.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://www.fnl.es/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://www.fnl.es/tag/zeitgeist.html">zeitgeist</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h4 class="date">Sep 12,  2008</h4>
+                <div class="post">
+                    <h2 class="title">
+                        <a href="http://www.fnl.es/what-were-you-up-to-this-summer.html" rel="bookmark" title="Permanent Link to &quot;What were you up to this summer?&quot;">What were you up to this summer?</a>
+                    </h2>
+                    
+                    <p>Obviously, from the huge gap between this and my last post you probably
+already have imagined, mine was quite busy. To sum it up: I went to
+Canada, then Mayte - that is my gorgeous girlfriend in case you still
+don’t know! - was in Madrid for a whole month (happy me!!!) ad we went
+to Tarragona, a city to the south of Barcelona, and to Bilbao. Finally,
+I had to prepare for a talk in Turku, Finland, which was the last
+“station” for me this summer.</p>
+<p>First things first, I’ll start with the Canada trip. This was more or
+less all payed by my institute because I went to the world’s largest
+bioinformatics conference, the ISMB in Toronto, to present my
+<a class="reference external" href="http://bcms.bioinfo.cnio.es">BioCreative MetaServer</a> project the first time. Reception was quite
+good, and my boss and I were both quite happy. The hotel we stayed at,
+although expensive, was rather crappy: The second day we got back, a
+colleague of mine found another guy in his room, just taking a shower!
+After some inquiries at the desk, they could not “determine” how the
+mistake happend and the manager went up with my friend to clear the
+matters up. The guy there the even refused to change the room! So my
+friend finally decided to do the only logic thing and moved to another
+room… Nice hotel, especially considering we were paying almost Can$ 200
+a night! The city of Toronto itself is very US-like, with skyscrapers
+and a downtown that gets all crappy and full of homeless people during
+the night. I also was kind of annoyed by the way people act there -
+everyone is just a bit too friendly for my taste, it seems more like a
+show than for real. Finally, the city surely is cosy in winter: all the
+center is connected with tunnels so you do never have to go outside -
+brr, that makes me freeze just thinking of it! Another funny thing:
+while we were there, the largest bike theft ever was going on; later the
+police caught a bike seller stealing most of them - they found a whole
+2,800 (!!!) bikes in his home, his shop, and in various garages he had
+to rent to store all those bikes!</p>
+<p>Mayte’s stay here without doubt was my personal highlight this summer,
+and maybe even this year: she found a way to be here a whole month,
+which we spent together almost every day (well, at least the nights…).
+It will be a while before we can spend that much time together in a row
+again! Anyways, apart from some good going out to “terrazas”, bars and
+fancy night clubs here in Madrid, getting some even better dancing done
+and listening to the latest electronic beats, we also did two trips to
+the north of Spain and had a nice afternoon one weekend getting out of
+the city sprawl and enjoying the great countryside - of which you can
+ascertain yourself in the photos below. We went to Tarragona together
+with Iris and Gonzalo to a Spa-Hotel with all sorts nice luxury like
+Saunas, swimming pools, baths, massages, golf course, etc. and had a
+very nice and relaxed weekend while celebrating Iris’ birthday. Actually
+this is a really special occasion, as Iris usually loves to be with many
+people and gives great parties with very many people (and nice Spanish
+and Mexican girls … not that it would be any of my business nowadays!).
+The second trip we made to Bilbao, enjoying the great landscape there,
+making the obligatory - and worth while! - visit to the Guggenheim, as
+well as having a heavy night out during the opening of the Semana
+Grande, which had spectacular fireworks. While we were sitting in the
+grass watching the fireworks, a group standing next to us with two guys
+and a girl was watching just as delighted - when suddenly a really huge
+explosion filled the whole sky above us in a startling view of little
+stars falling down from the sky. The girl got rather frightened, jumped,
+and ran a bit, when she finally just ducked “for cover” on the grass. I
+admit it was not nice of us, but we had to laugh. Then her boyfriend
+turned his head toward her and with a very nonchalant voice asked: “Que
+tienes?” (“What’s up with you?” - “Was hast’n?”). The somewhat
+frightened girlfriend returned to his side, while we keept giggling
+every other time a huge rocket exploded and she started to make leeway…
+Well, apart from that we had a great breakfast, too, with champagne and
+caviar, of which I am sorry to say, I cannot give details. So, this city
+is really worth a visit, especially if you have a person along who knows
+her way around town, the bars, and the beaches. One day the time was
+ripe for Mayte to go back, and I finally gave up my plans of taking here
+hostage and let her go back - and now she is happy and far away from all
+the bourgeois western world in South America… Man, do I miss her
+company!</p>
+<p>The third and final trip this summer was going to Turku. What, you
+really do not know what or where Turku is? No worries, I didn’t either.
+To be honest, it took me some time to find an acceptable travel route to
+that place… But every Turku inhabitant will quickly assure you that you
+missed out on history: it was, until about a hundred years ago, the
+capital of Finland, and is also the oldest town to be found in that part
+of the world. So, you might be asking yourself quite rightfully,
+what-the-hell was I doing in such a remote location? Well, I was
+attending a text-mining conference there: the SMBM’08 (Semantic Mining
+in Biomedicine) and was giving an almost one hour long presentation
+about my platform. So you can imagine it took my quite some time to
+prepare the talk and the data to present, and, as I never had given a
+talk of that length, quite some cups of tea (thanks to a tip from
+Mayte!) before the talk to keep me calm. As a result, I had the feeling
+the presentation was quite some success and the response from the
+audience more than good. Anyhow, the “real” success will have to be
+measured when seeing how many new participants I could attract to the
+platform with this presentation - time will tell! Apart from work, we
+had a great boat tour through the hundreds of tiny islands along the
+coast, went to a Finish smoke Sauna with heated baths - you cool
+yourself of by jumping into the (very cold) sea! - and a great dinner.
+This had a rather funny ending, when the organizers fooled around with
+me: there was a quiz about Finish wildlife, which I apparently won. They
+gave me a bottle filled with transparent liquid and some finish text
+explaining the contents. Without much thought I assumed it was vodka and
+immediately got some shot glasses and shared the bottle with the
+conference attendants. Much to our surprise, it did not have the taste
+of vodka, but was a special kind of water extracted from birch trees… I
+guess, I have to rethink my attitude about alcohol! As for the Finish
+people themselves, there are some quite notable things: first of, it
+really is true, they are blond, almost all of them! Second, and I really
+was quite astonished, I never met that many friendly - and really
+friendly, not that artificial stuff you find in the US and Canada -
+people in any country before. The only thing why I think they are
+slightly crazy occurred to me when, while walking through town at about
+15 ˚C, with jackets and long pants, we passed by an outdoor, public
+swimming pool: it was full of Fins “simulating” that it still was
+summer!</p>
+<p>Well, I am sure I forgot to cover some stuff, but then the post is
+already long enough as it is. To all of you, have a nice autumn,
+enjoying the last rays of sun - if you do not live in Spain!</p>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+                        <a href="http://www.fnl.es/what-were-you-up-to-this-summer.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://www.fnl.es/category/misc.html" rel="tag">Misc</a>                        
+                        <div class="tags">
+                            <a href="http://www.fnl.es/tag/travel.html">travel</a>
+                            <a href="http://www.fnl.es/tag/mayte.html">Mayte</a>
+                            <a href="http://www.fnl.es/tag/biocreative.html">BioCreative</a>
+                        </div>                        
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="clear"></div>
+                <div class="pages">                
+                    <a href="http://www.fnl.es/index2.html" class="prev_page">&larr;&nbsp;Previous</a>
+                    <a href="http://www.fnl.es/index4.html" class="next_page">Next&nbsp;&rarr;</a>
+                    <span>Page 3 of 6</span>
+                </div>
+
+                <div class="clear"></div>
+                <div id="footer">
+                    <p>
+                    Theme by <a href="http://nevanscott.com/">Nevan Scott</a>
+                    &middot;
+                    Modified by Florian Leitner
+                    &middot;
+                    <a class="atom" href="http://www.fnl.es/feeds/all.atom.xml">Feed</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>
