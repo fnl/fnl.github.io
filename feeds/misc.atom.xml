@@ -1,7 +1,422 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2013-07-01T00:00:00+02:00</updated><entry><title>A new "home" for fnl.es</title><link href="http://fnl.es/a-new-home-for-fnles.html" rel="alternate"></link><updated>2013-07-01T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2013-07-01:a-new-home-for-fnles.html</id><summary type="html">&lt;p&gt;After months of looking for a loophole in my calendar to migrate my rather outdated and mostly untended Blogger site to something more modern, I have found the ideal timing: The birth and arrival of my son, Alexander LV (&lt;a class="reference external" href="https://twitter.com/AlexThe55th"&gt;&amp;#64;AlexThe55th&lt;/a&gt;)!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2013-10-08T00:00:00+02:00</updated><entry><title>Concurrent Node.js</title><link href="http://fnl.es/concurrent-nodejs.html" rel="alternate"></link><updated>2013-10-08T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2013-10-08:concurrent-nodejs.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Recently, a &lt;a class="reference external" href="https://twitter.com/SoftActiva"&gt;colleague&lt;/a&gt; of mine asked me to introduce the most important concepts of &lt;a class="reference external" href="http://nodejs.org/"&gt;Node&lt;/a&gt; programming to a flock of interested people in our &lt;a class="reference external" href="http://www.cnio.es/es/grupos/plantillas/presentacion.asp?grupo=50004294"&gt;research group&lt;/a&gt;.
+Initiallly, I declined, considering the &lt;a class="reference external" href="http://howtonode.org/"&gt;vast&lt;/a&gt; &lt;a class="reference external" href="http://blog.modulus.io/absolute-beginners-guide-to-nodejs"&gt;number&lt;/a&gt; of &lt;a class="reference external" href="http://www.nodebeginner.org/"&gt;tutorials&lt;/a&gt; and &lt;a class="reference external" href="https://duckduckgo.com/?q=node.js+book"&gt;books&lt;/a&gt;, but then thought it might be quite an interesting challenge to keep my know-how about Node in shape.
+Taking this into account, my main issue for this tutorial was:
+Which part of developing Node programs is the hardest to grasp for programmers proficient in imperative languages (Java, JavaScript, Objective-C, PHP, Python, Ruby, ...)?
+At the same time, what is the least covered aspect regarding the existing tutorials?
+Last, I wanted to present relevant topics &lt;em&gt;without&lt;/em&gt; getting too far ahead of the status quo (e.g., &lt;a class="reference external" href="http://wiki.ecmascript.org/doku.php?id=harmony:generators"&gt;generators&lt;/a&gt;, which are still an experimental feature for now) or anything else that cannot be used in production.
+My concusion is that the hardest part is to &lt;em&gt;code&lt;/em&gt; &lt;a class="reference external" href="http://www.reactivemanifesto.org/"&gt;reactive&lt;/a&gt; programs that are maintainable and concise.
+Because I only want to use production-ready packages, after checking with &lt;a class="reference external" href="https://npmjs.org/"&gt;npm&lt;/a&gt; and GitHub, this leaves &lt;strong&gt;async&lt;/strong&gt; and &lt;strong&gt;Q&lt;/strong&gt; as the only viable libraries of choice.
+The tutorial should explain to the reader how, with a very limited set of constucts, a Node developer can write highly concurrent Node apps without ending in &amp;quot;callback hell&amp;quot;.
+This introduction will take the reader familiar with Node's imperative callback chain (evil tongues would say &amp;quot;callback spaghetti&amp;quot;) via asynchronous control structures to a concurrent, functional programming style that uses &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Futures_and_promises"&gt;promises&lt;/a&gt; - also know as &lt;strong&gt;futures&lt;/strong&gt; - to delegate the program flow from the code to the V8 engine.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="a-quick-refresher"&gt;
+&lt;h2&gt;A Quick Refresher&lt;/h2&gt;
+&lt;p&gt;Lets look at a static HTTP file server, using the basic Node modules only:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var http = require(&amp;quot;http&amp;quot;)
+var url = require(&amp;quot;url&amp;quot;)
+var path = require(&amp;quot;path&amp;quot;)
+var fs = require(&amp;quot;fs&amp;quot;)
+var port = process.argv[2] || 80
+
+http.createServer(function(request, response) {
+  var uri = url.parse(request.url).pathname
+  var filename = path.join(process.cwd(), uri)
+
+  path.exists(filename, function(exists) {
+    if(!exists) {
+      response.writeHead(404, {&amp;quot;Content-Type&amp;quot;: &amp;quot;text/plain&amp;quot;})
+      response.write(&amp;quot;404 Not Found\n&amp;quot;)
+      response.end()
+    } else {
+      if (fs.statSync(filename).isDirectory()) filename += '/index.html'
+
+      fs.readFile(filename, &amp;quot;binary&amp;quot;, function(err, file) {
+        if(err) {
+          response.writeHead(500, {&amp;quot;Content-Type&amp;quot;: &amp;quot;text/plain&amp;quot;})
+          response.write(err + &amp;quot;\n&amp;quot;)
+          response.end()
+        } else {
+          response.writeHead(200)
+          response.write(file, &amp;quot;binary&amp;quot;)
+          response.end()
+        }
+      })
+    }
+  })
+}).listen(parseInt(port, 80))
+
+console.log(&amp;quot;file server running at http://localhost:&amp;quot; + port + &amp;quot;/&amp;quot;)
+&lt;/pre&gt;
+&lt;p&gt;This highlights basic Node concepts; Upon receiving a request, the server makes an asynchronous check via the OS to ensure the file exists.
+The asynchronicity is indicated by the callback that gets sent to &lt;tt class="docutils literal"&gt;path.exists()&lt;/tt&gt;.
+Then, again asychronously (note the callback sent into &lt;tt class="docutils literal"&gt;fs.readFile()&lt;/tt&gt;), Node reads the file, and if this job completes successfully, sends the file (data) to the response handler.
+Because both checks are done asynchronously, this leaves the server process free to handle other requests while the OS is doing the file lookups (i.e., &amp;quot;non-blocking&amp;quot;).
+However, this demonstrates a problem with this callback coding style: the functions are stacked one on top of another, making this code quite uncomfortable to read and maintain.&lt;/p&gt;
+&lt;p&gt;Before we begin, it is also worth to refresh the &lt;strong&gt;six commandments&lt;/strong&gt; you should follow when coding concurrent programs:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Never mix sync and async style: return a value &lt;em&gt;or&lt;/em&gt; a callback, but not either.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Return&lt;/em&gt; on a callback: write &lt;tt class="docutils literal"&gt;return callback(null, result)&lt;/tt&gt; to prevent execution continuing beyond the CB.&lt;/li&gt;
+&lt;li&gt;Always check errors in callbacks: make sure the CB has a way to deal with error states, as in &lt;tt class="docutils literal"&gt;if (err) { ... }&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Avoid mutable state - it leads to &amp;quot;debugging hell&amp;quot; in concurrent programs (e.g., &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Heisenbug"&gt;Heisenbugs&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Only use try, throw &amp;amp; catch within imperative code sections (you cannot throw &amp;quot;across&amp;quot; a CB).&lt;/li&gt;
+&lt;li&gt;Write tiny functions: maybe 3 statements, and no more than 5.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class="section" id="multiprocessing-in-node-js"&gt;
+&lt;h2&gt;Multiprocessing in Node.js&lt;/h2&gt;
+&lt;p&gt;Node is process-oriented, i.e., unlike some langauges where you create multiple threads in your process, in node you need to &amp;quot;open&amp;quot; multiple OS processes (using &lt;tt class="docutils literal"&gt;popen(3)&lt;/tt&gt;).
+The default tool to run multiple processes in Node is the &lt;a class="reference external" href="http://nodejs.org/api/child_process.html"&gt;child_process&lt;/a&gt; module, and, as an experimental add-on since Node v9, &lt;a class="reference external" href="http://nodejs.org/api/cluster.html"&gt;cluster&lt;/a&gt; can run multiple Node processes in parallel that share the same port or socket.
+When forking/spawning/executing child process, be aware that segmentation faults and other nasty errors in a child process have the potential to bring down your whole stack.
+In general, there are three calls that are relevant for running parallel processes:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options"&gt;spawn&lt;/a&gt; provides a &lt;strong&gt;streaming&lt;/strong&gt; process that you communicate with through Unix pipes. Think of it as in shell syntax &amp;quot;&lt;tt class="docutils literal"&gt;process &amp;lt; instream &amp;gt; outstream &amp;amp;&lt;/tt&gt;&amp;quot;.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback"&gt;exec&lt;/a&gt; runs a single shell &lt;strong&gt;command&lt;/strong&gt; and returns the exit status of the comuptation. Think of it as in shell syntex &amp;quot;&lt;tt class="docutils literal"&gt;exec input; echo $?&lt;/tt&gt;&amp;quot;. Note that while exec does have an output buffer, it is tiny and you should use the streaming interface of spawn if you expect to receive output from the process you are running.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options"&gt;fork&lt;/a&gt; runs a &lt;strong&gt;worker&lt;/strong&gt; script you can communicate with via a &lt;em&gt;channel&lt;/em&gt;. Think of it as a bidiretional version of the shell pipe &amp;quot;&lt;tt class="docutils literal"&gt;server | worker &amp;amp;&lt;/tt&gt;&amp;quot;. Fork is also useful to isolate blocking calls from your otherwise non-blocking Node program.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Note that &lt;tt class="docutils literal"&gt;spawn&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;fork&lt;/tt&gt; are much like background daemons, while &lt;tt class="docutils literal"&gt;exec&lt;/tt&gt; runs some binary to completion.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="example-case-a-service-broker"&gt;
+&lt;h2&gt;Example Case: A Service Broker&lt;/h2&gt;
+&lt;p&gt;Throughout this tutorial, we will use a theoretical service broker that might query a DB or use XHR to communicate with another server.
+It also could be some worker writing or reading data, or anything else that is somehow &amp;quot;IO-bound&amp;quot;.
+Whatever you prefer, the point is that this is a blocking (&amp;quot;side-effecting&amp;quot;) IO call in your program that you want to handle asynchronously.
+In other words, this means you will need to use &lt;strong&gt;callbacks&lt;/strong&gt; (CB) to be notified when the IO event finished and with which result and error state.&lt;/p&gt;
+&lt;p&gt;First, we create a directory where we can put our tutorial code, and for the sake of popularity, use the &lt;a class="reference external" href="http://expressjs.com/"&gt;Express&lt;/a&gt; web app framework:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ mkdir reactive-node-tutorial
+$ cd reactive-node-tutorial
+$ npm install express
+$ node_modules/express/bin/express
+yes
+$ npm install
+&lt;/pre&gt;
+&lt;p&gt;We will use the following &lt;tt class="docutils literal"&gt;broker.js&lt;/tt&gt; script, placed in this same directory:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+/* a &amp;quot;blocking&amp;quot; query */
+function query(ms) {
+  var start = new Date().getTime()
+  console.log(&amp;quot;&amp;quot; + start + &amp;quot;: query started&amp;quot;)
+  while ((new Date().getTime() - start) &amp;lt; ms) {}
+  console.log(&amp;quot;&amp;quot; + new Date().getTime() + &amp;quot; query finished&amp;quot;)
+}
+
+
+process.on('message', function(m) {
+  // normally, here would probably be:
+  // process.send(query(m))
+
+  query(Math.floor(Math.random()*200+900))
+  process.send(m)
+  process.exit()
+})
+&lt;/pre&gt;
+&lt;p&gt;Obviously, this is quite a a toy example, because our worker receives and returns only one single message before shutting down.
+Similarly, our server API for this broker in &lt;tt class="docutils literal"&gt;app.js&lt;/tt&gt; will be just as simple:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var broker = require('child_process')
+
+function query(bucket, query, cb) {
+  var channel = broker.fork(__dirname + '/db.js')
+  channel.send(query)
+
+  channel.on('message', function(result) {
+    cb(null, result)
+  })
+
+  channel.on('error', function(err) {
+    console.log(err)
+    cb(err)
+  })
+}
+&lt;/pre&gt;
+&lt;p&gt;Go ahead and replace everything in &lt;tt class="docutils literal"&gt;app.js&lt;/tt&gt; with this code.
+In a real-world program, you would use a pool of workers and, each time you start a &lt;tt class="docutils literal"&gt;query()&lt;/tt&gt;, use another channel from your pool.
+As a matter of fact, most Node libraries will provide you with non-blocking versions of the API they wrap, so you might need no workers at all.
+Rather, you are more likely to start scaling Node across multiple cores and even machines using workers and IPC events.
+However, this will be enough to run our queries in parallel and demonstrate idioms that can help you write your code to be highly concurrent and easy to scale.
+For demonstration purposes this setting will do, so let's start coding our &amp;quot;reactive&amp;quot; app!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="a-simple-json-rest-service"&gt;
+&lt;h2&gt;A Simple JSON-REST Service&lt;/h2&gt;
+&lt;p&gt;Let's assume we want to provide a JSON-REST web service connecting a query for a blogger ID against the broker that in turn interfaces to some form of external API or DB.
+Upon receiving the user's ID, the server should query the broker for the user's data, and then, in a second step can use that data to fetch any posts the user wrote and any comments she made.
+In other words, we have a serial flow of fetching user and the an parallel step of fetching post and comment data.
+Once all this data is collected, the server should respond with a JSON object containing this data.&lt;/p&gt;
+&lt;p&gt;In the simplest case, you would string a few calls to your query API together and return the results, maybe like this (&lt;em&gt;antipattern&lt;/em&gt;):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var app = require('express')()
+
+app.get('/sync/:userId', function(req, res, next) {
+  var userId = req.params.userId
+
+  db_query('users', userId, function(err, user) {
+    if (err) return next(err)
+
+    db_query('posts', {poster: user}, function(err, posts) {
+      if (err) return next(err)
+
+      db_query('comments', {commenter: user}, function(err, comments) {
+        if (err) return next(err)
+        else return res.json({user: user, posts: posts, comments: comments})
+      })
+    })
+  })
+})
+
+
+app.listen(8000)
+&lt;/pre&gt;
+&lt;p&gt;(Again, you can append this to the app.js you created earlier, just as all following code snippets.)
+The above example gives rise to the (wrong) argument why callbacks are a Bad Idea (you will learn the true reason why callbacks are evil later):
+By putting one CB on top of the next, or returning (think &amp;quot;break&amp;quot;) early if an error occurred, we end up with unmaintable &amp;quot;callback spaghetti&amp;quot;.
+Worse, we just lost the advantage of using Node... this code is actually being run synchronously, one broker query after the next!
+If you run this app in the shell and query the URL (e.g., &lt;tt class="docutils literal"&gt;curl &lt;span class="pre"&gt;http://localhost:8000/sync/example&lt;/span&gt;&lt;/tt&gt;), you will get this output:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ node app.js
+1381334176812: query started
+1381334177793 query finished
+1381334177858: query started
+1381334178830 query finished
+1381334178897: query started
+1381334179868 query finished
+&lt;/pre&gt;
+&lt;p&gt;As can be seen, despite our best intentions, the queries are run one after the next instead of running the last two in parallel.
+So we need to dispatch our last two &lt;tt class="docutils literal"&gt;query()&lt;/tt&gt; calls simultaneously once we have the &lt;tt class="docutils literal"&gt;user&lt;/tt&gt; data and use the callbacks to collect the results!
+In addition, this will allow us to &amp;quot;unstring&amp;quot; this callback chain a bit.
+This takes us straight into the realm of asynchronous programming.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="home-brew-asynchronicity"&gt;
+&lt;h2&gt;Home-brew Asynchronicity&lt;/h2&gt;
+&lt;p&gt;While this certainly is not the cleanest code, here is a quick shot at solving the problem of concurrently running these three queries:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+app.get('/brew/:userId', function(req, res, next) {
+  var userId = req.params.userId
+  var result = {}
+  var cbCounter = 0
+  var gotError = false
+
+  function checkError(err, cb) {
+    if (gotError) return
+    if (err) {
+      gotError = true
+      return next(err)
+    }
+    cbCounter++
+    return cb()
+  }
+
+  db_query('users', userId, function(err, user) {
+    return checkError(err,  function() {
+      result.user = user
+
+      db_query('posts', {poster: user}, function(err, posts) {
+        return checkError(err, function() {
+          result.posts = posts
+          if (cbCounter == 3) return res.json(result)
+        })
+      })
+
+      db_query('comments', {commenter: user}, function(err, comments) {
+        return checkError(err, function() {
+          result.comments = comments
+          if (cbCounter == 3) return res.json(result)
+        })
+      })
+    })
+  })
+})
+&lt;/pre&gt;
+&lt;p&gt;While this version now runs the last two queries concurrently, and, if you have more than one CPU core at least, in parallel, the code has become quite bloated.
+You need to ensure that all three calls have completed before returning a valid result.
+You need to ensure to only return the error once.
+And you need to make sure you have collected the intermediate results.
+Last, if you add another query, you might forget to update the counter checks, use a wrong counter value, or forget to store the intermediate result.
+Luckily, these issues have been solved with the second most popular node module used by fellow Node coders, &lt;a class="reference external" href="https://github.com/caolan/async"&gt;async&lt;/a&gt; (the most popular dependency being ... you guessed it, &lt;a class="reference external" href="http://underscorejs.org/"&gt;underscore&lt;/a&gt;, which we will use in a bit, too).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="controlling-data-flow"&gt;
+&lt;h2&gt;Controlling Data Flow&lt;/h2&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;$ npm install async&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;We wil use the &lt;tt class="docutils literal"&gt;auto()&lt;/tt&gt; method of &lt;a class="reference external" href="https://github.com/caolan/async"&gt;async&lt;/a&gt; to make the code more readible, leaving all the mentioned issues up to the library to take care of. In essence, &lt;tt class="docutils literal"&gt;auto()&lt;/tt&gt; takes an array or object of &amp;quot;tasks&amp;quot; (functions) and returns an equally shaped array or object of the results if all tasks could be run without errors
+In addition to the tasks, you can list any other tasks you handed to auto that have to be completed before that specific task is run:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var async = require('async')
+
+app.get('/async/:userId', function(req, res, next) {
+  var userId = req.params.userId
+
+  async.auto({
+    user: function(cb) {
+      db_query('users', userId, cb)
+    },
+    posts: ['user', function(cb, res) {
+      db_query('posts', {poster: res.user}, cb)
+    }],
+    comments: ['user', function(cb, res) {
+      db_query('posts', {commenter: res.user}, cb)
+    }]
+  }, function(err, result) {
+    if (err) next(err)
+    else res.json(result)
+  })
+})
+&lt;/pre&gt;
+&lt;p&gt;In essence, we send the auto function an object with three properties (tasks), &lt;tt class="docutils literal"&gt;user&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;posts&lt;/tt&gt;, and &lt;tt class="docutils literal"&gt;comments&lt;/tt&gt;.
+Both the &lt;tt class="docutils literal"&gt;posts&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;comments&lt;/tt&gt; tasks require that the &lt;tt class="docutils literal"&gt;user&lt;/tt&gt; task has been run successfully before them, as indicated by the array value they map to.
+The tasks (functions) have to accept a standard Node callback (&lt;tt class="docutils literal"&gt;function(err, result)&lt;/tt&gt;) and should delegate that to some asynchronous task.
+In the case of dependent functions, they can also accept the result of the prior task(s).
+The overall outcome then is pushed into another callback that is the last argument of &lt;tt class="docutils literal"&gt;auto()&lt;/tt&gt;;
+This CB will receive the error status or, if no error ocurred, the result of each individual tasks, in the same &amp;quot;shape&amp;quot; as the object sent to auto.&lt;/p&gt;
+&lt;p&gt;We have now solved our issues and have achieved our goal of a clean coding of our asynchronous tasks.
+However, if you later need to write more complex code, the control to structure of your callbacks still gets back to you.
+Imagine you need to run a number of interdepenent tasks, some of which have to run in parallel, while others need to be serialized.
+In a nutshell, you are coding the &lt;strong&gt;control flow&lt;/strong&gt; of your program, while instead you should be describing what is known as &lt;strong&gt;data dependencies&lt;/strong&gt; and let the Node engine figure out when to run which task.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-promised-land"&gt;
+&lt;h2&gt;The Promised Land&lt;/h2&gt;
+&lt;p&gt;As a matter of fact, with &lt;a class="reference external" href="https://github.com/caolan/async"&gt;async&lt;/a&gt; you will be able to write concurrent Node.js apps perfectly fine.
+This last section will introduce you to concepts that will help you get rid of the problems described at the end of the former section.&lt;/p&gt;
+&lt;p&gt;To avoid the use of control flow statements, declarative languages instead have developed the concept of the &lt;strong&gt;future&lt;/strong&gt;, also known as &lt;a class="reference external" href="http://promises-aplus.github.io/promises-spec/"&gt;promise&lt;/a&gt;.
+So far, we were using callbacks, that is, functions that do not return a value. This means they are hard to use when &lt;em&gt;composing&lt;/em&gt; new functions from them and, as they do not return a value, are exclusively executed for their &lt;em&gt;side-effects&lt;/em&gt;.
+This means that both &lt;em&gt;function composition&lt;/em&gt; and &lt;em&gt;unit testing&lt;/em&gt; of these callbacks is rather a pain.
+And it means that you have to manually control the &amp;quot;flow&amp;quot; of your data through these callbacks.
+For example, to read a file in Node, the idiomatic structure is:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+function finish(res, data) {
+  res.write(data)
+  res.end()
+}
+
+function sendData(res, data) {
+  res.writeHead(200)
+  finish(res, data)
+}
+
+function reportError(res, err) {
+  res.writeHead(500)
+  console.log(err)
+  finish(res, data)
+}
+
+function onResult(res, err, data) {
+  if (err) reportError(res, err)
+  else sendData(res, data)
+}
+
+function(req, res) {
+  var callback = onResult.curry(res)
+
+  fs.readFile(req.params.filename, callback)
+}
+&lt;/pre&gt;
+&lt;p&gt;Instead, if the &lt;tt class="docutils literal"&gt;readFile&lt;/tt&gt; function were to return a value, this could be expressed in a much cleaner way, without having to nest (structure) the tasks into callback chains.
+However, as we know, at the time of calling &lt;tt class="docutils literal"&gt;readFile&lt;/tt&gt;, no such value exists - as a matter of fact, we do not even know if we will be able to read the file at all.
+So the only thing we can return is a &amp;quot;future&amp;quot; value, or a &amp;quot;promise&amp;quot; to return such a value (hence the name of these data structures).
+For this reason, such a data type would have to provide three methods:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+promise.resolve(result)
+promise.reject(reason)
+result = promise.then(onFulfilled(result), onRejected(error))
+&lt;/pre&gt;
+&lt;p&gt;The called function that returned the promise will, in the future, decide to resolve or reject the promise.
+And that new promise will &lt;tt class="docutils literal"&gt;then&lt;/tt&gt; have to describe what the program should do if the promise has been &lt;em&gt;fulfilled&lt;/em&gt; or &lt;em&gt;rejected&lt;/em&gt;.
+Furthermore, promises are propagating: the return value of &lt;tt class="docutils literal"&gt;then&lt;/tt&gt; (&lt;tt class="docutils literal"&gt;result&lt;/tt&gt;) is yet another promise:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;If you return a value from any of the two handlers (fulfilled, rejected), &lt;tt class="docutils literal"&gt;result&lt;/tt&gt; will be fulfilled.&lt;/li&gt;
+&lt;li&gt;If you throw an exception in any of the two, &lt;tt class="docutils literal"&gt;result&lt;/tt&gt; will be rejected.&lt;/li&gt;
+&lt;li&gt;If you return yet another promise, &lt;tt class="docutils literal"&gt;result&lt;/tt&gt; will &lt;em&gt;become&lt;/em&gt; that promise.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This means you can comfortably chain promises.
+With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var Promise = require('q')
+// wrap fs.readFile as a &amp;quot;promise-returning function&amp;quot;:
+var readFile = Promise.nfbind(fs.readFile)
+
+function setHeader(header, res, data) {
+  res.setHeader(header)
+  return data
+}
+
+var set200 = setHeader.curry(200)
+var set500 = setHeader.curry(500)
+
+function(req, res) {
+  var data = readFile(req.params.filename)
+  var error = set500.curry(res)
+  var send = set200.curry(res)
+
+  data.then(send, error)
+    .then(res.write, console.log)
+    .fin(function() { res.end() })
+}
+&lt;/pre&gt;
+&lt;p&gt;Promises therefore make it possible to resolve function values in a &lt;em&gt;time-independent&lt;/em&gt; manner:
+We can call the &lt;tt class="docutils literal"&gt;then&lt;/tt&gt; method after or &lt;em&gt;before&lt;/em&gt; either &lt;tt class="docutils literal"&gt;resolve&lt;/tt&gt; or &lt;tt class="docutils literal"&gt;reject&lt;/tt&gt; have been executed.
+Furthermore, libraries that implement promises must guarantee that no matter how often we check the promise' state (call &lt;tt class="docutils literal"&gt;then&lt;/tt&gt;), that promise always will be resolved or rejected the same way.
+We have also eliminated the linear dependencies of each function on the next, thus our functions become much more convenient to reuse.
+Last, this version is actually safer than the callback implementation:
+If setting the header fails for any reason, this gets logged, and the parameter-less &lt;tt class="docutils literal"&gt;fin&lt;/tt&gt; method is &lt;strong&gt;always&lt;/strong&gt; executed with &lt;tt class="docutils literal"&gt;res.end()&lt;/tt&gt;, ensuring all responses will be closed.&lt;/p&gt;
+&lt;p&gt;This makes promises ideal to resolve I/O bound (blocking) tasks.
+(Do not use promises for CPU intensive tasks!
+Protip: If reading blogs about comparing promise libraries, make sure the tests are using the right kind of task.)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="from-control-flow-to-data-dependencies"&gt;
+&lt;h2&gt;From Control Flow to Data Dependencies&lt;/h2&gt;
+&lt;p&gt;If you want to learn the nitty-gritty details of the benefits of moving from callback-based control flow to data dependencies encoded as promises, James Coglan has an &lt;a class="reference external" href="http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/"&gt;excellent blog post&lt;/a&gt; on that matter.
+We instead will directly get our hands dirty and use this knowledge to describe our three queries problem in terms of promises.
+To do so, we will require the popular &lt;a class="reference external" href="http://documentup.com/kriskowal/q/"&gt;Q&lt;/a&gt; and &lt;a class="reference external" href="http://underscorejs.org/"&gt;underscore&lt;/a&gt; libaries:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ npm install q
+$ npm install underscore
+&lt;/pre&gt;
+&lt;p&gt;Without much fanfare, this is how our JSON-REST service looks like using promises and some functional trickery:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var Q = require('q')
+var _ = require('underscore')
+var q_query = Q.nfbind(db_query)
+
+function fetchPostsAndComments(user) {
+  return Q.all([
+    user,
+    q_query('posts', {poster: user}),
+    q_query('comments', {commenter: user})
+  ])
+}
+
+function respond(res, user, posts, comments) {
+  res.json({user: user, posts: posts, comments: comments})
+}
+
+app.get('/promise/:userId', function(req, res, next) {
+  var userId = req.params.userId
+  var response = _.partial(respond, res)
+
+  q_query('users', userId)
+    .then(fetchPostsAndComments, next)
+    .spread(response, next)
+})
+&lt;/pre&gt;
+&lt;p&gt;So what has changed?
+Admittedly, except for the main function itself being a bit shorter, this code is longer than the asynchronous version.
+None the less, after introducing you to the benefits of promises, you should be able to see the elegance of this final solution.
+In particulary, because of the separation of concerns, your code has become much easier to test.
+And because each function is clear and expressive, the code is easy to understand.
+Last, we finally have reached our of goal of three statements per function.&lt;/p&gt;
+&lt;p&gt;Well, I hope to have enlightend you in a way or another and maybe made you a better Node developer!&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="JavaScript"></category><category term="Node.js"></category></entry><entry><title>A new "home" for fnl.es</title><link href="http://fnl.es/a-new-home-for-fnles.html" rel="alternate"></link><updated>2013-07-01T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2013-07-01:a-new-home-for-fnles.html</id><summary type="html">&lt;p&gt;After months of looking for a loophole in my calendar to migrate my rather outdated and mostly untended Blogger site to something more modern, I have found the ideal timing: The birth and arrival of my son, Alexander LV (&lt;a class="reference external" href="https://twitter.com/AlexThe55th"&gt;&amp;#64;AlexThe55th&lt;/a&gt;)!
 (Because here in Spain even daddies get two to three weeks off.)&lt;/p&gt;
-&lt;img alt="Alexander taking a sun bath." src="http://fnl.es/static/images/13-07-01_initial-alexander.jpg" style="width: 75%;" /&gt;
+&lt;img alt="Alexander taking a sun bath." src="http://fnl.es/images/13-07-01_initial-alexander.jpg" style="width: 75%;" /&gt;
 &lt;p&gt;I will reduce the amount of personal entries and augment the articles about (mostly biological) data mininig issues, in particular related to text mining and software engineering.
 Now and then I intend to throw in some issues about privacy, human rights, travelling and all those other things that interest me and make life worth living.&lt;/p&gt;
 &lt;p&gt;As blogging framework I have decided to move on to &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt;, because it is &lt;a class="reference external" href="http://www.python.org/"&gt;Python&lt;/a&gt;-based, generating extremely light-weight static pages from &lt;a class="reference external" href="http://sphinx-doc.org/rest.html"&gt;ReST&lt;/a&gt; files.

@@ -4,9 +4,9 @@
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <title>fnl.es &middot; Articles by Florian Leitner</title>
         <link rel="shortcut icon" href="http://fnl.es/favicon.ico" />
-        <link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
-                        <link href="http://fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
-        
+<link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
+        <link href="http://fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+
         <link rel="stylesheet" href="http://fnl.es/theme/css/screen.css" type="text/css" />
         <link rel="stylesheet" href="http://fnl.es/theme/css/pygments.css" type="text/css" />
         <!-- Start of StatCounter Code for Default Guide -->
@@ -27,13 +27,13 @@ target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/3728421/0/a5624e69/1/"
 alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
-        <div id="header">
+<div id="header">
             <ul id="nav">
                 <li class="ephemeral selected"><a href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
-                <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
-                  <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
-                  <li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
+<li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
+<li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
+<li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
             </ul>
             <div class="header_box">
                 <h1><a href="http://fnl.es">fnl.es</a></h1>
@@ -42,15 +42,449 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
+                <h4 class="date">Oct  8,  2013</h4>
+                <div class="post">
+<h2 class="title">
+                        <a href="http://fnl.es/concurrent-nodejs.html" rel="bookmark" title="Permanent Link to &quot;Concurrent Node.js&quot;">Concurrent Node.js</a>
+                    </h2>
+
+                    <div class="section" id="introduction">
+<h2>Introduction</h2>
+<p>Recently, a <a class="reference external" href="https://twitter.com/SoftActiva">colleague</a> of mine asked me to introduce the most important concepts of <a class="reference external" href="http://nodejs.org/">Node</a> programming to a flock of interested people in our <a class="reference external" href="http://www.cnio.es/es/grupos/plantillas/presentacion.asp?grupo=50004294">research group</a>.
+Initiallly, I declined, considering the <a class="reference external" href="http://howtonode.org/">vast</a> <a class="reference external" href="http://blog.modulus.io/absolute-beginners-guide-to-nodejs">number</a> of <a class="reference external" href="http://www.nodebeginner.org/">tutorials</a> and <a class="reference external" href="https://duckduckgo.com/?q=node.js+book">books</a>, but then thought it might be quite an interesting challenge to keep my know-how about Node in shape.
+Taking this into account, my main issue for this tutorial was:
+Which part of developing Node programs is the hardest to grasp for programmers proficient in imperative languages (Java, JavaScript, Objective-C, PHP, Python, Ruby, ...)?
+At the same time, what is the least covered aspect regarding the existing tutorials?
+Last, I wanted to present relevant topics <em>without</em> getting too far ahead of the status quo (e.g., <a class="reference external" href="http://wiki.ecmascript.org/doku.php?id=harmony:generators">generators</a>, which are still an experimental feature for now) or anything else that cannot be used in production.
+My concusion is that the hardest part is to <em>code</em> <a class="reference external" href="http://www.reactivemanifesto.org/">reactive</a> programs that are maintainable and concise.
+Because I only want to use production-ready packages, after checking with <a class="reference external" href="https://npmjs.org/">npm</a> and GitHub, this leaves <strong>async</strong> and <strong>Q</strong> as the only viable libraries of choice.
+The tutorial should explain to the reader how, with a very limited set of constucts, a Node developer can write highly concurrent Node apps without ending in &quot;callback hell&quot;.
+This introduction will take the reader familiar with Node's imperative callback chain (evil tongues would say &quot;callback spaghetti&quot;) via asynchronous control structures to a concurrent, functional programming style that uses <a class="reference external" href="http://en.wikipedia.org/wiki/Futures_and_promises">promises</a> - also know as <strong>futures</strong> - to delegate the program flow from the code to the V8 engine.</p>
+</div>
+<div class="section" id="a-quick-refresher">
+<h2>A Quick Refresher</h2>
+<p>Lets look at a static HTTP file server, using the basic Node modules only:</p>
+<pre class="literal-block">
+var http = require(&quot;http&quot;)
+var url = require(&quot;url&quot;)
+var path = require(&quot;path&quot;)
+var fs = require(&quot;fs&quot;)
+var port = process.argv[2] || 80
+
+http.createServer(function(request, response) {
+  var uri = url.parse(request.url).pathname
+  var filename = path.join(process.cwd(), uri)
+
+  path.exists(filename, function(exists) {
+    if(!exists) {
+      response.writeHead(404, {&quot;Content-Type&quot;: &quot;text/plain&quot;})
+      response.write(&quot;404 Not Found\n&quot;)
+      response.end()
+    } else {
+      if (fs.statSync(filename).isDirectory()) filename += '/index.html'
+
+      fs.readFile(filename, &quot;binary&quot;, function(err, file) {
+        if(err) {
+          response.writeHead(500, {&quot;Content-Type&quot;: &quot;text/plain&quot;})
+          response.write(err + &quot;\n&quot;)
+          response.end()
+        } else {
+          response.writeHead(200)
+          response.write(file, &quot;binary&quot;)
+          response.end()
+        }
+      })
+    }
+  })
+}).listen(parseInt(port, 80))
+
+console.log(&quot;file server running at http://localhost:&quot; + port + &quot;/&quot;)
+</pre>
+<p>This highlights basic Node concepts; Upon receiving a request, the server makes an asynchronous check via the OS to ensure the file exists.
+The asynchronicity is indicated by the callback that gets sent to <tt class="docutils literal">path.exists()</tt>.
+Then, again asychronously (note the callback sent into <tt class="docutils literal">fs.readFile()</tt>), Node reads the file, and if this job completes successfully, sends the file (data) to the response handler.
+Because both checks are done asynchronously, this leaves the server process free to handle other requests while the OS is doing the file lookups (i.e., &quot;non-blocking&quot;).
+However, this demonstrates a problem with this callback coding style: the functions are stacked one on top of another, making this code quite uncomfortable to read and maintain.</p>
+<p>Before we begin, it is also worth to refresh the <strong>six commandments</strong> you should follow when coding concurrent programs:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Never mix sync and async style: return a value <em>or</em> a callback, but not either.</li>
+<li><em>Return</em> on a callback: write <tt class="docutils literal">return callback(null, result)</tt> to prevent execution continuing beyond the CB.</li>
+<li>Always check errors in callbacks: make sure the CB has a way to deal with error states, as in <tt class="docutils literal">if (err) { ... }</tt>.</li>
+<li>Avoid mutable state - it leads to &quot;debugging hell&quot; in concurrent programs (e.g., <a class="reference external" href="http://en.wikipedia.org/wiki/Heisenbug">Heisenbugs</a>).</li>
+<li>Only use try, throw &amp; catch within imperative code sections (you cannot throw &quot;across&quot; a CB).</li>
+<li>Write tiny functions: maybe 3 statements, and no more than 5.</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="multiprocessing-in-node-js">
+<h2>Multiprocessing in Node.js</h2>
+<p>Node is process-oriented, i.e., unlike some langauges where you create multiple threads in your process, in node you need to &quot;open&quot; multiple OS processes (using <tt class="docutils literal">popen(3)</tt>).
+The default tool to run multiple processes in Node is the <a class="reference external" href="http://nodejs.org/api/child_process.html">child_process</a> module, and, as an experimental add-on since Node v9, <a class="reference external" href="http://nodejs.org/api/cluster.html">cluster</a> can run multiple Node processes in parallel that share the same port or socket.
+When forking/spawning/executing child process, be aware that segmentation faults and other nasty errors in a child process have the potential to bring down your whole stack.
+In general, there are three calls that are relevant for running parallel processes:</p>
+<blockquote>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options">spawn</a> provides a <strong>streaming</strong> process that you communicate with through Unix pipes. Think of it as in shell syntax &quot;<tt class="docutils literal">process &lt; instream &gt; outstream &amp;</tt>&quot;.</li>
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">exec</a> runs a single shell <strong>command</strong> and returns the exit status of the comuptation. Think of it as in shell syntex &quot;<tt class="docutils literal">exec input; echo $?</tt>&quot;. Note that while exec does have an output buffer, it is tiny and you should use the streaming interface of spawn if you expect to receive output from the process you are running.</li>
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options">fork</a> runs a <strong>worker</strong> script you can communicate with via a <em>channel</em>. Think of it as a bidiretional version of the shell pipe &quot;<tt class="docutils literal">server | worker &amp;</tt>&quot;. Fork is also useful to isolate blocking calls from your otherwise non-blocking Node program.</li>
+</ol>
+</blockquote>
+<p>Note that <tt class="docutils literal">spawn</tt> and <tt class="docutils literal">fork</tt> are much like background daemons, while <tt class="docutils literal">exec</tt> runs some binary to completion.</p>
+</div>
+<div class="section" id="example-case-a-service-broker">
+<h2>Example Case: A Service Broker</h2>
+<p>Throughout this tutorial, we will use a theoretical service broker that might query a DB or use XHR to communicate with another server.
+It also could be some worker writing or reading data, or anything else that is somehow &quot;IO-bound&quot;.
+Whatever you prefer, the point is that this is a blocking (&quot;side-effecting&quot;) IO call in your program that you want to handle asynchronously.
+In other words, this means you will need to use <strong>callbacks</strong> (CB) to be notified when the IO event finished and with which result and error state.</p>
+<p>First, we create a directory where we can put our tutorial code, and for the sake of popularity, use the <a class="reference external" href="http://expressjs.com/">Express</a> web app framework:</p>
+<pre class="literal-block">
+$ mkdir reactive-node-tutorial
+$ cd reactive-node-tutorial
+$ npm install express
+$ node_modules/express/bin/express
+yes
+$ npm install
+</pre>
+<p>We will use the following <tt class="docutils literal">broker.js</tt> script, placed in this same directory:</p>
+<pre class="literal-block">
+/* a &quot;blocking&quot; query */
+function query(ms) {
+  var start = new Date().getTime()
+  console.log(&quot;&quot; + start + &quot;: query started&quot;)
+  while ((new Date().getTime() - start) &lt; ms) {}
+  console.log(&quot;&quot; + new Date().getTime() + &quot; query finished&quot;)
+}
+
+
+process.on('message', function(m) {
+  // normally, here would probably be:
+  // process.send(query(m))
+
+  query(Math.floor(Math.random()*200+900))
+  process.send(m)
+  process.exit()
+})
+</pre>
+<p>Obviously, this is quite a a toy example, because our worker receives and returns only one single message before shutting down.
+Similarly, our server API for this broker in <tt class="docutils literal">app.js</tt> will be just as simple:</p>
+<pre class="literal-block">
+var broker = require('child_process')
+
+function query(bucket, query, cb) {
+  var channel = broker.fork(__dirname + '/db.js')
+  channel.send(query)
+
+  channel.on('message', function(result) {
+    cb(null, result)
+  })
+
+  channel.on('error', function(err) {
+    console.log(err)
+    cb(err)
+  })
+}
+</pre>
+<p>Go ahead and replace everything in <tt class="docutils literal">app.js</tt> with this code.
+In a real-world program, you would use a pool of workers and, each time you start a <tt class="docutils literal">query()</tt>, use another channel from your pool.
+As a matter of fact, most Node libraries will provide you with non-blocking versions of the API they wrap, so you might need no workers at all.
+Rather, you are more likely to start scaling Node across multiple cores and even machines using workers and IPC events.
+However, this will be enough to run our queries in parallel and demonstrate idioms that can help you write your code to be highly concurrent and easy to scale.
+For demonstration purposes this setting will do, so let's start coding our &quot;reactive&quot; app!</p>
+</div>
+<div class="section" id="a-simple-json-rest-service">
+<h2>A Simple JSON-REST Service</h2>
+<p>Let's assume we want to provide a JSON-REST web service connecting a query for a blogger ID against the broker that in turn interfaces to some form of external API or DB.
+Upon receiving the user's ID, the server should query the broker for the user's data, and then, in a second step can use that data to fetch any posts the user wrote and any comments she made.
+In other words, we have a serial flow of fetching user and the an parallel step of fetching post and comment data.
+Once all this data is collected, the server should respond with a JSON object containing this data.</p>
+<p>In the simplest case, you would string a few calls to your query API together and return the results, maybe like this (<em>antipattern</em>):</p>
+<pre class="literal-block">
+var app = require('express')()
+
+app.get('/sync/:userId', function(req, res, next) {
+  var userId = req.params.userId
+
+  db_query('users', userId, function(err, user) {
+    if (err) return next(err)
+
+    db_query('posts', {poster: user}, function(err, posts) {
+      if (err) return next(err)
+
+      db_query('comments', {commenter: user}, function(err, comments) {
+        if (err) return next(err)
+        else return res.json({user: user, posts: posts, comments: comments})
+      })
+    })
+  })
+})
+
+
+app.listen(8000)
+</pre>
+<p>(Again, you can append this to the app.js you created earlier, just as all following code snippets.)
+The above example gives rise to the (wrong) argument why callbacks are a Bad Idea (you will learn the true reason why callbacks are evil later):
+By putting one CB on top of the next, or returning (think &quot;break&quot;) early if an error occurred, we end up with unmaintable &quot;callback spaghetti&quot;.
+Worse, we just lost the advantage of using Node... this code is actually being run synchronously, one broker query after the next!
+If you run this app in the shell and query the URL (e.g., <tt class="docutils literal">curl <span class="pre">http://localhost:8000/sync/example</span></tt>), you will get this output:</p>
+<pre class="literal-block">
+$ node app.js
+1381334176812: query started
+1381334177793 query finished
+1381334177858: query started
+1381334178830 query finished
+1381334178897: query started
+1381334179868 query finished
+</pre>
+<p>As can be seen, despite our best intentions, the queries are run one after the next instead of running the last two in parallel.
+So we need to dispatch our last two <tt class="docutils literal">query()</tt> calls simultaneously once we have the <tt class="docutils literal">user</tt> data and use the callbacks to collect the results!
+In addition, this will allow us to &quot;unstring&quot; this callback chain a bit.
+This takes us straight into the realm of asynchronous programming.</p>
+</div>
+<div class="section" id="home-brew-asynchronicity">
+<h2>Home-brew Asynchronicity</h2>
+<p>While this certainly is not the cleanest code, here is a quick shot at solving the problem of concurrently running these three queries:</p>
+<pre class="literal-block">
+app.get('/brew/:userId', function(req, res, next) {
+  var userId = req.params.userId
+  var result = {}
+  var cbCounter = 0
+  var gotError = false
+
+  function checkError(err, cb) {
+    if (gotError) return
+    if (err) {
+      gotError = true
+      return next(err)
+    }
+    cbCounter++
+    return cb()
+  }
+
+  db_query('users', userId, function(err, user) {
+    return checkError(err,  function() {
+      result.user = user
+
+      db_query('posts', {poster: user}, function(err, posts) {
+        return checkError(err, function() {
+          result.posts = posts
+          if (cbCounter == 3) return res.json(result)
+        })
+      })
+
+      db_query('comments', {commenter: user}, function(err, comments) {
+        return checkError(err, function() {
+          result.comments = comments
+          if (cbCounter == 3) return res.json(result)
+        })
+      })
+    })
+  })
+})
+</pre>
+<p>While this version now runs the last two queries concurrently, and, if you have more than one CPU core at least, in parallel, the code has become quite bloated.
+You need to ensure that all three calls have completed before returning a valid result.
+You need to ensure to only return the error once.
+And you need to make sure you have collected the intermediate results.
+Last, if you add another query, you might forget to update the counter checks, use a wrong counter value, or forget to store the intermediate result.
+Luckily, these issues have been solved with the second most popular node module used by fellow Node coders, <a class="reference external" href="https://github.com/caolan/async">async</a> (the most popular dependency being ... you guessed it, <a class="reference external" href="http://underscorejs.org/">underscore</a>, which we will use in a bit, too).</p>
+</div>
+<div class="section" id="controlling-data-flow">
+<h2>Controlling Data Flow</h2>
+<p><tt class="docutils literal">$ npm install async</tt></p>
+<p>We wil use the <tt class="docutils literal">auto()</tt> method of <a class="reference external" href="https://github.com/caolan/async">async</a> to make the code more readible, leaving all the mentioned issues up to the library to take care of. In essence, <tt class="docutils literal">auto()</tt> takes an array or object of &quot;tasks&quot; (functions) and returns an equally shaped array or object of the results if all tasks could be run without errors
+In addition to the tasks, you can list any other tasks you handed to auto that have to be completed before that specific task is run:</p>
+<pre class="literal-block">
+var async = require('async')
+
+app.get('/async/:userId', function(req, res, next) {
+  var userId = req.params.userId
+
+  async.auto({
+    user: function(cb) {
+      db_query('users', userId, cb)
+    },
+    posts: ['user', function(cb, res) {
+      db_query('posts', {poster: res.user}, cb)
+    }],
+    comments: ['user', function(cb, res) {
+      db_query('posts', {commenter: res.user}, cb)
+    }]
+  }, function(err, result) {
+    if (err) next(err)
+    else res.json(result)
+  })
+})
+</pre>
+<p>In essence, we send the auto function an object with three properties (tasks), <tt class="docutils literal">user</tt>, <tt class="docutils literal">posts</tt>, and <tt class="docutils literal">comments</tt>.
+Both the <tt class="docutils literal">posts</tt> and <tt class="docutils literal">comments</tt> tasks require that the <tt class="docutils literal">user</tt> task has been run successfully before them, as indicated by the array value they map to.
+The tasks (functions) have to accept a standard Node callback (<tt class="docutils literal">function(err, result)</tt>) and should delegate that to some asynchronous task.
+In the case of dependent functions, they can also accept the result of the prior task(s).
+The overall outcome then is pushed into another callback that is the last argument of <tt class="docutils literal">auto()</tt>;
+This CB will receive the error status or, if no error ocurred, the result of each individual tasks, in the same &quot;shape&quot; as the object sent to auto.</p>
+<p>We have now solved our issues and have achieved our goal of a clean coding of our asynchronous tasks.
+However, if you later need to write more complex code, the control to structure of your callbacks still gets back to you.
+Imagine you need to run a number of interdepenent tasks, some of which have to run in parallel, while others need to be serialized.
+In a nutshell, you are coding the <strong>control flow</strong> of your program, while instead you should be describing what is known as <strong>data dependencies</strong> and let the Node engine figure out when to run which task.</p>
+</div>
+<div class="section" id="the-promised-land">
+<h2>The Promised Land</h2>
+<p>As a matter of fact, with <a class="reference external" href="https://github.com/caolan/async">async</a> you will be able to write concurrent Node.js apps perfectly fine.
+This last section will introduce you to concepts that will help you get rid of the problems described at the end of the former section.</p>
+<p>To avoid the use of control flow statements, declarative languages instead have developed the concept of the <strong>future</strong>, also known as <a class="reference external" href="http://promises-aplus.github.io/promises-spec/">promise</a>.
+So far, we were using callbacks, that is, functions that do not return a value. This means they are hard to use when <em>composing</em> new functions from them and, as they do not return a value, are exclusively executed for their <em>side-effects</em>.
+This means that both <em>function composition</em> and <em>unit testing</em> of these callbacks is rather a pain.
+And it means that you have to manually control the &quot;flow&quot; of your data through these callbacks.
+For example, to read a file in Node, the idiomatic structure is:</p>
+<pre class="literal-block">
+function finish(res, data) {
+  res.write(data)
+  res.end()
+}
+
+function sendData(res, data) {
+  res.writeHead(200)
+  finish(res, data)
+}
+
+function reportError(res, err) {
+  res.writeHead(500)
+  console.log(err)
+  finish(res, data)
+}
+
+function onResult(res, err, data) {
+  if (err) reportError(res, err)
+  else sendData(res, data)
+}
+
+function(req, res) {
+  var callback = onResult.curry(res)
+
+  fs.readFile(req.params.filename, callback)
+}
+</pre>
+<p>Instead, if the <tt class="docutils literal">readFile</tt> function were to return a value, this could be expressed in a much cleaner way, without having to nest (structure) the tasks into callback chains.
+However, as we know, at the time of calling <tt class="docutils literal">readFile</tt>, no such value exists - as a matter of fact, we do not even know if we will be able to read the file at all.
+So the only thing we can return is a &quot;future&quot; value, or a &quot;promise&quot; to return such a value (hence the name of these data structures).
+For this reason, such a data type would have to provide three methods:</p>
+<pre class="literal-block">
+promise.resolve(result)
+promise.reject(reason)
+result = promise.then(onFulfilled(result), onRejected(error))
+</pre>
+<p>The called function that returned the promise will, in the future, decide to resolve or reject the promise.
+And that new promise will <tt class="docutils literal">then</tt> have to describe what the program should do if the promise has been <em>fulfilled</em> or <em>rejected</em>.
+Furthermore, promises are propagating: the return value of <tt class="docutils literal">then</tt> (<tt class="docutils literal">result</tt>) is yet another promise:</p>
+<blockquote>
+<ul class="simple">
+<li>If you return a value from any of the two handlers (fulfilled, rejected), <tt class="docutils literal">result</tt> will be fulfilled.</li>
+<li>If you throw an exception in any of the two, <tt class="docutils literal">result</tt> will be rejected.</li>
+<li>If you return yet another promise, <tt class="docutils literal">result</tt> will <em>become</em> that promise.</li>
+</ul>
+</blockquote>
+<p>This means you can comfortably chain promises.
+With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:</p>
+<pre class="literal-block">
+var Promise = require('q')
+// wrap fs.readFile as a &quot;promise-returning function&quot;:
+var readFile = Promise.nfbind(fs.readFile)
+
+function setHeader(header, res, data) {
+  res.setHeader(header)
+  return data
+}
+
+var set200 = setHeader.curry(200)
+var set500 = setHeader.curry(500)
+
+function(req, res) {
+  var data = readFile(req.params.filename)
+  var error = set500.curry(res)
+  var send = set200.curry(res)
+
+  data.then(send, error)
+    .then(res.write, console.log)
+    .fin(function() { res.end() })
+}
+</pre>
+<p>Promises therefore make it possible to resolve function values in a <em>time-independent</em> manner:
+We can call the <tt class="docutils literal">then</tt> method after or <em>before</em> either <tt class="docutils literal">resolve</tt> or <tt class="docutils literal">reject</tt> have been executed.
+Furthermore, libraries that implement promises must guarantee that no matter how often we check the promise' state (call <tt class="docutils literal">then</tt>), that promise always will be resolved or rejected the same way.
+We have also eliminated the linear dependencies of each function on the next, thus our functions become much more convenient to reuse.
+Last, this version is actually safer than the callback implementation:
+If setting the header fails for any reason, this gets logged, and the parameter-less <tt class="docutils literal">fin</tt> method is <strong>always</strong> executed with <tt class="docutils literal">res.end()</tt>, ensuring all responses will be closed.</p>
+<p>This makes promises ideal to resolve I/O bound (blocking) tasks.
+(Do not use promises for CPU intensive tasks!
+Protip: If reading blogs about comparing promise libraries, make sure the tests are using the right kind of task.)</p>
+</div>
+<div class="section" id="from-control-flow-to-data-dependencies">
+<h2>From Control Flow to Data Dependencies</h2>
+<p>If you want to learn the nitty-gritty details of the benefits of moving from callback-based control flow to data dependencies encoded as promises, James Coglan has an <a class="reference external" href="http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/">excellent blog post</a> on that matter.
+We instead will directly get our hands dirty and use this knowledge to describe our three queries problem in terms of promises.
+To do so, we will require the popular <a class="reference external" href="http://documentup.com/kriskowal/q/">Q</a> and <a class="reference external" href="http://underscorejs.org/">underscore</a> libaries:</p>
+<pre class="literal-block">
+$ npm install q
+$ npm install underscore
+</pre>
+<p>Without much fanfare, this is how our JSON-REST service looks like using promises and some functional trickery:</p>
+<pre class="literal-block">
+var Q = require('q')
+var _ = require('underscore')
+var q_query = Q.nfbind(db_query)
+
+function fetchPostsAndComments(user) {
+  return Q.all([
+    user,
+    q_query('posts', {poster: user}),
+    q_query('comments', {commenter: user})
+  ])
+}
+
+function respond(res, user, posts, comments) {
+  res.json({user: user, posts: posts, comments: comments})
+}
+
+app.get('/promise/:userId', function(req, res, next) {
+  var userId = req.params.userId
+  var response = _.partial(respond, res)
+
+  q_query('users', userId)
+    .then(fetchPostsAndComments, next)
+    .spread(response, next)
+})
+</pre>
+<p>So what has changed?
+Admittedly, except for the main function itself being a bit shorter, this code is longer than the asynchronous version.
+None the less, after introducing you to the benefits of promises, you should be able to see the elegance of this final solution.
+In particulary, because of the separation of concerns, your code has become much easier to test.
+And because each function is clear and expressive, the code is easy to understand.
+Last, we finally have reached our of goal of three statements per function.</p>
+<p>Well, I hope to have enlightend you in a way or another and maybe made you a better Node developer!</p>
+</div>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+<a href="http://fnl.es/concurrent-nodejs.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
+                        <div class="tags">
+                            <a href="http://fnl.es/tag/javascript.html">JavaScript</a>
+                            <a href="http://fnl.es/tag/nodejs.html">Node.js</a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
                 <h4 class="date">Jul  1,  2013</h4>
                 <div class="post">
-                    <h2 class="title">
+<h2 class="title">
                         <a href="http://fnl.es/a-new-home-for-fnles.html" rel="bookmark" title="Permanent Link to &quot;A new &quot;home&quot; for fnl.es&quot;">A new &quot;home&quot; for fnl.es</a>
                     </h2>
-                    
+
                     <p>After months of looking for a loophole in my calendar to migrate my rather outdated and mostly untended Blogger site to something more modern, I have found the ideal timing: The birth and arrival of my son, Alexander LV (<a class="reference external" href="https://twitter.com/AlexThe55th">&#64;AlexThe55th</a>)!
 (Because here in Spain even daddies get two to three weeks off.)</p>
-<img alt="Alexander taking a sun bath." src="http://fnl.es/static/images/13-07-01_initial-alexander.jpg" style="width: 75%;" />
+<img alt="Alexander taking a sun bath." src="http://fnl.es/images/13-07-01_initial-alexander.jpg" style="width: 75%;" />
 <p>I will reduce the amount of personal entries and augment the articles about (mostly biological) data mininig issues, in particular related to text mining and software engineering.
 Now and then I intend to throw in some issues about privacy, human rights, travelling and all those other things that interest me and make life worth living.</p>
 <p>As blogging framework I have decided to move on to <a class="reference external" href="http://blog.getpelican.com/">Pelican</a>, because it is <a class="reference external" href="http://www.python.org/">Python</a>-based, generating extremely light-weight static pages from <a class="reference external" href="http://sphinx-doc.org/rest.html">ReST</a> files.
@@ -59,171 +493,205 @@ This allows me to easily maintain the blog from any terminal and its pythonic or
 
                     <div class="clear"></div>
                     <div class="info">
-                        <a href="http://fnl.es/a-new-home-for-fnles.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>                        
+<a href="http://fnl.es/a-new-home-for-fnles.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
                         <div class="tags">
                             <a href="http://fnl.es/tag/general.html">general</a>
                             <a href="http://fnl.es/tag/alex.html">alex</a>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>
 
-                <h4 class="date">Apr 14,  2008</h4>
+                <h4 class="date">Feb 11,  2013</h4>
                 <div class="post">
-                    <h2 class="title">
-                        <a href="http://fnl.es/amazonas-101.html" rel="bookmark" title="Permanent Link to &quot;Amazonas 101&quot;">Amazonas 101</a>
+<h2 class="title">
+                        <a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html" rel="bookmark" title="Permanent Link to &quot;Installing a full stack Python data analysis environment on OSX&quot;">Installing a full stack Python data analysis environment on OSX</a>
                     </h2>
-                    
-                    <p>Colombia is one of the most magnificent countries I have been so far.
-If you know a tiny bit of its history with all the bloody civil wars
-which have been almost continuously tormenting the country since the
-40s, it is more than astonishing to find that the people themselves are
-very open and friendly. The lush green on the countryside and the
-amazing beaches on the coasts, mixed with some really high mountain
-peaks allow for a variety you will not find in many other countries.
-Finally, as it is next to the equator, the climate is almost all year
-round the same: warm and mostly sunny (well, Bogotá is at 2,600 ASL, so
-bring a warm jacket for the capital...).</p>
-<p>The current president, Uribe, is sending military forces everywhere in
-the country to protect the civilians and tourists from attacks from
-guerilla and paramilitary groups. Although you might not agree that this
-is the best solution to the problem, you have to admit that he so far is
-probably the most successful president in terms of restoring relative
-security - at the great price of sacrificing the peoples personal
-freedom, obviously; Colombia probably never has been as safe in the past
-few decades as it is now - and it has by far less hostage-takings per
-year as most uninformed people would make you believe (by now, something
-below 600 per year). In my travels, I never felt more unsafe than in any
-place in Europe - at least if you learn to ignore that at every second
-corner you see a small group of military personnel or police.</p>
-<p>Both major cities I visited, Bogotá and Cartagena, are really nice
-cities - although the crazy traffic and taxi drivers in Bogotá can make
-you feel a little ill to you stomach... Especially Cartagena is really
-worth the visit, the old town being built in a style slightly similar to
-the houses in Extremadura (Spain) - and not without reason probably,
-as most Conquistadores came from this region of Spain. Yet, the bright
-colors and plenty of flowers and green give the town a very unique and
-lovely look. Last but not least, Cartagena is on the Caribbean coast and
-therefore you have plenty of wonderful beaches to choose to spend your
-day. On a general advice: usually, you take boats to get to those
-beaches, which leave from the town center. Insist, really, to be taken
-there by a tiny private boat (not more than 20 or so passengers) and do
-not take one of the big ships: it cuts your beach stay in half, you are
-dumped at a super-touristic aquarium nobody seemed interested in anyway,
-and spend the boat time with hundreds of Colombian families (including
-everything from grandmother to great-grand child). Not that it was my
-worst experience ever, but there are more fun ways to waste your time...</p>
-<p>The major part of our travels - with my [now (*kiss*)] girlfriend
-Mayte and two of her friends from Portugal and Spain, Xana and Ivan - we
-spent in the Amazons. It is hard to describe the experience of visiting
-the jungle, but if you have been to a real desert, on top of high
-mountains or glaciers, or other really strange places, you know what I
-am talking about. The biodiversity is so amazing you will never be able
-to go back to a zoo or botanic garden without a knowing smile on your
-face. I have no idea how many different plants I saw - including the
-Victoria amazonica, the largest lotus in the world - but when one of our
-guides was telling us about which plant heals what while in the jungle,
-I got the impression of walking though a pharmacy... The animal life is
-just as amazing: alligators, snakes, birds in all varieties and kinds,
-spiders, sloths, insects of all sizes, piranhas (we even caught our own
-- but as far as I can tell, it took us more chicken meat to catch them
-than they yielded...), even dolphins (which get a pink tint when they
-hunt because of their circulation - a really unique view) - plus another
-few dozen or so I have missed to list here.</p>
-<p>Moving around the jungle might seem tough and dangerous at first - and
-I make a bet it is, if you try to move cross-country straight through
-the jungle for days. We were not intending to do that - we were moving
-along the Amazonas river only - and always had at least a hut to sleep
-in, with beds and mosquito nets in the most &quot;extreme&quot; cases. Most of the
-time we spent in villages and towns (Leticia -&gt; Puerto Nariño [a little
-jewel in the Colombian Amazons and a must visit] -&gt; Leticia/Tabatinga -&gt;
-and Manaus) in hotels, where you do not even need to use mosquito nets.
-The greatest danger is you doing something stupid on your own. The
-interested might want an advice on what to bring, so I'd suggest to
-pack:</p>
+
+                    <p>It is a bit of an effort to install the latest <strong>numpy</strong> and <strong>scipy</strong>
+libraries due to their dependencies on Fortran libraries, while Apple is
+(was? ...) mostly neglecting all Fortran issues. Furthermore, when
+trying to compile a collection of these libraries for Python 3k and 64
+bit, all these headaches seem to magnify enough so that attempting to
+use them with Py3k on OSX has to be very much discouraged by the author.
+Getting NumPy to work on 64 bit with Py3k and playing nicely the various
+&quot;high-level&quot; libraries and the R environment can become a nightmare on a
+Mac. If you really need to use Py3k, but are married to OSX, you are
+probably better off installing a virtual machine with your favorite
+Linux distro than trying to get this ensemble to work natively. In other
+words, OSX is not a good platform for scientific computing, and you are
+living easier with what is available - unless you prefer spending your
+time on tinkering over productivity. You have been warned…</p>
+<p>This guide will outline how to install the following Python software
+stack:</p>
 <ul class="simple">
-<li>lots of insect repellent (we used Relec extra fuerte, about 1 bottle
-[100 mL each] per person and week),</li>
-<li>a light rain protection (if it rains really heavy - which it does
-more or less every morning - just forget protection... this is more
-against the wind and on boats),</li>
-<li>some long-sleeves and long pants (protection against sun and/or while
-hiking in the jungle),</li>
-<li>decent (!) hiking shoes,</li>
-<li>very strong sun protection (factor 40 or more - I used 60!),</li>
-<li>a towel (no, this is no Hitchhikers Guide joke :-) - preferentially,
-one of those micro-towels to save space and weight),</li>
-<li>a flashlight,</li>
-<li>a small first aid kit with antibiotics against diarrhea, pills to
-dampen fever and Malaria effects (Ibuprofen 600, Malaron - just in
-case - I strongly advise against taking those Malaria pills on the
-trip as prevention if you do not go jungle-trekking for many days!
-The side effects are rather ugly, and actually the pills only reduce
-the effects of Malaria, they do not really help prevent it.),</li>
-<li>Suero (salt &amp; electrolytes) powder, and a lots of it! This protects you
-from dehydrating and diarrhea; My friends all laughed at me for
-drinking a liter of it a day (it tastes rather ugly), but I was the
-only of our group to not have to spend a day on the pot in the end...</li>
-<li>a very light (I used silk) sleeping bag, and</li>
-<li>something to pass time (books, card games, etc. - hey, it's Colombia,
-no need to be in a hurry).</li>
+<li>NumPy (1.6.2)</li>
+<li>SciPy (0.10.1)</li>
+<li>MatPlotLib (1.2.0)</li>
+<li>IPython (0.13.2)</li>
+<li>Scikit-Learn (0.13)</li>
+<li>RPy2 (2.3.2)</li>
 </ul>
-<p>On a final shout-out: many thanks to my amazing travel companions (aka
-&quot;los pendejos/tottos&quot;...) and some very special ones to the most
-gorgeous girl in the world that I am more than just happy to have become
-close with during this trip: You provided me with one of the most
-exciting trips I ever have made in my life!</p>
+<p>Optional instructions to install the two &quot;new kids on the block&quot;,
+Pandas and StatsModels, are provided, too. To get a 64 bit version of
+all this software installed on OSX 10.6 through 10.8 that does work &quot;out
+of the box&quot; (although admittedly not optimally due to the Fortran
+issues!) without too much of a hassle, follow these steps:</p>
+<div class="section" id="preparatory-setup">
+<h2>Preparatory Setup</h2>
+<p>It is assumed you are using <strong>distribute</strong> and <strong>pip</strong> to install
+Python packages. This means, you need to have the following setup done
+already:</p>
+<pre class="literal-block">
+curl -O http://python-distribute.org/distribute\_setup.py
+sudop python distribute\_setup.py
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+sudo python get-pip.py
+</pre>
+<p>Furthermore, we are assuming a 64 bit build of Python 2.7 as the
+target environment. If you only need/want to use a stack compiled for a
+32 bit architecture, simpler paths than the one laid out here might work
+as well.</p>
+</div>
+<div class="section" id="numpy">
+<h2><a class="reference external" href="http://www.numpy.org/">NumPy</a></h2>
+<p><a class="reference external" href="http://sourceforge.net/projects/numpy/files/NumPy/">Download and install</a> a version of numpy that is not too new
+(currently, 1.6 worked, while numpy-dev is at 1.8) for the latest
+version of OSX and the oldest still supported version of Python
+(currently, 2.7) to have any chance of success.</p>
+<p>The &quot;newest&quot; NumPy package that was found to work was the numpy-1.6.2
+package for Python 2.7, while when using any newer package, the
+post-installation check in the Python interpreter:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import numpy; numpy.test('full')
+</pre>
+<p>did not pass without errors. What you never want to be seeing are
+errors directly related to the Fortran compiler. This would probably
+mean that you have your own version of Fortran installed; The best
+remedy in that case is to remove it and the tests should pass.</p>
+</div>
+<div class="section" id="scipy">
+<h2><a class="reference external" href="http://www.scipy.org/SciPy">SciPy</a></h2>
+<p>Again, <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">fetch a version</a> where not too many tests fail (and even on
+Ubuntu LTS 12.04, the tests &quot;test_io.test_imread&quot; and &quot;test_expon&quot;
+are known too fail and are considered to be a non-issue). On OSX 10.7
+with Python 2.7, it is possible to install the 0.10.1 package and the
+final:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import scipy; scipy.test()
+</pre>
+<p>check passes with &quot;only&quot; 9 failures. If you use newer versions, more
+tests will fail. In general, these two core libraries are the hardest
+part and it is essential to get particularly NumPy installed correctly
+for everything else to work.</p>
+</div>
+<div class="section" id="matplotlib">
+<h2><a class="reference external" href="http://matplotlib.org/">MatPlotLib</a></h2>
+<p>The next step is the installation of matplotlib; There are
+<a class="reference external" href="http://matplotlib.org/downloads.html">pre-compiled OSX packages</a> for Python 2.7 available, and the latest
+version (1.2.0 at the time of this writing) should work without any
+trouble. To ensure the installation worked, try this in the Python
+interpreter:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; from pylab import \*; plot([1,2,3]); show()
+</pre>
+<p>and you should see a plot with a straight diagonal. To ensure you have
+the right library, also check:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import matlpotlib; matplotlib.\_\_version\_\_
+</pre>
+<p>And you should see the desired version number you were trying to
+install.</p>
+</div>
+<div class="section" id="ipython">
+<h2><a class="reference external" href="http://ipython.org/">IPython</a></h2>
+<p>First of all, a different readline installation is necessary:</p>
+<pre class="literal-block">
+sudo easy\_install-2.7 readline
+</pre>
+<p>Note that readline has to be installed using easy_install, not pip!</p>
+<p>Now, the default installation way should work and we can simply do:</p>
+<pre class="literal-block">
+sudo pip install ipython[zmq,qtconsole,notebook,test]
+</pre>
+<p>To make sure the installation worked, execute the newly installed
+iptest script.</p>
+</div>
+<div class="section" id="scikit-learn">
+<h2><a class="reference external" href="http://scikit-learn.org/stable/">Scikit-Learn</a></h2>
+<p>This again is pretty straightforward; Do:</p>
+<pre class="literal-block">
+sudo pip install scikit-learn
+nosetests sklearn --exe
+</pre>
+<p>This nosetest will produce one (and only one) error: &quot;Split arrays or
+matrices into random train and test subsets&quot;. But <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/1648">according to the
+developer</a>, this is a non-issue and can be ignored.</p>
+<p>Last, if you are interested in using two more experimental and novel
+libraries on Python that are attempting to rid the requirement of using
+R (and/or rpy), you might want to install Pandas and StatsModels. If you
+prefer non-experimental, production stable libraries, you are probably
+advised to use R and RPy2, as RPy (&quot;version 1&quot;) often tends to have
+issues.</p>
+</div>
+<div class="section" id="pandas">
+<h2><a class="reference external" href="http://pandas.pydata.org/">Pandas</a></h2>
+<p>(Python Data Analysis Library) Again, the default installation route
+should work:</p>
+<pre class="literal-block">
+sudo pip install pandas
+</pre>
+<p>To ensure the library is operational, run (should not produce any
+errors):</p>
+<pre class="literal-block">
+nosetests pandas
+</pre>
+</div>
+<div class="section" id="statsmodels">
+<h2><a class="reference external" href="http://statsmodels.sourceforge.net/">StatsModels</a></h2>
+<p>As with Pandas, we can use the &quot;default installation pathway&quot;, but
+need to first install an undocumented dependency for this module
+(patsy):</p>
+<pre class="literal-block">
+sudo pip install patsy
+sudo pip install statsmodels
+</pre>
+<p>To check the installation worked, open a Python interpreter session
+and do:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import statsmodels.api as sm
+&gt;&gt;&gt; sm.test()
+</pre>
+<p>Here, several tests seem to be failing and it is not clear at all if
+this is expected or not. StatsModels has several hundreds of open issues
+and should probably be considered very experimental at this stage.</p>
+</div>
+<div class="section" id="rpy2">
+<h2><a class="reference external" href="http://rpy.sourceforge.net/">RPy2</a></h2>
+<p>Again, the standard installation works (assuming you have R itself
+installed already, at least!):</p>
+<pre class="literal-block">
+sudo pip install rpy2
+</pre>
+<p>To ensure the install worked, run the tests as:</p>
+<pre class="literal-block">
+python -m 'rpy2.tests'
+</pre>
+<p>You should not be seeing any problems.</p>
+<p><em>E voilà</em> - you now have a fully functioning environment for running
+all kinds and sorts of statistical data analyses and machine learning
+algorithms!</p>
+</div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <a href="http://fnl.es/amazonas-101.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>                        
+<a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
                         <div class="tags">
-                            <a href="http://fnl.es/tag/travel.html">travel</a>
-                            <a href="http://fnl.es/tag/amazonas.html">Amazonas</a>
-                        </div>                        
-                    </div>
-                    <div class="clear"></div>
-                </div>
-
-                <h4 class="date">Oct 28,  2007</h4>
-                <div class="post">
-                    <h2 class="title">
-                        <a href="http://fnl.es/geo-4.html" rel="bookmark" title="Permanent Link to &quot;GEO-4&quot;">GEO-4</a>
-                    </h2>
-                    
-                    <p>If you don't know what <a class="reference external" href="http://www.unep.org/geo/geo4">GEO-4</a> (4th Global Environment Outlook) is, it is
-about high time to get you informed. This is a recent publication by the
-United Nations, explaining why this planet's ecosystem and the human
-race is close to the point of no return, facing (unavoidable)
-extinction. Let's hope this is what the authors (390 scientist backed by
-another 1000 reviewers) intend it to be: the final &quot;wake up call&quot; for
-<strong>all</strong> of us.</p>
-<p>To provide you a few facts:</p>
-<p>We are currently, on a total, using 30 % more resources than earth can
-provide for us; water contamination is the number 1 cause of death
-worldwide; we are overfishing at a rate of 250 %; major regions of the
-world's oceans having become oxygen dead zones (i.e. lifeless); in
-Africa, food production over the past 20 years has declined by more than
-10 %; somewhere between today and 2100 we will have reached a global
-warming level which will lead to inevitable (&quot;point of no return&quot;)
-extinction of the ecosystem (i.e. incl. humanity) - oh well, I could go
-on... this report is approx. 400 pages! The only positive news I could
-mine: at least the ozone layer will be recovering - although currently,
-the Antarctic hole is still growing, being larger today than ever
-before. The real message behind all this:
-<strong>We have to act *now*!</strong></p>
-<p>One last warning: this might be the most depressing news you ever
-encountered, yet also the most important if you were not aware of these
-facts (I surely wasnt aware of that many....)</p>
-
-
-                    <div class="clear"></div>
-                    <div class="info">
-                        <a href="http://fnl.es/geo-4.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>                        
-                        <div class="tags">
-                            <a href="http://fnl.es/tag/environment.html">Environment</a>
-                        </div>                        
+                            <a href="http://fnl.es/tag/python.html">Python</a>
+                            <a href="http://fnl.es/tag/apple.html">Apple</a>
+                            <a href="http://fnl.es/tag/data-mining.html">data-mining</a>
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>
