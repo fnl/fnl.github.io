@@ -433,22 +433,8 @@ Protip: If reading blogs about comparing promise libraries, make sure the tests 
 <h2>From Control Flow to Data Dependencies</h2>
 <p>As we have seen so far, the elegance of using promises instead of callbacks is that blocking functions now can <em>return values</em> (promises) instead of requiring you to <em>send functions</em> (callbacks) to them.
 In other words, promise-returning functions behave like any other function.
-Furthermore, the return value of <tt class="docutils literal">then</tt> will always be another (&quot;output&quot;) promise for the return value of either handler sent to it:</p>
-<blockquote>
-<ol class="arabic">
-<li><p class="first">If the fulfillment or rejection handlers return a promise themselves, <tt class="docutils literal">then</tt>'s &quot;output promise&quot; will become that promise.</p>
-</li>
-<li><dl class="first docutils">
-<dt>If any of the handers throws an exception, the output promise will always be rejected.</dt>
-<dd><ol class="first last arabic simple">
-<li>If <strong>any</strong> of the two handlers returns a value, the output promise will get fulfilled with that value.</li>
-</ol>
-</dd>
-</dl>
-</li>
-</ol>
-</blockquote>
-<p>Because of this behavior, you can keep chaining promises over your success (<tt class="docutils literal">onFulfilled(result)</tt>) and error functions (<tt class="docutils literal">onRejected(error)</tt>), and the final outcome will always be a result value or an error.
+Furthermore, the return value of <tt class="docutils literal">then</tt> will always be another (&quot;output&quot;) promise for the return value of either handler sent to it.
+Because of this behavior, you can keep chaining promises over your success (<tt class="docutils literal">onFulfilled(result)</tt>) and error functions (<tt class="docutils literal">onRejected(error)</tt>), and the final outcome will always be a result value or an error.
 However, because you return promises instead of having to send them continuation functions, you have separated the control flow from your code.</p>
 <p>If you want to learn the nitty-gritty theory behind the benefits of moving from callback-based control flow to data dependencies encoded as promises, James Coglan has an <a class="reference external" href="http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/">excellent blog post</a> on that matter.
 And if you need more hands-on experience than what we have discussed so far, <a class="reference external" href="http://strongloop.com/strongblog/promises-in-node-js-with-q-an-alternative-to-callbacks/">StrongLoop</a> provides a very comprehensive tutorial of using promises.
