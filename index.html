@@ -385,15 +385,16 @@ result = promise.then(onFulfilled(result), onRejected(error))
 </pre>
 <p>The called function that returned the promise will, in the future, decide to resolve or reject the promise.
 And that new promise will <tt class="docutils literal">then</tt> have to describe what the program should do if the promise has been <em>fulfilled</em> or <em>rejected</em>.
-Furthermore, promises are propagating: the return value of <tt class="docutils literal">then</tt> (<tt class="docutils literal">result</tt>) is yet another promise:</p>
+The most important concept is that promises are <strong>propagating</strong>:
+The return value of <tt class="docutils literal">then</tt> (<tt class="docutils literal">result</tt> in the above API description) is yet another promise (the &quot;output promise&quot;):</p>
 <blockquote>
 <ul class="simple">
-<li>If you return a value from any of the two handlers (fulfilled, rejected), <tt class="docutils literal">result</tt> will be fulfilled.</li>
-<li>If you throw an exception in any of the two, <tt class="docutils literal">result</tt> will be rejected.</li>
-<li>If you return yet another promise, <tt class="docutils literal">result</tt> will <em>become</em> that promise.</li>
+<li>If you return a value from any of the two handlers (fulfilled, rejected), the output promise will get fulfilled, too.</li>
+<li>If you throw an exception in any of the two handlers, the output promise will get rejected.</li>
+<li>If you return yet another promise from any of the two handlers, the <tt class="docutils literal">result</tt> will <em>become</em> that promise.</li>
 </ul>
 </blockquote>
-<p>This means you can comfortably chain promises.
+<p>This means you can comfortably chain promises, while you can rely on <em>return values</em> (instead of side effects).
 With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:</p>
 <pre class="literal-block">
 var _ = require('_')
@@ -433,9 +434,9 @@ Protip: If reading blogs about comparing promise libraries, make sure the tests 
 <h2>From Control Flow to Data Dependencies</h2>
 <p>As we have seen so far, the elegance of using promises instead of callbacks is that blocking functions now can <em>return values</em> (promises) instead of requiring you to <em>send functions</em> (callbacks) to them.
 In other words, promise-returning functions behave like any other function.
-Furthermore, the return value of <tt class="docutils literal">then</tt> will always be another (&quot;output&quot;) promise for the return value of either handler sent to it.
-Because of this behavior, you can keep chaining promises over your success (<tt class="docutils literal">onFulfilled(result)</tt>) and error functions (<tt class="docutils literal">onRejected(error)</tt>), and the final outcome will always be a result value or an error.
-However, because you return promises instead of having to send them continuation functions, you have separated the control flow from your code.</p>
+Furthermore, the return value of <tt class="docutils literal">then</tt> will always be another (&quot;output&quot;) promise, possibly even the return value from or exception thrown in either handler sent to it.
+Because of this behavior, you can keep chaining promises over your success (<tt class="docutils literal">onFulfilled(result)</tt>) and error functions (<tt class="docutils literal">onRejected(error)</tt>), and the final outcome will always be <em>the same</em> result value or error.
+As you return promises from your functions instead of having to send them continuation functions, you have separated the control flow from your code.</p>
 <p>If you want to learn the nitty-gritty theory behind the benefits of moving from callback-based control flow to data dependencies encoded as promises, James Coglan has an <a class="reference external" href="http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/">excellent blog post</a> on that matter.
 And if you need more hands-on experience than what we have discussed so far, <a class="reference external" href="http://strongloop.com/strongblog/promises-in-node-js-with-q-an-alternative-to-callbacks/">StrongLoop</a> provides a very comprehensive tutorial of using promises.
 We instead will directly get our hands dirty and use this knowledge to describe our three queries problem in terms of promises.
