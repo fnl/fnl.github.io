@@ -104,17 +104,25 @@ blockquote {
 	border-left: 1px solid #EEE;
 	}
 
+.twitter-timeline {
+        font-family: sans-serif;
+}
+.twitter-timeline, #twitter-widget-0 {
+        clear: both;
+        float: left;
+        width: 180px;
+}
 .date {
 	color: #DDD;
 	float: left;
 	clear: both;
-	width: 160px;
+	width: 180px;
 	font-size: 1.5em;
 	line-height: 1em;
-	margin: 0 20px 1em 0;
+	margin: 0 10px 1em 0;
 	}
 .post {
-	margin: 0 0 4.5em 180px;
+	margin: 0 0 4.5em 190px;
 	}
 .post.archives {
 	margin-bottom: 1.5em;
