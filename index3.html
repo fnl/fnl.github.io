@@ -49,179 +49,163 @@ alt="hit counter"></a></div></noscript>
                         <a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html" rel="bookmark" title="Permanent Link to &quot;Installing a full stack Python data analysis environment on OSX&quot;">Installing a full stack Python data analysis environment on OSX</a>
                     </h2>
 
-                    <p>It is a bit of an effort to install the latest <strong>numpy</strong> and <strong>scipy</strong>
-libraries due to their dependencies on Fortran libraries, while Apple is
-(was? ...) mostly neglecting all Fortran issues. Furthermore, when
-trying to compile a collection of these libraries for Python 3k and 64
-bit, all these headaches seem to magnify enough so that attempting to
-use them with Py3k on OSX has to be very much discouraged by the author.
-Getting NumPy to work on 64 bit with Py3k and playing nicely the various
-&quot;high-level&quot; libraries and the R environment can become a nightmare on a
-Mac. If you really need to use Py3k, but are married to OSX, you are
-probably better off installing a virtual machine with your favorite
-Linux distro than trying to get this ensemble to work natively. In other
-words, OSX is not a good platform for scientific computing, and you are
-living easier with what is available - unless you prefer spending your
-time on tinkering over productivity. You have been warned…</p>
-<p>This guide will outline how to install the following Python software
-stack:</p>
+                    <p><strong>UPDATE</strong>: Installing a Scientific Python stack from &quot;source&quot; has become a lot simpler recently and this tutorial was updated accordingly in November 2013 to use with OSX Mavericks.</p>
+<p>This post should help you install a full-stack scientific data analysis environment on Mac OSX.
+Thanks to Apple, parts of the required libraries are already on your box (code-named &quot;Accelerate&quot;), and the remaining pieces can easily be installed due to the great <a class="reference external" href="http://brew.sh/">Homebrew</a> project.
+In other words, for the <a class="reference external" href="http://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms">BLAS</a> optimizations this setup will use Apple's pre-installed Accelerate framework and you can choose to add the <a class="reference external" href="http://www.cise.ufl.edu/research/sparse/SuiteSparse/">SuiteSparse</a> and <a class="reference external" href="http://www.fftw.org/">FFTW</a> libraries via Homebrew for some extra speed when factorizing sparse matrices and doing Fourier transforms.
+This guide will describe how to properly install the following software stack on Mac OSX from their sources and ensuring all the relevant C/Fortran &quot;acceleration&quot; is available:</p>
 <ul class="simple">
-<li>NumPy (1.6.2)</li>
-<li>SciPy (0.10.1)</li>
-<li>MatPlotLib (1.2.0)</li>
-<li>IPython (0.13.2)</li>
-<li>Scikit-Learn (0.13)</li>
-<li>RPy2 (2.3.2)</li>
+<li><a class="reference external" href="http://www.numpy.org/">NumPy</a></li>
+<li><a class="reference external" href="http://www.scipy.org/scipylib">SciPy</a></li>
+<li><a class="reference external" href="http://matplotlib.org/">matplotlib</a></li>
+<li><a class="reference external" href="http://ipython.org/">IPython</a></li>
 </ul>
-<p>Optional instructions to install the two &quot;new kids on the block&quot;,
-Pandas and StatsModels, are provided, too. To get a 64 bit version of
-all this software installed on OSX 10.6 through 10.8 that does work &quot;out
-of the box&quot; (although admittedly not optimally due to the Fortran
-issues!) without too much of a hassle, follow these steps:</p>
+<p>With this stack, it is a breeze to add other cool data analysis tools such as <a class="reference external" href="http://scikit-learn.org/stable">scikit-learn</a>, <a class="reference external" href="http://pandas.pydata.org/">pandas</a>, <a class="reference external" href="http://sympy.org/en/index.html">SymPy</a>, <a class="reference external" href="http://radimrehurek.com/gensim">gensim</a>, or <a class="reference external" href="http://github.com/pymc-devs/pymc">PyMC</a> in your <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a>.</p>
 <div class="section" id="preparatory-setup">
 <h2>Preparatory Setup</h2>
-<p>It is assumed you are using <strong>distribute</strong> and <strong>pip</strong> to install
-Python packages. This means, you need to have the following setup done
-already:</p>
+<p>First, you need to make sure you have <a class="reference external" href="http://brew.sh/">Homebrew</a> installed and running without any issues:</p>
 <pre class="literal-block">
-curl -O http://python-distribute.org/distribute\_setup.py
-sudop python distribute\_setup.py
-curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-sudo python get-pip.py
+brew doctor
 </pre>
-<p>Furthermore, we are assuming a 64 bit build of Python 2.7 as the
-target environment. If you only need/want to use a stack compiled for a
-32 bit architecture, simpler paths than the one laid out here might work
-as well.</p>
+<p>If that produces any other output than:</p>
+<pre class="literal-block">
+Your system is ready to brew.
+</pre>
+<p>you need to stop <em>right now</em> and fix the issues or install <a class="reference external" href="http://brew.sh/">Homebrew</a> first.
+Note that if you <em>upgraded</em> to OSX Mavericks, you also need to upgrade your XCode command line tools (or download them if you have not installed them) by executing:</p>
+<pre class="literal-block">
+xcode-select --install
+</pre>
+<p>(And this means that you will have to re-install/compile most brew libraries, too, because of a change of XCode libraries...)
+Once you have a clean version of Homebrew up and running, you can proceed to install the actual requirements.</p>
+<p>First, you need to install a Fortran compiler and <a class="reference external" href="http://docs.python.org/3">Python3</a> itself:</p>
+<pre class="literal-block">
+brew tag homebrew/science
+brew install gfortran
+brew install python3
+</pre>
+<p>All of these commands should work nicely and you should encounter no issues.</p>
+<p>Second, it is obviously necessary to set up a minimal Python environment.
+This tutorial will be using <strong>distribute</strong> and <strong>pip</strong> to install Python packages:</p>
+<pre class="literal-block">
+curl -O http://python-distribute.org/distribute_setup.py
+python3 distribute_setup.py
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+python3 get-pip.py
+</pre>
+<p>Note that you <em>do not</em> need to prefix <tt class="docutils literal">sudo</tt> to any of this - because you installed Python 3 using <a class="reference external" href="http://brew.sh/">Homebrew</a>, you are relieved from having to &quot;root&quot; everything.
+And you should consider using <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a> and <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> for your Python development, too:</p>
+<pre class="literal-block">
+pip3 install virtualenv
+pip3 install nose
+</pre>
+<p>With this setup, you have Homebrew plus Python 3000 with <strong>pip</strong>,  <strong>nosetests</strong>, and <strong>virtualenv</strong> all set up.
+This is a great start for any kind of Python development;
+Normally, it is suggested to &quot;stop&quot; here and install all further Python packages only in each &quot;virtual environment&quot;.
+However, this scientific stack you are building is quite a lot of work to set up (compile-wise), so it is a time-saver to have this stack installed globally and then make use of it via <tt class="docutils literal"><span class="pre">--system-site-packages</span></tt> when creating a new virtual environment instead of having to install it each time.</p>
 </div>
 <div class="section" id="numpy">
 <h2><a class="reference external" href="http://www.numpy.org/">NumPy</a></h2>
-<p><a class="reference external" href="http://sourceforge.net/projects/numpy/files/NumPy/">Download and install</a> a version of numpy that is not too new
-(currently, 1.6 worked, while numpy-dev is at 1.8) for the latest
-version of OSX and the oldest still supported version of Python
-(currently, 2.7) to have any chance of success.</p>
-<p>The &quot;newest&quot; NumPy package that was found to work was the numpy-1.6.2
-package for Python 2.7, while when using any newer package, the
-post-installation check in the Python interpreter:</p>
+<p>First, download the latest stable <a class="reference external" href="http://sourceforge.net/projects/numpy/files/NumPy/">NumPy sources from SourceForge</a>.
+By installing from source, NumPy will automatically detect that you are using OSX and therefore configure itself to use the <em>Accelerate</em> framework for the BLAS/LAPACK optimizations:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; import numpy; numpy.test('full')
+python3 setup.py config
 </pre>
-<p>did not pass without errors. What you never want to be seeing are
-errors directly related to the Fortran compiler. This would probably
-mean that you have your own version of Fortran installed; The best
-remedy in that case is to remove it and the tests should pass.</p>
+<p>Below <tt class="docutils literal">atlas_info</tt>, at the end the config output, you should see the following message:</p>
+<pre class="literal-block">
+FOUND:
+  extra_link_args = ['-Wl,-framework', '-Wl,Accelerate']
+  extra_compile_args = ['-msse3']
+  define_macros = [('NO_ATLAS_INFO', 3)]
+</pre>
+<p>As NumPy recognized Accelerate, you can proceed with the installation:</p>
+<pre class="literal-block">
+python3 setup.py build
+python3 setup.py install
+</pre>
+<p>If you installed <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> (as advised), you also can test that your installation is working correctly:</p>
+<pre class="literal-block">
+python3 -c &quot;import numpy; numpy.test('full')&quot;
+</pre>
+<p>All tests should pass without errors or issues.</p>
 </div>
 <div class="section" id="scipy">
-<h2><a class="reference external" href="http://www.scipy.org/SciPy">SciPy</a></h2>
-<p>Again, <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">fetch a version</a> where not too many tests fail (and even on
-Ubuntu LTS 12.04, the tests &quot;test_io.test_imread&quot; and &quot;test_expon&quot;
-are known too fail and are considered to be a non-issue). On OSX 10.7
-with Python 2.7, it is possible to install the 0.10.1 package and the
-final:</p>
+<h2><a class="reference external" href="http://www.scipy.org/scipylib">SciPy</a></h2>
+<p>To use SciPy, you need to install <a class="reference external" href="http://cython.org/">Cython</a> and <a class="reference external" href="http://swig.org/">SWIG</a> first:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; import scipy; scipy.test()
+pip3 install Cython
+brew install swig
 </pre>
-<p>check passes with &quot;only&quot; 9 failures. If you use newer versions, more
-tests will fail. In general, these two core libraries are the hardest
-part and it is essential to get particularly NumPy installed correctly
-for everything else to work.</p>
+<p>Optionally, you can also install <a class="reference external" href="http://www.openblas.net/">OpenBLAS</a>, <a class="reference external" href="http://www.fftw.org/">FFTW</a> and <a class="reference external" href="http://www.cise.ufl.edu/research/sparse/SuiteSparse/">SuiteSparse</a> (for the AMD and UMFPACK libraries) for some extra speedups on Fourier Transform and sparse asymmetric matrix factorizations:</p>
+<pre class="literal-block">
+brew install openblas
+brew install fftw --with-fortran
+brew install suite-sparse --with-openblas
+</pre>
+<p>This step is probably recommended (although it is entirely optional).</p>
+<p>Next you now can fetch the <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">SciPy sources from SourceForge</a> and build them:</p>
+<pre class="literal-block">
+python3 setup.py config
+python3 setup.py build
+python3 setup.py install
+</pre>
+<p>The <tt class="docutils literal">config</tt> step is only there so you can make sure SciPy found the Accelerate framework and the UMFPACK/AMD SuiteSparse libraries.
+The <a class="reference external" href="http://www.fftw.org/">FFTW</a> library you installed earlier with Homebrew is not listed in this output, but will be used during the build, too.</p>
+<p>As with NumPy, you can run some tests to ensure our installation is working properly after moving to another directory:</p>
+<pre class="literal-block">
+python3 -c &quot;import scipy; scipy.test()&quot;
+</pre>
+<p>None of the tests should fail (except for KNOWNFAIL and SKIP tests, naturally).</p>
+<p>If you have come this far, congratulations! Everything from here on will be a <a class="reference external" href="http://en.wikipedia.org/wiki/Cakewalk">cake-walk</a>.</p>
 </div>
 <div class="section" id="matplotlib">
-<h2><a class="reference external" href="http://matplotlib.org/">MatPlotLib</a></h2>
-<p>The next step is the installation of matplotlib; There are
-<a class="reference external" href="http://matplotlib.org/downloads.html">pre-compiled OSX packages</a> for Python 2.7 available, and the latest
-version (1.2.0 at the time of this writing) should work without any
-trouble. To ensure the installation worked, try this in the Python
-interpreter:</p>
+<h2><a class="reference external" href="http://matplotlib.org/">matplotlib</a></h2>
+<p>The next step is the installation of matplotlib:</p>
+<pre class="literal-block">
+pip3 install matplotlib
+</pre>
+<p>As it is trivial to install and only takes a few minutes, you might consider adding it to your virtual environments only.
+However, the next packge that will be installed, IPython, makes use of matplotlib and is quite a hassle to install in every virtual environment.</p>
+<p>To ensure the plotting library is working, try this in an interpreter:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; from pylab import \*; plot([1,2,3]); show()
 </pre>
-<p>and you should see a plot with a straight diagonal. To ensure you have
-the right library, also check:</p>
-<pre class="literal-block">
-&gt;&gt;&gt; import matlpotlib; matplotlib.\_\_version\_\_
-</pre>
-<p>And you should see the desired version number you were trying to
-install.</p>
+<p>You should see a plot with a straight diagonal.</p>
 </div>
 <div class="section" id="ipython">
 <h2><a class="reference external" href="http://ipython.org/">IPython</a></h2>
-<p>First of all, a different readline installation is necessary:</p>
+<p>Now it is time to install a great MATLAB-like interpreter and environment.
+As before, installs are beginning to become straightforward:</p>
 <pre class="literal-block">
-sudo easy\_install-2.7 readline
+pip3 install ipython[zmq,qtconsole,notebook,test]
 </pre>
-<p>Note that readline has to be installed using easy_install, not pip!</p>
-<p>Now, the default installation way should work and we can simply do:</p>
-<pre class="literal-block">
-sudo pip install ipython[zmq,qtconsole,notebook,test]
-</pre>
-<p>To make sure the installation worked, execute the newly installed
-iptest script.</p>
+<p>To make sure the installation worked, execute the newly installed <tt class="docutils literal">iptest3</tt> script.
+Again as before, there should be no failures.</p>
+<p>From now on, instead of <tt class="docutils literal">python3</tt>, you should be using <tt class="docutils literal">ipython3</tt> if you want to work in a Python interpreter.</p>
 </div>
-<div class="section" id="scikit-learn">
-<h2><a class="reference external" href="http://scikit-learn.org/stable/">Scikit-Learn</a></h2>
-<p>This again is pretty straightforward; Do:</p>
-<pre class="literal-block">
-sudo pip install scikit-learn
-nosetests sklearn --exe
-</pre>
-<p>This nosetest will produce one (and only one) error: &quot;Split arrays or
-matrices into random train and test subsets&quot;. But <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/1648">according to the
-developer</a>, this is a non-issue and can be ignored.</p>
-<p>Last, if you are interested in using two more experimental and novel
-libraries on Python that are attempting to rid the requirement of using
-R (and/or rpy), you might want to install Pandas and StatsModels. If you
-prefer non-experimental, production stable libraries, you are probably
-advised to use R and RPy2, as RPy (&quot;version 1&quot;) often tends to have
-issues.</p>
-</div>
-<div class="section" id="pandas">
-<h2><a class="reference external" href="http://pandas.pydata.org/">Pandas</a></h2>
-<p>(Python Data Analysis Library) Again, the default installation route
-should work:</p>
-<pre class="literal-block">
-sudo pip install pandas
-</pre>
-<p>To ensure the library is operational, run (should not produce any
-errors):</p>
-<pre class="literal-block">
-nosetests pandas
-</pre>
-</div>
-<div class="section" id="statsmodels">
-<h2><a class="reference external" href="http://statsmodels.sourceforge.net/">StatsModels</a></h2>
-<p>As with Pandas, we can use the &quot;default installation pathway&quot;, but
-need to first install an undocumented dependency for this module
-(patsy):</p>
-<pre class="literal-block">
-sudo pip install patsy
-sudo pip install statsmodels
-</pre>
-<p>To check the installation worked, open a Python interpreter session
-and do:</p>
-<pre class="literal-block">
-&gt;&gt;&gt; import statsmodels.api as sm
-&gt;&gt;&gt; sm.test()
-</pre>
-<p>Here, several tests seem to be failing and it is not clear at all if
-this is expected or not. StatsModels has several hundreds of open issues
-and should probably be considered very experimental at this stage.</p>
-</div>
-<div class="section" id="rpy2">
-<h2><a class="reference external" href="http://rpy.sourceforge.net/">RPy2</a></h2>
-<p>Again, the standard installation works (assuming you have R itself
-installed already, at least!):</p>
-<pre class="literal-block">
-sudo pip install rpy2
-</pre>
-<p>To ensure the install worked, run the tests as:</p>
-<pre class="literal-block">
-python -m 'rpy2.tests'
-</pre>
-<p>You should not be seeing any problems.</p>
+<div class="section" id="additional-data-science-libraries">
+<h2>Additional Data Science Libraries</h2>
+<p>Finally, here is a list of mature, interesting data science libraries that all will use the stack you just installed.
+These could all go either into the global site-packages, or you can just add them to your projects in your virtual environments as needed.
+In the latter case, do not forget to enable the globabl stack with <tt class="docutils literal"><span class="pre">--system-site-packages</span></tt> when creating a new <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a>.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://scikit-learn.org/stable">scikit-learn</a> machine learning library: <tt class="docutils literal">pip3 install <span class="pre">scikit-learn</span></tt></li>
+<li><a class="reference external" href="http://pandas.pydata.org/">pandas</a> statistical data analysis: <tt class="docutils literal">pip3 install pandas</tt></li>
+<li><a class="reference external" href="http://sympy.org/en/index.html">SymPy</a> symbolic computer algebra system: <tt class="docutils literal">pip3 install sympy</tt></li>
+<li><a class="reference external" href="http://github.com/pymc-devs/pymc">PyMC</a> probabilistic programming environment (see the <a class="reference external" href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">PyMC Tutorial</a>):
+<tt class="docutils literal">pip3 install pymc</tt></li>
+</ul>
+<p>Other noteworthy analytical tools include:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://radimrehurek.com/gensim">gensim</a> semantic modelling: <tt class="docutils literal">pip3 install gensim</tt></li>
+<li><a class="reference external" href="http://www.pytables.org/">PyTables</a> large data management: <tt class="docutils literal">pip3 install tables</tt></li>
+<li><a class="reference external" href="http://rpy.sourceforge.net/">RPy2</a> Python-R interface: <tt class="docutils literal">pip3 install rpy2</tt> (assuming you have R installed)</li>
+<li><a class="reference external" href="http://github.com/pydata/patsy">patsy</a> and <a class="reference external" href="http://statsmodels.sourceforge.net/">StatsModels</a> statistical models:
+<tt class="docutils literal">pip3 install patsy &amp;&amp; pip3 install statsmodels</tt></li>
+</ul>
 <p><em>E voilà</em> - you now have a fully functioning environment for running
-all kinds and sorts of statistical data analyses and machine learning
-algorithms!</p>
+all kinds and sorts of statistical data analyses and developing machine
+learning algorithms!</p>
 </div>
 
 
