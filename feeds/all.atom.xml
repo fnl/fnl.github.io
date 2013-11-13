@@ -582,7 +582,7 @@ In the latter case, do not forget to enable the globabl stack with &lt;tt class=
 &lt;li&gt;&lt;a class="reference external" href="http://scikit-learn.org/stable"&gt;scikit-learn&lt;/a&gt; machine learning library: &lt;tt class="docutils literal"&gt;pip3 install &lt;span class="pre"&gt;scikit-learn&lt;/span&gt;&lt;/tt&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt; statistical data analysis: &lt;tt class="docutils literal"&gt;pip3 install pandas&lt;/tt&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://sympy.org/en/index.html"&gt;SymPy&lt;/a&gt; symbolic computer algebra system: &lt;tt class="docutils literal"&gt;pip3 install sympy&lt;/tt&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://github.com/pymc-devs/pymc"&gt;PyMC&lt;/a&gt; probabilistic programming environment (see the &lt;a class="reference external" href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers"&gt;PyMC Tutorial&lt;/a&gt;):
+&lt;li&gt;&lt;a class="reference external" href="http://github.com/pymc-devs/pymc"&gt;PyMC&lt;/a&gt; probabilistic programming environment (see this &lt;a class="reference external" href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers"&gt;PyMC tutorial&lt;/a&gt;):
 &lt;tt class="docutils literal"&gt;pip3 install pymc&lt;/tt&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Other noteworthy analytical tools include:&lt;/p&gt;
