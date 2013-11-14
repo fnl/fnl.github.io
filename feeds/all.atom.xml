@@ -532,9 +532,7 @@ brew install openblas
 brew install fftw --with-fortran
 brew install suite-sparse --with-openblas
 &lt;/pre&gt;
-&lt;p&gt;This step is probably recommended (although it is entirely optional).
-To make use the FFTW library, you also need to install &lt;a href="#id5"&gt;&lt;span class="problematic" id="id6"&gt;pyFFTW_&lt;/span&gt;&lt;/a&gt; and &lt;a class="reference external" href="http://hgomersall.github.io/pyFFTW/sphinx/tutorial.html#quick-and-easy-the-pyfftw-interfaces-module"&gt;monkey patch&lt;/a&gt; your SciPy &lt;tt class="docutils literal"&gt;fftn&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;ifftn&lt;/tt&gt; interfaces.
-With this replacement, FFTs should run about twice as fast as before.&lt;/p&gt;
+&lt;p&gt;This step is probably recommended (although it is entirely optional).&lt;/p&gt;
 &lt;p&gt;Next you now can fetch the &lt;a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/"&gt;SciPy sources from SourceForge&lt;/a&gt; and build them:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 python3 setup.py config
@@ -598,12 +596,6 @@ In the latter case, do not forget to enable the globabl stack with &lt;tt class=
 &lt;p&gt;&lt;em&gt;E voilà&lt;/em&gt; - you now have a fully functioning environment for running
 all kinds and sorts of statistical data analyses and developing machine
 learning algorithms!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="system-messages section"&gt;
-&lt;h2&gt;Docutils System Messages&lt;/h2&gt;
-&lt;div class="system-message" id="id5"&gt;
-&lt;p class="system-message-title"&gt;System Message: ERROR/3 (&lt;tt class="docutils"&gt;/Users/fleitner/Documents/Blog/content/13-02-11_ipython_on_osx.rst&lt;/tt&gt;, line 107); &lt;em&gt;&lt;a href="#id6"&gt;backlink&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-Unknown target name: &amp;quot;pyfftw&amp;quot;.&lt;/div&gt;
 &lt;/div&gt;
 </summary><category term="python"></category><category term="apple"></category><category term="data mining"></category></entry><entry><title>No "Smart"-Phone, Please</title><link href="http://fnl.es/no-smart-phone-please.html" rel="alternate"></link><updated>2011-08-06T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2011-08-06:no-smart-phone-please.html</id><summary type="html">&lt;p&gt;Out of my strong opinions about privacy, I avoid the total exposure of my private life to governmental organizations and trans-national cooperations that you (maybe unconciously) subdue yourself by owning a &amp;quot;smart&amp;quot; phone and storing your whole life's data in the Cloud.
 And no, I am not being paranoid: There is hard evidence for the &lt;a class="reference external" href="http://www.zeit.de/digital/datenschutz/2011-03/data-protection-malte-spitz/seite-1"&gt;tracking&lt;/a&gt; (&lt;em&gt;and&lt;/em&gt; now [EDIT in 2013] the &lt;a class="reference external" href="http://www.guardian.co.uk/world/prism"&gt;sniffing&lt;/a&gt;) going on - &lt;a class="reference external" href="http://www.onread.com/book/Brave-New-World-191056/"&gt;Huxley&lt;/a&gt; and &lt;a class="reference external" href="http://www.george-orwell.org/1984"&gt;Orwell&lt;/a&gt; didn't even scratch the surface of what was to come…
