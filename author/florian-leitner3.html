@@ -143,7 +143,9 @@ brew install openblas
 brew install fftw --with-fortran
 brew install suite-sparse --with-openblas
 </pre>
-<p>This step is probably recommended (although it is entirely optional).</p>
+<p>This step is probably recommended (although it is entirely optional).
+To make use the FFTW library, you also need to install <a href="#id5"><span class="problematic" id="id6">pyFFTW_</span></a> and <a class="reference external" href="http://hgomersall.github.io/pyFFTW/sphinx/tutorial.html#quick-and-easy-the-pyfftw-interfaces-module">monkey patch</a> your SciPy <tt class="docutils literal">fftn</tt> and <tt class="docutils literal">ifftn</tt> interfaces.
+With this replacement, FFTs should run about twice as fast as before.</p>
 <p>Next you now can fetch the <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">SciPy sources from SourceForge</a> and build them:</p>
 <pre class="literal-block">
 python3 setup.py config
@@ -207,6 +209,12 @@ In the latter case, do not forget to enable the globabl stack with <tt class="do
 <p><em>E voilà</em> - you now have a fully functioning environment for running
 all kinds and sorts of statistical data analyses and developing machine
 learning algorithms!</p>
+</div>
+<div class="system-messages section">
+<h2>Docutils System Messages</h2>
+<div class="system-message" id="id5">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">/Users/fleitner/Documents/Blog/content/13-02-11_ipython_on_osx.rst</tt>, line 107); <em><a href="#id6">backlink</a></em></p>
+Unknown target name: &quot;pyfftw&quot;.</div>
 </div>
 
 
