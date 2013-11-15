@@ -181,7 +181,10 @@ This is not required, but it is nice to render plots inline in a Qt terminal win
 brew install sip
 brew install qt --HEAD # currently, on Mavericks, the --HEAD option is required
 </pre>
-<p>Finally, you need to <a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/download">download</a> and install PyQt4 via <tt class="docutils literal">python3 setup.py install</tt>.</p>
+<p>Finally, you need to <a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/download">download</a> and install PyQt4 using:</p>
+<pre class="literal-block">
+python3 setup.py install
+</pre>
 <p>Apart from PyQt4, installing IPython itself is again straightforward:</p>
 <pre class="literal-block">
 pip3 install ipython[zmq,qtconsole,notebook,test]
