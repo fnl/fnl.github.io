@@ -184,7 +184,8 @@ brew install qt --HEAD # currently, on Mavericks, the --HEAD option is required
 </pre>
 <p>Finally, you need to <a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/download">download</a> and install PyQt4 using:</p>
 <pre class="literal-block">
-python3 setup.py install
+python3 configure-ng.py
+make &amp;&amp; make install
 </pre>
 <p>Apart from PyQt4, installing IPython itself is again straightforward:</p>
 <pre class="literal-block">
