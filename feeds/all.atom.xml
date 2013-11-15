@@ -568,8 +568,8 @@ However, the next packge that will be installed, IPython, makes use of matplotli
 The first, optional, step is to install PyQt4 so you can use IPython's &lt;tt class="docutils literal"&gt;qtconsole&lt;/tt&gt;.
 This is not required, but it is nice to render plots inline in a Qt terminal window, making the IPython &amp;quot;experience&amp;quot; more like MATLAB:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-brew install qt --HEAD # currently, on Mavericks, the --HEAD option is required
 brew install sip
+brew install qt --HEAD # currently, on Mavericks, the --HEAD option is required
 &lt;/pre&gt;
 &lt;p&gt;Finally, you need to &lt;a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/download"&gt;download&lt;/a&gt; and install PyQt4 via &lt;tt class="docutils literal"&gt;python3 setup.py install&lt;/tt&gt;.&lt;/p&gt;
 &lt;p&gt;Apart from PyQt4, installing IPython itself is again straightforward:&lt;/p&gt;
