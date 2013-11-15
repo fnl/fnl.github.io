@@ -581,7 +581,10 @@ pip3 install ipython[zmq,qtconsole,notebook,test]
 &lt;/pre&gt;
 &lt;p&gt;To make sure the installation worked, execute the newly installed &lt;tt class="docutils literal"&gt;iptest3&lt;/tt&gt; script.
 Again as before, there should be no failures.&lt;/p&gt;
-&lt;p&gt;From now on, instead of &lt;tt class="docutils literal"&gt;python3&lt;/tt&gt;, you should be using &lt;tt class="docutils literal"&gt;ipython3&lt;/tt&gt; if you want to work in a Python interpreter.&lt;/p&gt;
+&lt;p&gt;From now on, instead of &lt;tt class="docutils literal"&gt;python3&lt;/tt&gt;, you should be using &lt;tt class="docutils literal"&gt;ipython3&lt;/tt&gt; if you want to work in a Python interpreter and you have reached the &amp;quot;holy grail&amp;quot; of having set up a MATLAB-like scientific computing environment:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ipython3 qtconsole --pylab
+&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="additional-data-science-libraries"&gt;
 &lt;h2&gt;Additional Data Science Libraries&lt;/h2&gt;
