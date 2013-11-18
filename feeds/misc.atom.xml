@@ -450,7 +450,7 @@ This guide will describe how to properly install the following software stack on
 &lt;li&gt;&lt;a class="reference external" href="http://matplotlib.org/"&gt;matplotlib&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://ipython.org/"&gt;IPython&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;With this stack, it is a breeze to add other cool data analysis tools such as &lt;a class="reference external" href="http://scikit-learn.org/stable"&gt;scikit-learn&lt;/a&gt;, &lt;a class="reference external" href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt;, &lt;a class="reference external" href="http://sympy.org/en/index.html"&gt;SymPy&lt;/a&gt;, &lt;a href="#id5"&gt;&lt;span class="problematic" id="id6"&gt;gensim_&lt;/span&gt;&lt;/a&gt;, or &lt;a class="reference external" href="http://github.com/pymc-devs/pymc"&gt;PyMC&lt;/a&gt; in your &lt;a class="reference external" href="http://www.virtualenv.org/"&gt;VirtualEnv&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;With this stack, it is a breeze to add other cool data analysis tools such as &lt;a class="reference external" href="http://scikit-learn.org/stable"&gt;scikit-learn&lt;/a&gt;, &lt;a class="reference external" href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt;, &lt;a class="reference external" href="http://sympy.org/en/index.html"&gt;SymPy&lt;/a&gt;, or &lt;a class="reference external" href="http://github.com/pymc-devs/pymc"&gt;PyMC&lt;/a&gt; in your &lt;a class="reference external" href="http://www.virtualenv.org/"&gt;VirtualEnv&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="section" id="preparatory-setup"&gt;
 &lt;h2&gt;Preparatory Setup&lt;/h2&gt;
 &lt;p&gt;First, you need to make sure you have &lt;a class="reference external" href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; installed and running without any issues:&lt;/p&gt;
@@ -609,12 +609,6 @@ In the latter case, do not forget to enable the globabl stack with &lt;tt class=
 &lt;p&gt;&lt;em&gt;E voilà&lt;/em&gt; - you now have a fully functioning environment for running
 all kinds and sorts of statistical data analyses and developing machine
 learning algorithms!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="system-messages section"&gt;
-&lt;h2&gt;Docutils System Messages&lt;/h2&gt;
-&lt;div class="system-message" id="id5"&gt;
-&lt;p class="system-message-title"&gt;System Message: ERROR/3 (&lt;tt class="docutils"&gt;/Users/fleitner/Documents/Blog/content/13-02-11_ipython_on_osx.rst&lt;/tt&gt;, line 19); &lt;em&gt;&lt;a href="#id6"&gt;backlink&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-Unknown target name: &amp;quot;gensim&amp;quot;.&lt;/div&gt;
 &lt;/div&gt;
 </summary><category term="python"></category><category term="apple"></category><category term="data mining"></category></entry><entry><title>No "Smart"-Phone, Please</title><link href="http://fnl.es/no-smart-phone-please.html" rel="alternate"></link><updated>2011-08-06T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2011-08-06:no-smart-phone-please.html</id><summary type="html">&lt;p&gt;Out of my strong opinions about privacy, I avoid the total exposure of my private life to governmental organizations and trans-national cooperations that you (maybe unconciously) subdue yourself by owning a &amp;quot;smart&amp;quot; phone and storing your whole life's data in the Cloud.
 And no, I am not being paranoid: There is hard evidence for the &lt;a class="reference external" href="http://www.zeit.de/digital/datenschutz/2011-03/data-protection-malte-spitz/seite-1"&gt;tracking&lt;/a&gt; (&lt;em&gt;and&lt;/em&gt; now [EDIT in 2013] the &lt;a class="reference external" href="http://www.guardian.co.uk/world/prism"&gt;sniffing&lt;/a&gt;) going on - &lt;a class="reference external" href="http://www.onread.com/book/Brave-New-World-191056/"&gt;Huxley&lt;/a&gt; and &lt;a class="reference external" href="http://www.george-orwell.org/1984"&gt;Orwell&lt;/a&gt; didn't even scratch the surface of what was to come…
