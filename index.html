@@ -65,7 +65,8 @@ Next, you need to set the global environment variable <tt class="docutils litera
 It has to point to the directory you installed Go in;
 When using Homebrew on OSX, this can be tricky, so here is a snippet that will create the correct path for you:</p>
 <pre class="literal-block">
-export GOROOT=$(brew --prefix)/Cellar/go/$(go version | cut -f3 -d' ' | sed 's/go//')/libexec
+export GOROOT=$(brew --prefix)/Cellar/go/$(go \
+version | cut -f3 -d' ' | sed 's/go//')/libexec
 </pre>
 <p><em>Protip</em>: If during the next steps you see a lot of errors of the form:</p>
 <pre class="literal-block">
