@@ -52,7 +52,7 @@ alt="hit counter"></a></div></noscript>
                     <p>Given how easy it is to write highly concurrent code in Go (aka &quot;<a class="reference external" href="http://golang.org">golang</a>&quot;), it is probably worth learning this language.
 Personally, I believe Go is not yet mature enough for &quot;production&quot; projects other than servers maybe (and I am sure there are people who will not agree with my belief...).
 But for doing science, juggling huge ammounts of data (no, I will not say the &quot;B&quot;-word...), and your typical scripting pipelines, Go is really great.
-On top of that, Go is really easy to learn because it has a simple syntax and a very &quot;bare bones&quot; approach in so many aspects.
+On top of that, Go is easy to learn because it has a simple syntax and a very &quot;bare bones&quot; approach in so many aspects.
 So if you feel like giving it a try, here is a quick recipe to bootstrap a Go development environment within moments:</p>
 <p>First, <a class="reference external" href="http://golang.org/doc/install">install Go</a> itself using your package manager; For example, on OSX, you might use <a class="reference external" href="http://brew.sh/">Homebrew</a>, and on Ubuntu or Debian you'd probably use <tt class="docutils literal">apt</tt>:</p>
 <pre class="literal-block">
@@ -78,34 +78,34 @@ For this, I use a simple shell script (that I call <tt class="docutils literal">
 #!/bin/sh
 
 # setup a directory structure for programming in go
-GITHUB=username
+VCS_HUB=github.com/username
 PROJECT=`basename &quot;$1&quot;`
 
 mkdir -p &quot;$1&quot;
 cd &quot;$1&quot;
-# put your
-mkdir -p src/github.com/$GITHUB/$PROJECT
+mkdir -p &quot;src/$VCS_HUB/$PROJECT&quot;
 mkdir bin
 mkdir pkg
-# exmple if you want default packages pre-installed in your environments:
 GOPATH=`pwd` go get github.com/nsf/gocode
 cat &lt;&lt; ACTIVATE &gt; bin/activate
-export GOPATH=`pwd`
-export PATH=\&quot;\$GOPATH/bin:\$PATH\&quot;
-export PS1=\&quot;\($PROJECT\)\$PS1\&quot;
+export GOPATH=&quot;`pwd`&quot;
+export PATH=&quot;\$GOPATH/bin:\$PATH&quot;
+export PS1=&quot;($PROJECT)\$PS1&quot;
 ACTIVATE
 </pre>
-<p>Put this script somewhere on you <tt class="docutils literal">PATH</tt>, replace with your own GitHub <tt class="docutils literal">username</tt>, make it executable (<tt class="docutils literal">chmod 755 goinit</tt>), and ensure you have the <tt class="docutils literal">GOROOT</tt> set in your environment and <tt class="docutils literal">goinit</tt> on your path.
+<p>Put this script somewhere on you <tt class="docutils literal">PATH</tt>, replace with your own GitHub <tt class="docutils literal">username</tt> (or any other version control system you use), make it executable (<tt class="docutils literal">chmod 755 goinit</tt>), and ensure you have the <tt class="docutils literal">GOROOT</tt> set in your environment and <tt class="docutils literal">goinit</tt> on your path.
 For example, let's assume you want to start with the Go Tour to learn about the language itself (<em>highly</em> recommendable!);
-Bootstrapping your next Go project now is as simple as:</p>
+With this setup, bootstrapping your next Go project (simply called &quot;<tt class="docutils literal">project</tt>&quot; here) now is as simple as:</p>
 <pre class="literal-block">
-goinit path/to/my/work/directory/gotour
-cd path/to/my/work/directory/gotour
+goinit path/to/project
+cd path/to/project
 source bin/activate
+
+# if you are new to Go, you might want to try this:
 go get code.google.com/p/go-tour/gotour
 gotour
 </pre>
-<p>The &quot;gotour&quot; should have opened in your browser.
+<p>The <tt class="docutils literal">gotour</tt> should have opened in your browser.
 Happy Go coding!</p>
 
 

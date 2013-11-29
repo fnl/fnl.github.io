@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fnl.es</title><link>http://fnl.es/</link><description>&lt;a href="mailto:flo@fnl.es" id="webmaster"&gt;fnl&lt;/a&gt; en España</description><atom:link href="http://fnl.es/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 29 Nov 2013 00:00:00 +0100</lastBuildDate><item><title>Getting started with a "virtual" Go environment</title><link>http://fnl.es/getting-started-with-a-virtual-go-environment.html</link><description>&lt;p&gt;Given how easy it is to write highly concurrent code in Go (aka &amp;quot;&lt;a class="reference external" href="http://golang.org"&gt;golang&lt;/a&gt;&amp;quot;), it is probably worth learning this language.
 Personally, I believe Go is not yet mature enough for &amp;quot;production&amp;quot; projects other than servers maybe (and I am sure there are people who will not agree with my belief...).
 But for doing science, juggling huge ammounts of data (no, I will not say the &amp;quot;B&amp;quot;-word...), and your typical scripting pipelines, Go is really great.
-On top of that, Go is really easy to learn because it has a simple syntax and a very &amp;quot;bare bones&amp;quot; approach in so many aspects.
+On top of that, Go is easy to learn because it has a simple syntax and a very &amp;quot;bare bones&amp;quot; approach in so many aspects.
 So if you feel like giving it a try, here is a quick recipe to bootstrap a Go development environment within moments:&lt;/p&gt;
 &lt;p&gt;First, &lt;a class="reference external" href="http://golang.org/doc/install"&gt;install Go&lt;/a&gt; itself using your package manager; For example, on OSX, you might use &lt;a class="reference external" href="http://brew.sh/"&gt;Homebrew&lt;/a&gt;, and on Ubuntu or Debian you'd probably use &lt;tt class="docutils literal"&gt;apt&lt;/tt&gt;:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -28,34 +28,34 @@ For this, I use a simple shell script (that I call &lt;tt class="docutils litera
 #!/bin/sh
 
 # setup a directory structure for programming in go
-GITHUB=username
+VCS_HUB=github.com/username
 PROJECT=`basename &amp;quot;$1&amp;quot;`
 
 mkdir -p &amp;quot;$1&amp;quot;
 cd &amp;quot;$1&amp;quot;
-# put your
-mkdir -p src/github.com/$GITHUB/$PROJECT
+mkdir -p &amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;
 mkdir bin
 mkdir pkg
-# exmple if you want default packages pre-installed in your environments:
 GOPATH=`pwd` go get github.com/nsf/gocode
 cat &amp;lt;&amp;lt; ACTIVATE &amp;gt; bin/activate
-export GOPATH=`pwd`
-export PATH=\&amp;quot;\$GOPATH/bin:\$PATH\&amp;quot;
-export PS1=\&amp;quot;\($PROJECT\)\$PS1\&amp;quot;
+export GOPATH=&amp;quot;`pwd`&amp;quot;
+export PATH=&amp;quot;\$GOPATH/bin:\$PATH&amp;quot;
+export PS1=&amp;quot;($PROJECT)\$PS1&amp;quot;
 ACTIVATE
 &lt;/pre&gt;
-&lt;p&gt;Put this script somewhere on you &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt;, replace with your own GitHub &lt;tt class="docutils literal"&gt;username&lt;/tt&gt;, make it executable (&lt;tt class="docutils literal"&gt;chmod 755 goinit&lt;/tt&gt;), and ensure you have the &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; set in your environment and &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt; on your path.
+&lt;p&gt;Put this script somewhere on you &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt;, replace with your own GitHub &lt;tt class="docutils literal"&gt;username&lt;/tt&gt; (or any other version control system you use), make it executable (&lt;tt class="docutils literal"&gt;chmod 755 goinit&lt;/tt&gt;), and ensure you have the &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; set in your environment and &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt; on your path.
 For example, let's assume you want to start with the Go Tour to learn about the language itself (&lt;em&gt;highly&lt;/em&gt; recommendable!);
-Bootstrapping your next Go project now is as simple as:&lt;/p&gt;
+With this setup, bootstrapping your next Go project (simply called &amp;quot;&lt;tt class="docutils literal"&gt;project&lt;/tt&gt;&amp;quot; here) now is as simple as:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-goinit path/to/my/work/directory/gotour
-cd path/to/my/work/directory/gotour
+goinit path/to/project
+cd path/to/project
 source bin/activate
+
+# if you are new to Go, you might want to try this:
 go get code.google.com/p/go-tour/gotour
 gotour
 &lt;/pre&gt;
-&lt;p&gt;The &amp;quot;gotour&amp;quot; should have opened in your browser.
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;gotour&lt;/tt&gt; should have opened in your browser.
 Happy Go coding!&lt;/p&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Fri, 29 Nov 2013 00:00:00 +0100</pubDate><guid>tag:fnl.es,2013-11-29:getting-started-with-a-virtual-go-environment.html</guid><category>golang</category><category>posix</category></item><item><title>Concurrent Node.js</title><link>http://fnl.es/concurrent-nodejs.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
