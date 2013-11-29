@@ -89,9 +89,11 @@ mkdir bin
 mkdir pkg
 # exmple if you want default packages pre-installed in your environments:
 GOPATH=`pwd` go get github.com/nsf/gocode
-echo export GOPATH=`pwd` &gt; bin/activate
-echo export PATH=\&quot;\$GOPATH/bin:\$PATH\&quot; &gt;&gt; bin/activate
-echo export PS1=\&quot;\($PROJECT\)\$PS1\&quot; &gt;&gt; bin/activate
+cat &lt;&lt; ACTIVATE &gt; bin/activate
+export GOPATH=`pwd`
+export PATH=\&quot;\$GOPATH/bin:\$PATH\&quot;
+export PS1=\&quot;\($PROJECT\)\$PS1\&quot;
+ACTIVATE
 </pre>
 <p>Put this script somewhere on you <tt class="docutils literal">PATH</tt>, replace with your own GitHub <tt class="docutils literal">username</tt>, make it executable (<tt class="docutils literal">chmod 755 goinit</tt>), and ensure you have the <tt class="docutils literal">GOROOT</tt> set in your environment and <tt class="docutils literal">goinit</tt> on your path.
 For example, let's assume you want to start with the Go Tour to learn about the language itself (<em>highly</em> recommendable!);
