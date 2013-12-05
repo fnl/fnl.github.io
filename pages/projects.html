@@ -64,6 +64,16 @@ data directly from NCBI eUtils or by parsing MEDLINE XML files. Content can be e
 plain-text (full, TIAB only, or as TSV) or HTML formats. This is an evolution of the <a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a>
 <tt class="docutils literal">medline</tt> tool. The easiest way to install it is from PyPi, using &quot;<tt class="docutils literal">pip3 install medic</tt>&quot;.
 To use it, check out &quot;<tt class="docutils literal">medic <span class="pre">--help</span></tt>&quot; and &quot;<tt class="docutils literal">man medic</tt>&quot;.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/gnamed">gnamed</a></p>
+<blockquote>
+A command-line tool to maintain an up-to-date database of gene and protein names together with
+their most important keywords (kDa, length, chromosome position, etc.) and their references to
+the NCBI taxonomy and to PubMed. This is very useful to build gene normalization systems.
+Beyond just duming the data, this tool groups unique genes and proteins from different databases
+and links proteins and genes (as a <tt class="docutils literal">n to m</tt> relation).
+To use it, clone it from GitHub (<tt class="docutils literal">git clone git&#64;github.com:fnl/gnamed.git</tt>) and install it
+locally (<tt class="docutils literal"><span class="pre">virtualenv-3.3</span> gnamed; cd gnamed; . bin/activate; python3 setup.py install</tt>).
+Then, you can learn about it by using <tt class="docutils literal">man gnamed</tt> (or just visit the link...).</blockquote>
 <p><a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a></p>
 <blockquote>
 My continuous Python library for supporting all types of BioNLP tasks I am interested in:
@@ -71,7 +81,8 @@ My continuous Python library for supporting all types of BioNLP tasks I am inter
 a unified PostgreSQL repository. <tt class="docutils literal">medline</tt> is a tool to maintain a on-site instance of the
 NLM MEDLINE database. Several other minor tools and libraries are available, such as annotator
 evaluation or interfacing to CouchDB with my own Python 3k client (written a few years ago when
-there was no other Py3k CouchDB client around).</blockquote>
+there was no other Py3k CouchDB client around). Essentially it is the &quot;source&quot; of the two
+projects just described above.</blockquote>
 <p><a class="reference external" href="http://www.biocreative.org">BioCreative</a></p>
 <blockquote>
 An international project organizing community challenges in text mining for molecular biology.
