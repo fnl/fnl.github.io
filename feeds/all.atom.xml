@@ -24,7 +24,7 @@ imports PKGNAME: unrecognized import path &amp;quot;PATH&amp;quot;
 &lt;/pre&gt;
 &lt;p&gt;They probably occur while running &lt;tt class="docutils literal"&gt;go get SOME_PKG&lt;/tt&gt;, and it most likely just means that your &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; is wrong or unset.
 Finally, you want to quickly bootstrap a &amp;quot;virtual&amp;quot; development environment for Go.
-For this, I use a simple shell script (that I call &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt;) to set up the directory structure and an &amp;quot;&lt;tt class="docutils literal"&gt;activate&lt;/tt&gt;-able&amp;quot; environment:&lt;/p&gt;
+For this, I use a simple shell script (that I call &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt;) to set up the directory structure and an &amp;quot;&lt;tt class="docutils literal"&gt;activate&lt;/tt&gt;-able&amp;quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 #!/bin/sh
 
@@ -37,7 +37,11 @@ cd &amp;quot;$1&amp;quot;
 mkdir -p &amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;
 mkdir bin
 mkdir pkg
-GOPATH=`pwd` go get github.com/nsf/gocode
+GOPATH=`pwd`
+go get github.com/nsf/gocode
+go get github.com/jstemmer/gotags
+go get github.com/davecheney/godoc2md
+go get github.com/grobins2/gobrew
 cat &amp;lt;&amp;lt; ACTIVATE &amp;gt; bin/activate
 export GOPATH=&amp;quot;`pwd`&amp;quot;
 export PATH=&amp;quot;\$GOPATH/bin:\$PATH&amp;quot;
