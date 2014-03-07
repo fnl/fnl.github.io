@@ -43,53 +43,64 @@ alt="hit counter"></a></div></noscript>
                 <div class="page">
                     <h1>Projects</h1>
                     <p><strong>Text Mining in Biomedicine</strong></p>
+<p><a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a></p>
+<blockquote>
+My ever evolving Python 3 API and CLI for supporting all types of text mining tasks I do.
+So far, this collection provides the following toolkits:
+<tt class="docutils literal">fnlclassi.py</tt> is used to develop classifiers for [NER-tagged] text using <a class="reference external" href="http://scikit-learn.org/stable/">Scikit-Learn</a>.
+<tt class="docutils literal">fnlcorpus.py</tt> stores corpora of distinct origins in one unified JSON format.
+<tt class="docutils literal">fnldictag.py</tt> is an light-weight approach to tag tokens using a dictionary.
+<tt class="docutils literal">fnlgpcounter.py</tt> scans and counts gene/protein symbols in MEDLINE.
+<tt class="docutils literal">fnlkappa.py</tt> is a script to do inter-annotator agreement evaluations that work well with
+corpora annotated using our online <a class="reference external" href="http://myminer.armi.monash.edu.au">MyMiner</a> corpora generation tool.
+<tt class="docutils literal">fnlsegtrain.py</tt> and <tt class="docutils literal">fnlsegment.py</tt> form a suite to train and use an <em>unsupervised</em>
+sentence segmentation model for text using <a class="reference external" href="http://www.nltk.org/">NLTK</a>.</blockquote>
 <p><a class="reference external" href="https://github.com/fnl/txtfnnl">txtfnnl</a></p>
 <blockquote>
-My current main project, a modular text mining pipeline for biomedicine using the UIMA framework.
+A modular, command-line based text mining pipeline for biomedicine using the UIMA framework.
 It provides a set of Annotation Engine (AE) modules that can be combined to run more complex text
 mining tasks such as Gene Normalization (assigning DB IDs to gene symbols) or mining for
 biological events (e.g., transcription regulation interactions). My framework adds a special
 builder pattern implementation to make UIMA/uimaFIT AEs and Resources less of a chore to develop,
 maintain, and configure. In addition, my framework provides a &quot;type-free&quot; &quot;one-model-fits-all&quot;
 type system, that is a single text annotation type with an <tt class="docutils literal">annotator&#64;namespace:identifier</tt>
-schema to make any kind of annotations on a UIMA SOFA. Last it has special wrappers for the
-Apache Tika project (a libary to extract text content from many different file-types) that add
-functionality beyond the raw extraction alone.</blockquote>
+schema to make any kind of annotations on a UIMA SOFA and thus get rid of the problems having a
+specific UIMA type system generates. Last, it has special wrappers for the Apache Tika project
+(a library to extract text content from many different file-types) that add functionality beyond
+the raw extraction alone. Given how much time it takes to build useful Java tools compared to
+the Python/C combo, I have heavily reduced the time I spend on this project, but it provides a
+number of useful tools, particularly it is fully capable of doing the NLP pre-processing of
+arbitrary input files (Word, PDFs, XML, etc.), including segmenting, tokenization, PoS-tagging,
+and chunking.</blockquote>
 <p><a class="reference external" href="https://pypi.python.org/pypi/medic/">medic</a></p>
 <blockquote>
-A command-line tool to manage an up-to-date PubMed/MEDLINE DB mirror. This is a Python3 program
+A command-line tool to manage an up-to-date PubMed/MEDLINE DB mirror. This is a Python 3 program
 that allows you to bootstrap a MEDLINE Citation (PubMed Abstracts) repository in either SQLite or
-PostgreSQL (Technically, it uses SQL Alchemy, so most datastores should be OK.) You can import
-data directly from NCBI eUtils or by parsing MEDLINE XML files. Content can be extracted in
-plain-text (full, TIAB only, or as TSV) or HTML formats. This is an evolution of the <a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a>
-<tt class="docutils literal">medline</tt> tool. The easiest way to install it is from PyPi, using &quot;<tt class="docutils literal">pip3 install medic</tt>&quot;.
-To use it, check out &quot;<tt class="docutils literal">medic <span class="pre">--help</span></tt>&quot; and &quot;<tt class="docutils literal">man medic</tt>&quot;.</blockquote>
+PostgreSQL (Technically, it uses SQL Alchemy, so a few other datastores should be OK, too.) You
+can import data directly from the NCBI eUtils web service or by parsing MEDLINE XML files.
+Content can be extracted in plain-text (full, TIAB only, or as a table) or HTML format.
+The easiest way to install it is from PyPi, using &quot;<tt class="docutils literal">pip3 install medic</tt>&quot;.
+To use it, check out &quot;<tt class="docutils literal">medic <span class="pre">--help</span></tt>&quot; and &quot;<tt class="docutils literal">man medic</tt>&quot;.
+Apparently, this has been so far the package that has been most often used by fellow researchers
+and therefore I claim it is &quot;production ready&quot; - and if you find a bug, I usually do have it
+fixed in less than 24 hours, anyways.</blockquote>
 <p><a class="reference external" href="https://github.com/fnl/gnamed">gnamed</a></p>
 <blockquote>
-A command-line tool to maintain an up-to-date database of gene and protein names together with
+A command-line tool to maintain an up-to-date repository of gene and protein names together with
 their most important keywords (kDa, length, chromosome position, etc.) and their references to
-the NCBI taxonomy and to PubMed. This is very useful to build gene normalization systems.
-Beyond just duming the data, this tool groups unique genes and proteins from different databases
-and links proteins and genes (as a <tt class="docutils literal">n to m</tt> relation).
+the NCBI taxonomy and to PubMed. This is particularly useful to build gene normalization systems.
+Beyond just dumping the data, this tool groups unique genes and proteins from different databases
+and links all those proteins and genes (as a <tt class="docutils literal">n to m</tt> relation).
 To use it, clone it from GitHub (&quot;<tt class="docutils literal">git clone git&#64;github.com:fnl/gnamed.git</tt>&quot;) and install it
 locally (&quot;<tt class="docutils literal"><span class="pre">virtualenv-3.3</span> gnamed; cd gnamed; . bin/activate; python3 setup.py install</tt>&quot;).
-Then, you can learn about it by using <tt class="docutils literal">man gnamed</tt> (or just visit the link...).</blockquote>
-<p><a class="reference external" href="https://github.com/fnl/libfnl">libfnl</a></p>
-<blockquote>
-My continuous Python library for supporting all types of BioNLP tasks I am interested in:
-<tt class="docutils literal">gnamed</tt> is a library to import gene and protein symbols, names, keywords, and references into
-a unified PostgreSQL repository. <tt class="docutils literal">medline</tt> is a tool to maintain a on-site instance of the
-NLM MEDLINE database. Several other minor tools and libraries are available, such as annotator
-evaluation or interfacing to CouchDB with my own Python 3k client (written a few years ago when
-there was no other Py3k CouchDB client around). Essentially it is the &quot;source&quot; of the two
-projects just described above.</blockquote>
+Then, you can learn about it by using <tt class="docutils literal">man gnamed</tt> (or, just follow the link to the tool...)</blockquote>
 <p><a class="reference external" href="http://www.biocreative.org">BioCreative</a></p>
 <blockquote>
-An international project organizing community challenges in text mining for molecular biology.
-I have in particular been the main organizer of one of these challenges, BioCreative II.5, and
-have developed a Django-based website to manage these events and their participants.
-Also part of this project is my <a class="reference external" href="https://github.com/fnl/bceval">bceval</a> evaluation script to evaluate the perfomance of text
-mining systems.</blockquote>
+An international project, organizing community challenges in text mining for molecular biology.
+I in particular have been the main organizer of one of these challenges, BioCreative II.5, and
+have been the developer of the Django-based website the organization uses to manage these events
+and their participants. Another integral part of this project is my official <a class="reference external" href="https://github.com/fnl/bceval">bceval</a> evaluation
+tool to measure the performance of the participating text mining systems.</blockquote>
 <p><strong>Sidekicks and Minor Projects</strong></p>
 <p><a class="reference external" href="https://github.com/fnl/couchdb_client">couchdb_client</a></p>
 <blockquote>
@@ -100,10 +111,29 @@ A generic finite state machine library in Java.
 Design your own grammar to quickly build generic pattern matching engines.</blockquote>
 <p><a class="reference external" href="https://github.com/fnl/sentence_splitter">sentence_splitter</a></p>
 <blockquote>
-A simple command-line tool to quickly split sentences based on regular patterns.</blockquote>
+A simple command-line tool to quickly split sentences using regular expression patterns.</blockquote>
 <p><a class="reference external" href="https://github.com/fnl/tred">tred</a></p>
 <blockquote>
 Load (parts of) the <a class="reference external" href="http://rulai.cshl.edu/cgi-bin/TRED/tred.cgi?process=home">Transcriptional Regulatory Element Database</a> into a PostgreSQL DB.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/word2numpy">word2numpy</a></p>
+<blockquote>
+My port of the <a class="reference external" href="http://radimrehurek.com/gensim/">Gensim</a> <tt class="docutils literal">word2vec.py</tt> Python 2 script to 3. <a class="reference external" href="https://code.google.com/p/word2vec/">word2vec</a> in turn is a
+(Google) ANN system to detect relationships between words using word vectors.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/progress_bar">progress_bar</a></p>
+<blockquote>
+A simply Python 2/3 tool (install via <tt class="docutils literal">pip install progress_bar</tt>) to display progress bars
+in a terminal with a bar header and adapted to the width of the terminal.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/ungreek">ungreek</a></p>
+<blockquote>
+Tools to expand Greek letters to Latin names and to replace non-ASCII characters with their
+closest ASCII-representation.</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/tokenizer">tokenizer</a></p>
+<blockquote>
+A parallel, high-throughput tokenizer using a deterministic finite state automaton written in
+Go (&quot;golang&quot;).</blockquote>
+<p><a class="reference external" href="https://github.com/fnl/patricia-trie">patricia-trie</a></p>
+<blockquote>
+A PATRICIA tree implementation in pure Python; to install, run <tt class="docutils literal">pip install <span class="pre">patricia-trie</span></tt>.</blockquote>
 
                 </div>
 
