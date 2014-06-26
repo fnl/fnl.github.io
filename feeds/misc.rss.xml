@@ -645,7 +645,7 @@ FOUND:
 python3 setup.py build
 python3 setup.py install
 &lt;/pre&gt;
-&lt;p&gt;If you installed &lt;a class="reference external" href="http://nose.readthedocs.org/en/latest"&gt;nose&lt;/a&gt; (as advised), you also can test that your installation is working correctly: (&lt;em&gt;note that you must move to another directory than where you build NumPy before running the tests&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;If you installed &lt;a class="reference external" href="http://nose.readthedocs.org/en/latest"&gt;nose&lt;/a&gt; (as advised), you also can test that your installation is working correctly (note that you must &lt;em&gt;move to another directory&lt;/em&gt; than where you build NumPy before running the tests):&lt;/p&gt;
 &lt;blockquote&gt;
 python3 -c &amp;quot;import numpy; numpy.test('full')&amp;quot;&lt;/blockquote&gt;
 &lt;p&gt;All tests should pass without errors or issues.&lt;/p&gt;
