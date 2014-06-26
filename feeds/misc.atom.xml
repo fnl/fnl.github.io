@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2013-11-29T00:00:00+01:00</updated><entry><title>Getting started with a "virtual" Go environment</title><link href="http://fnl.es/getting-started-with-a-virtual-go-environment.html" rel="alternate"></link><updated>2013-11-29T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2013-11-29:getting-started-with-a-virtual-go-environment.html</id><summary type="html">&lt;p&gt;Given how easy it is to write highly concurrent code in Go (aka &amp;quot;&lt;a class="reference external" href="http://golang.org"&gt;golang&lt;/a&gt;&amp;quot;), it is probably worth learning this language.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2014-05-25T00:00:00+02:00</updated><entry><title>A Text Analytics Framework for Biomedicine</title><link href="http://fnl.es/a-text-analytics-framework-for-biomedicine.html" rel="alternate"></link><updated>2014-05-25T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2014-05-25:a-text-analytics-framework-for-biomedicine.html</id><summary type="html">&lt;p&gt;If you are asked to extract information from biomedical texts, there are probably one of five possible scenarios going though your head:&lt;/p&gt;
+&lt;p&gt;1. You feel overwhelmed by the task and do not know where to even start.
+2.
+3.
+4.
+5.:wq
+Given how easy it is to write highly concurrent code in Go (aka &amp;quot;&lt;a class="reference external" href="http://golang.org"&gt;golang&lt;/a&gt;&amp;quot;), it is probably worth learning this language.
+Personally, I believe Go is not yet mature enough for &amp;quot;production&amp;quot; projects other than servers maybe (and I am sure there are people who will not agree with my belief...).
+But for doing science, juggling huge ammounts of data (no, I will not say the &amp;quot;B&amp;quot;-word...), and your typical scripting pipelines, Go is really great.
+On top of that, Go is easy to learn because it has a simple syntax and a very &amp;quot;bare bones&amp;quot; approach in so many aspects.
+So if you feel like giving it a try, here is a quick recipe to bootstrap a Go development environment within moments:&lt;/p&gt;
+&lt;p&gt;First, &lt;a class="reference external" href="http://golang.org/doc/install"&gt;install Go&lt;/a&gt; itself using your package manager; For example, on OSX, you might use &lt;a class="reference external" href="http://brew.sh/"&gt;Homebrew&lt;/a&gt;, and on Ubuntu or Debian you'd probably use &lt;tt class="docutils literal"&gt;apt&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+brew install go --cross-compile-common
+apt-get install golang
+...
+&lt;/pre&gt;
+&lt;p&gt;Notice that if you are on a LTS version of Ubuntu (Precise/12.04 right now) or Debian, you might actually want to install a more &lt;a class="reference external" href="http://code.google.com/p/go/downloads/list"&gt;up-to-date binary&lt;/a&gt;.
+Next, you need to set the global environment variable &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt;.
+It has to point to the directory you installed Go in;
+When using Homebrew on OSX, this can be tricky, so here is a snippet that will create the correct path for you:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+export GOROOT=$(brew --prefix)/Cellar/go/$(go \
+version | cut -f3 -d' ' | sed 's/go//')/libexec
+&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Protip&lt;/em&gt;: If during the next steps you see a lot of errors of the form:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+imports PKGNAME: unrecognized import path &amp;quot;PATH&amp;quot;
+&lt;/pre&gt;
+&lt;p&gt;They probably occur while running &lt;tt class="docutils literal"&gt;go get SOME_PKG&lt;/tt&gt;, and it most likely just means that your &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; is wrong or unset.
+Finally, you want to quickly bootstrap a &amp;quot;virtual&amp;quot; development environment for Go.
+For this, I use a simple shell script (that I call &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt;) to set up the directory structure and an &amp;quot;&lt;tt class="docutils literal"&gt;activate&lt;/tt&gt;-able&amp;quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#!/bin/sh
+
+# setup a directory structure for programming in go
+VCS_HUB=github.com/username
+PROJECT=`basename &amp;quot;$1&amp;quot;`
+
+mkdir -p &amp;quot;$1&amp;quot;
+cd &amp;quot;$1&amp;quot;
+mkdir -p &amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;
+mkdir bin
+mkdir pkg
+GOPATH=`pwd`
+go get github.com/nsf/gocode
+go get github.com/jstemmer/gotags
+go get github.com/davecheney/godoc2md
+go get github.com/grobins2/gobrew
+cat &amp;lt;&amp;lt; ACTIVATE &amp;gt; bin/activate
+export GOPATH=&amp;quot;`pwd`&amp;quot;
+export PATH=&amp;quot;\$GOPATH/bin:\$PATH&amp;quot;
+export PS1=&amp;quot;($PROJECT)\$PS1&amp;quot;
+ACTIVATE
+&lt;/pre&gt;
+&lt;p&gt;Put this script somewhere on you &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt;, replace with your own GitHub &lt;tt class="docutils literal"&gt;username&lt;/tt&gt; (or any other version control system you use), make it executable (&lt;tt class="docutils literal"&gt;chmod 755 goinit&lt;/tt&gt;), and ensure you have the &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; set in your environment and &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt; on your path.
+For example, let's assume you want to start with the Go Tour to learn about the language itself (&lt;em&gt;highly&lt;/em&gt; recommendable!);
+With this setup, bootstrapping your next Go project (simply called &amp;quot;&lt;tt class="docutils literal"&gt;project&lt;/tt&gt;&amp;quot; here) now is as simple as:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+goinit path/to/project
+cd path/to/project
+source bin/activate
+
+# if you are new to Go, you might want to try this:
+go get code.google.com/p/go-tour/gotour
+gotour
+&lt;/pre&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;gotour&lt;/tt&gt; should have opened in your browser.
+Happy Go coding!&lt;/p&gt;
+</summary><category term="text mining"></category><category term="python"></category><category term="biology"></category></entry><entry><title>Getting started with a "virtual" Go environment</title><link href="http://fnl.es/getting-started-with-a-virtual-go-environment.html" rel="alternate"></link><updated>2013-11-29T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2013-11-29:getting-started-with-a-virtual-go-environment.html</id><summary type="html">&lt;p&gt;Given how easy it is to write highly concurrent code in Go (aka &amp;quot;&lt;a class="reference external" href="http://golang.org"&gt;golang&lt;/a&gt;&amp;quot;), it is probably worth learning this language.
 Personally, I believe Go is not yet mature enough for &amp;quot;production&amp;quot; projects other than servers maybe (and I am sure there are people who will not agree with my belief...).
 But for doing science, juggling huge ammounts of data (no, I will not say the &amp;quot;B&amp;quot;-word...), and your typical scripting pipelines, Go is really great.
 On top of that, Go is easy to learn because it has a simple syntax and a very &amp;quot;bare bones&amp;quot; approach in so many aspects.
@@ -576,10 +645,9 @@ FOUND:
 python3 setup.py build
 python3 setup.py install
 &lt;/pre&gt;
-&lt;p&gt;If you installed &lt;a class="reference external" href="http://nose.readthedocs.org/en/latest"&gt;nose&lt;/a&gt; (as advised), you also can test that your installation is working correctly:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-python3 -c &amp;quot;import numpy; numpy.test('full')&amp;quot;
-&lt;/pre&gt;
+&lt;p&gt;If you installed &lt;a class="reference external" href="http://nose.readthedocs.org/en/latest"&gt;nose&lt;/a&gt; (as advised), you also can test that your installation is working correctly: (&lt;em&gt;note that you must move to another directory than where you build NumPy before running the tests&lt;/em&gt;):&lt;/p&gt;
+&lt;blockquote&gt;
+python3 -c &amp;quot;import numpy; numpy.test('full')&amp;quot;&lt;/blockquote&gt;
 &lt;p&gt;All tests should pass without errors or issues.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="scipy"&gt;

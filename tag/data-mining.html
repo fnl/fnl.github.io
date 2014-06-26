@@ -124,10 +124,9 @@ FOUND:
 python3 setup.py build
 python3 setup.py install
 </pre>
-<p>If you installed <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> (as advised), you also can test that your installation is working correctly:</p>
-<pre class="literal-block">
-python3 -c &quot;import numpy; numpy.test('full')&quot;
-</pre>
+<p>If you installed <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> (as advised), you also can test that your installation is working correctly: (<em>note that you must move to another directory than where you build NumPy before running the tests</em>):</p>
+<blockquote>
+python3 -c &quot;import numpy; numpy.test('full')&quot;</blockquote>
 <p>All tests should pass without errors or issues.</p>
 </div>
 <div class="section" id="scipy">
