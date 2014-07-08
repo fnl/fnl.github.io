@@ -40,58 +40,82 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">May 26,  2009</h4>
+                <h4 class="date">Mar 12,  2010</h4>
 
                 <a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/mobileme-vs-sugarsync-vs-dropbox.html" rel="bookmark" title="Permanent Link to &quot;MobileMe vs. SugarSync vs. DropBox&quot;">MobileMe vs. SugarSync vs. DropBox</a>
+                        <a href="http://fnl.es/rails-rspecing-controllers-with-declarative-authorization-and-authlogic.html" rel="bookmark" title="Permanent Link to &quot;Rails: RSpec'ing controllers with declarative authorization AND AuthLogic&quot;">Rails: RSpec'ing controllers with declarative authorization AND AuthLogic</a>
                     </h2>
 
-                    <p>I now have tested MobileMe, SugarSync, and DropBox for quite a while to
-decide which service to buy for syncing my “electronic life” between my
-Macs (soon I’ll be managing two OSX Server blades, one Mini, and two
-MBPs!). After this period, there is no doubt to me: I’m syncing my iCal
-calendars and Address Book content via Google, my bookmarks with XMarks,
-and everything else via DropBox.</p>
-<p>MobileMe’s iDisk is nothing more than a pain and a piece of junk, which
-I honestly did not expect. After all the problems they had last year
-launching Me.com, I thought they would have by now created a working
-service. But the iDisk and syncing my PIM (Personal Information Manager
-- I still use Yojimbo, as Evernote’s and Together’s handling of
-encryption are pure patched add-ons) was just a [bad] joke: You even
-need to buy extra software if you want to do file syncing, as iDisk’s
-“offline” sync is so slow and error prone I could not believe Apple
-dares to offer something like that. So you need to either use Lingon and
-rsync to sync to your online mode iDisk which doesn’t win a medal for
-simplicity, or buy something like ChronoSync - and that takes hours
-(!!!) to ensure 10 GB of data in about 30-40k Files are synced, <strong>every
-time</strong>. All the more, ChronoSync may be the fastest and safest syncer in
-the wild! What finally got me mad was the sync agent using 90% CPU all
-of the time, at times virtually locking you out of your own machine,
-while performing almost nothing. Finally, if you ever try to navigate
-that online iDisk, get yourself a cup of tea, you will have plenty of
-time to drink it up until that file is open…</p>
-<p>Compared to SugarSync, DropBox with its simplicity and real versioning
-of files is significantly better performing than SugarSync, espcially if
-we talk upload and real volume, and if you ever tried SugarSync, it is a
-resource hugger (not as bad as iDisk, but it will stop your workflow).
-So in the end the choice for me was based on “mutual exclusion”, there
-is simply still no service that can hold the candle to DropBox - and
-just got me Pro account. As I am writing this, I am syncing up dozens of
-gigs of data to my 50 GB DropBox, and I hardly notice it happening!</p>
-<p>Oh, if you get yourself an account for DropBox, either the free 2 GB or
-a full Pro account, I would appreciate if you register via <a class="reference external" href="https://www.getdropbox.com/referrals/NTE0NTA0OTk">this link</a>,
-as it creates me some 500 MB extra space for referring you :o).</p>
+                    <p>I just had a rough time figuring out how to bypass all the security
+features of the Rails project I am developing to write decent controller
+specs with RSpec. I am using AuthLogic as authentication module and
+declarative authorization (DA) for exactly that. However, when I started
+to write controller specs that would simulate (HTTP) GET requests, I ran
+into a wall: I simply could not digg what the cleanest way would be to
+bypass both AuthLogic and DA. Finally, after finding the right queries
+in Google, I managed to get the necessary snippets. To avoid that the
+same tedious task might befall you, here's what you need to add, e.g.,
+to your spec_helpers directory - I called the file
+&quot;controller_helpers.rb&quot;:</p>
+<pre class="literal-block">
+module SessionHelper
+  def current_user(stubs = {})
+    &#64;current_user ||= mock_model(User, stubs)
+  end
+
+  def user_session(stubs = {}, user_stubs = {})
+    &#64;current_user_session ||= mock_model(
+      UserSession, { :user =&gt; current_user(user_stubs) }.merge(stubs)
+    )
+  end
+
+  def login(session_stubs = {}, user_stubs = {})
+    UserSession.stub!(:find).and_return(
+      user_session(session_stubs, user_stubs)
+    )
+  end
+
+  def logout()
+    &#64;user_session = nil
+  end
+
+  def disable_authorization()
+    Authorization.ignore_access_control(true)
+  end
+end
+</pre>
+<p>The trick is that, for AuthLogic, you can now &quot;authenticate&quot; the user
+by the stubbed UserSession that returns a mocked User model. DA is less
+complicated: the <tt class="docutils literal">disable_authorization()</tt> method is all that is
+needed. Now, in your &quot;spec_helper.rb&quot;, you add this line to the top:</p>
+<pre class="literal-block">
+require File.dirname(__FILE__) + '/spec_helpers/controller_helpers'
+</pre>
+<p>And this line somewhere in the <tt class="docutils literal"><span class="pre">Spec::Runner.configure</span></tt> loop:</p>
+<pre class="literal-block">
+config.include(SessionHelper)
+</pre>
+<p>Now, in your controller specs, it is more than trivial to disable
+authorization and authentication at once - simply add the following
+line, e.g., to your <tt class="docutils literal"><span class="pre">before(:each)</span></tt> definitions:</p>
+<pre class="literal-block">
+disable_authorization &amp;&amp; login
+</pre>
+<p>Voila - your GET requests pass; and you can even add stubs to your
+User model, if needed, by adding them as key-value pairs to the
+<tt class="docutils literal">login()</tt> call above! So now you can get back to make your specs
+pass...</p>
 
 
                     <div class="clear"></div>
                     <div class="info">
-<a href="http://fnl.es/mobileme-vs-sugarsync-vs-dropbox.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
+<a href="http://fnl.es/rails-rspecing-controllers-with-declarative-authorization-and-authlogic.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
                         <div class="tags">
-                            <a href="http://fnl.es/tag/apple.html">apple</a>
-                            <a href="http://fnl.es/tag/cloud-storage.html">cloud storage</a>
+                            <a href="http://fnl.es/tag/rspec.html">rspec</a>
+                            <a href="http://fnl.es/tag/rails.html">rails</a>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -101,7 +125,7 @@ as it creates me some 500 MB extra space for referring you :o).</p>
                 <div class="pages">
                     <a href="http://fnl.es/index6.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/index8.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 7 of 21</span>
+                    <span>Page 7 of 22</span>
                 </div>
 
                 <div class="clear"></div>
