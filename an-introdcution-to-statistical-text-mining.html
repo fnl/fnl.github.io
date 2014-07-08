@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>fnl.es &middot; An Introdcution to Statistical Text Mining</title>
+        <link rel="shortcut icon" href="http://fnl.es/favicon.ico" />
+<link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
+        <link href="http://fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+
+        <link rel="stylesheet" href="http://fnl.es/theme/css/screen.css" type="text/css" />
+        <link rel="stylesheet" href="http://fnl.es/theme/css/pygments.css" type="text/css" />
+        <!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=3728421; 
+var sc_invisible=1; 
+var sc_security="a5624e69"; 
+</script>
+<script type="text/javascript"
+src="http://www.statcounter.com/counter/counter.js"></script>
+        <!-- End of StatCounter Code for Default Guide -->
+    </head>
+    <body>
+        <!-- Start of StatCounter Code for Default Guide -->
+<noscript><div class="statcounter"><a title="hit counter"
+href="http://statcounter.com/free-hit-counter/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/3728421/0/a5624e69/1/"
+alt="hit counter"></a></div></noscript>
+        <!-- End of StatCounter Code for Default Guide -->
+<div id="header">
+            <ul id="nav">
+                <li><a class="flagred" href="http://fnl.es">Home</a></li>
+<li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
+<li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
+<li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
+            </ul>
+            <div class="header_box">
+                <h1><a href="http://fnl.es">fnl.es</a></h1>
+                <h2><a href="mailto:flo@fnl.es" id="webmaster">fnl</a> en España</h2>            </div>
+        </div>
+        <div id="wrapper">
+            <div id="content">
+                <h4 class="date">Jul  7,  2014</h4>
+
+                <a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                <div class="post">
+<h2 class="title">
+                        <a href="http://fnl.es/an-introdcution-to-statistical-text-mining.html" rel="bookmark" title="Permanent Link to &quot;An Introdcution to Statistical Text Mining&quot;">An Introdcution to Statistical Text Mining</a>
+                    </h2>
+
+                    <p>Last week I had to a really great time giving my first &quot;practical&quot; workshop, introducing text mining from the &quot;bottom up&quot; to a bunch of highly motivated summer students. This presentation was part of the 9th iteration of the <a class="reference external" href="http://www.dia.fi.upm.es/ASDM">Advanced Statistics and Data Mining</a> Madrid Summer School. In its context, I presented 15 hours worth of practical and theoretical classes on machine learning for text mining. Due to my very extreme Open Source, Open Accesss and Copyleft stance, I feel it is my very obligation to share the slides and the tutorial files with the world (i.e., you, dear reader) for free (but limited to non-commerical use). While I do hope much of the material can speak for itself, I think it will not &quot;save&quot; you from coming to my class (next year?). I definitely would look forward to your particiaption in a presentation that will make you understand and work through all the maths and statistics presented in the work linked here.</p>
+<div class="section" id="overview">
+<h2>Overview</h2>
+<p>The theory mostly focuses on explaining the methods and statiscs behind machine learning <em>for text mining</em> - without requiring a particlar background other than sharp high-school maths. The practicals on the other hand make use of Python, particularly online <a class="reference external" href="http://ipython.org/">IPython</a> Notebooks. Therefore, prior contact with Python will be very useful to profit the most from the practicals, but is not required to follow the course. IPython's Notebooks act very much like MATLAB Notebooks, but run online in any modern browser and provide facilities to place markup annotations and mathematical forumlas between the code snippets and their return values. Therefore, the notebooks should serve as &quot;take home material&quot; to study and play around with, even after the course. Given the power of IPython, learning to work in this environment would immediately enable you to do distributed, high-performance computing right &quot;off the shelf&quot; (e.g., via <a class="reference external" href="http://star.mit.edu/cluster/">StarCluster</a> on Amazon EC2 Clusters).</p>
+</div>
+<div class="section" id="day-1">
+<h2>Day 1</h2>
+<p><a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/statistical-text-mining-introduction-florian-leitner">Lecture 1</a> (<a class="reference external" href="https://github.com/fnl/asdm-tm-class/blob/master/Text%20Mining%201%20-%20Introduction%20-%20Florian%20Leitner.pdf?raw=true">pdf1</a>) starts with a light-weight introduction to text mining, natural language understanding and generation, and a statistics approach to artificial intelligence in general. It provides a taste of both what is to come in the course and what might be of interest to look into afterwards. It closes with a brief introduction to Bayesian statistics and conditional probability, particularly an example application of <em>Bayes' Rule</em> (the Monty Hall Problem). The <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/IPython%20Notebook%20Introduction.ipynb">practical #1</a> discusses how to use <a class="reference external" href="http://ipython.org/">IPython</a> and its online Notebook, as well as some aspects of <a class="reference external" href="http://www.numpy.org/">NumPy</a> (particularly, contrasting NumPy/SciPy to <a class="reference external" href="http://www.r-project.org/">R</a>) and the most important aspects of the <strong>Natural Language ToolKit</strong> (<a class="reference external" href="http://www.nltk.org/">NLTK</a>) Python library as the <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Introduction%20to%20NumPy%20and%20NLTK.ipynb">second part</a>. The NTLK will be frequently used during the course. As an exercise to become familiar with Python and the NLTK, participants are encouraged to implement a function to let two NLTK chat-bots converse between each other.</p>
+</div>
+<div class="section" id="day-2">
+<h2>Day 2</h2>
+<p>On the second day, <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-25-language-modeling-florian-leitner">lecture 2</a> (<a class="reference external" href="https://github.com/fnl/asdm-tm-class/blob/master/Text%20Mining%202%20-%20Language%20Modeling%20-%20Florian%20Leitner.pdf?raw=true">pdf2</a>) introduces the chain rule of conditional probablitity and builds on that to take you from the <em>Markov property</em> over <em>language modeling</em> to <em>smoothing techniques</em>. In class, you will learn how to operate on n-gram frequency tables and work out the conditional probability distributions of bi- and trigrams. This should ensure the students will have a well-grounded foundation of statistical language processing. After a <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Building%20a%20Language%20Model%20in%207%20Steps.ipynb">quick overview</a>, the accompanying <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Language%20Modelling%20with%20NLTK.ipynb">exercises #2</a> will demonstrate how to build language models in NLTK and you will be tasked with generating your own models using an advanced smoothing technique.</p>
+</div>
+<div class="section" id="day-3">
+<h2>Day 3</h2>
+<p>The <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-35-string-processing">third day lecture</a> (<a class="reference external" href="https://github.com/fnl/asdm-tm-class/blob/master/Text%20Mining%203%20-%20String%20Processing%20-%20Florian%20Leitner.pdf?raw=true">pdf3</a>) then focuses on <em>string processing</em> and the algorithmic aspects of text mining. It quickly presents an overview of state machines, like regular expressions, PATRICIA tries, or <em>Minimal Acyclic Deterministic Finite [State] Automata</em> (MADFA). Particular focus will be payed to string metrics and similarity measures and then a thorough introduction to <em>Locality Sensitive Hashing</em> (LSH) will give you your first tool to efficiently cluster millions of documents or implement approximate matching over very large-scale term dictionaries. The <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Locality%20Sensitive%20Hashing.ipynb">3rd exercises</a> will ask you to apply LSH to a toy problem: <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Spelling%20Correction%20using%20LSH.ipynb">spelling correction</a>.</p>
+</div>
+<div class="section" id="day-4">
+<h2>Day 4</h2>
+<p>After the &quot;algorithmic day&quot;, the <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-45-text-classification">lecture of day four</a> (<a class="reference external" href="https://github.com/fnl/asdm-tm-class/blob/master/Text%20Mining%204%20-%20Text%20Classification%20-%20Florian%20Leitner.pdf?raw=true">pdf4</a>) finally takes the participants into the realm of &quot;true&quot; machine learning. For starters, ways to calculate syntactic and semantic document similarity are presented, culminating in <em>Latent Semantic Analysis</em>. The slides introduce the Naive Bayes classifier as an example to prepare the audience for the <em>Maximum Entropy classifier</em> (Multinomial Logistic Regression) as the main topic of this session. To &quot;cool down&quot; a bit, <em>sentiment analysis</em> is discussed as a common example case of text classification problems. Finally, the important topic of evaluating set-based classifier performance using Accuracy, F-measure, and MCC Score are discussed in closing. The <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Twitter%20Sentiment%20Analysis.ipynb">fourth practical</a> then will walk through a Maximum Entropy sentiment classifier and will ask the audience to improve its performance by choosing the right features and making clever use of all the gained knowledge in the course so far.</p>
+</div>
+<div class="section" id="day-5">
+<h2>Day 5</h2>
+<p>On the final day, <em>probabilistic graphical models</em> will dominate the lecture. With the <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-55-information-extraction">slides for day #5</a> (<a class="reference external" href="https://github.com/fnl/asdm-tm-class/blob/master/Text%20Mining%205%20-%20Information%20Extraction%20-%20Florian%20Leitner.pdf?raw=true">pdf5</a>), the main differences between Bayesian Networks and Markov Random Fields are introduced. As a repriese of yesterday's text classification topics, <em>Latent Dirichlet Allocation</em> is presented as the first (static) graphical model. Then, for the remained of the talk, we move into <em>dynamic</em> (temporal) models, revisting the Markov chain to go from <em>Hidden Markov Models</em> all the way to <em>Conditional Random Fields</em>. To provide a closure for the course geared towards practical text mining, we will discuss some applications for the presented content, such as (semantic) <em>Word Representations</em> or <em>Named Entity Recognition</em>. The participants are left with the prospect of using the labels assigned to &quot;their&quot; texts using these dynamic models for more advanced tasks. For example, <em>Relationship Extraction</em> now becomes feasible by combining the shallow parse output we learned to generate as features for classifiers presented in other sessions of the Advanced Statistics and Data Mining course. The rank-based performance measures of ROC and PR curves are discussed as way to evaluate the labeled results. During the <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Shallow%20Parsing%20with%20NLTK.ipynb">last practical</a>, implementing a <strong>shallow parser</strong> using NLTK and the <a class="reference external" href="http://nlp.stanford.edu/software/tagger.shtml">Stanford Taggers</a> is demonstrated in class, which should enable the students to start off on their own text mining adventures right after the course.</p>
+</div>
+<div class="section" id="resume">
+<h2>Resume</h2>
+<p>Apart from next year's ASDM (hopefully!), you can naturally alway <a class="reference external" href="mailto:florian.leitner&#64;gmail.com">contact me</a> if you would like to discuss the possiblitiy of having this tutorial in the context of your own venue. Otherwise, I hope to have wetted your interest in coming to this course next year and/or have provided you with useful material either as a student or a teacher!</p>
+</div>
+
+
+                    <div class="clear"></div>
+                    <div class="info">
+<a href="http://fnl.es/an-introdcution-to-statistical-text-mining.html">posted at 12:00 P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
+                        <div class="tags">
+                            <a href="http://fnl.es/tag/text-mining.html">text mining</a>
+                            <a href="http://fnl.es/tag/python.html">python</a>
+                            <a href="http://fnl.es/tag/nltk.html">nltk</a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="clear"></div>
+                <div id="footer">
+                    <p>
+                    <a class="atom" href="http://fnl.es/feeds/all.atom.xml">RSS Feed</a>
+                    </p>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>
