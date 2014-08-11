@@ -62,7 +62,7 @@ body {
 	color: #444;
 	}
 #header, #wrapper, #controls ul {
-	width: 750px;
+	/*width: 750px;*/
 	margin: 0 0 0 85px;
 	padding: 0 20px;
 	}
@@ -108,6 +108,14 @@ blockquote {
 	.mobile-hide {
 		display: none;
 	}
+	.post {
+		margin: 0 0 4.5em 0;
+	}
+}
+@media screen and (min-width: 720px) {
+	.post {
+		margin: 0 0 4.5em 190px;
+	}
 }
 .twitter-timeline {
         font-family: sans-serif;
@@ -125,9 +133,6 @@ blockquote {
 	font-size: 1.5em;
 	line-height: 1em;
 	margin: 0 10px 1em 0;
-	}
-.post {
-	margin: 0 0 4.5em 190px;
 	}
 .post.archives {
 	margin-bottom: 1.5em;
