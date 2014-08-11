@@ -64,7 +64,7 @@ body {
 #header, #wrapper, #controls ul {
 	/*width: 750px;*/
 	/*margin: 0 0 0 85px;*/
-	padding: 0 20px;
+	padding: 0 0.5em;
 	}
 a#webmaster {
     color: rgb(221, 221, 221);
@@ -116,19 +116,23 @@ blockquote {
 	.post {
 		margin: 0 0 4.5em 190px;
 	}
+	.twitter-timeline, #twitter-widget-0 {
+		clear: both;
+		float: left;
+	}
+	.date {
+		float: left;
+		clear: both;
+	}
 }
 .twitter-timeline {
-        font-family: sans-serif;
+	font-family: sans-serif;
 }
 .twitter-timeline, #twitter-widget-0 {
-        clear: both;
-        float: left;
-        width: 180px;
+	width: 180px;
 }
 .date {
 	color: #DDD;
-	float: left;
-	clear: both;
 	width: 180px;
 	font-size: 1.5em;
 	line-height: 1em;
@@ -239,7 +243,7 @@ img.align-right {
 	font-family: sans-serif;
 	float: right;
 	list-style: none;
-	margin: 0 0 0 3em;
+	margin: 0 0 3em 0.5em;
 	padding: 0;
 	}
 #nav li {
