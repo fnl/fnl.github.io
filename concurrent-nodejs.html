@@ -73,43 +73,42 @@ This introduction will take the reader familiar with Node's basic callback mecha
 </div>
 <div class="section" id="a-quick-refresher">
 <h2>A Quick Refresher</h2>
-<p>Lets look at a static HTTP file server, using the basic Node modules only:</p>
-<pre class="literal-block">
-var http = require(&quot;http&quot;)
-var url = require(&quot;url&quot;)
-var path = require(&quot;path&quot;)
-var fs = require(&quot;fs&quot;)
-var port = process.argv[2] || 80
+<p>Lets look at a static HTTP file server, using the basic Node modules only.</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">||</span> <span class="mi">80</span>
 
-http.createServer(function(request, response) {
-  var uri = url.parse(request.url).pathname
-  var filename = path.join(process.cwd(), uri)
+<span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span>
+  <span class="kd">var</span> <span class="nx">filename</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="nx">uri</span><span class="p">)</span>
 
-  path.exists(filename, function(exists) {
-    if(!exists) {
-      response.writeHead(404, {&quot;Content-Type&quot;: &quot;text/plain&quot;})
-      response.write(&quot;404 Not Found\n&quot;)
-      response.end()
-    } else {
-      if (fs.statSync(filename).isDirectory()) filename += '/index.html'
+  <span class="nx">path</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">})</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;404 Not Found\n&quot;</span><span class="p">)</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">).</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="nx">filename</span> <span class="o">+=</span> <span class="s1">&#39;/index.html&#39;</span>
 
-      fs.readFile(filename, &quot;binary&quot;, function(err, file) {
-        if(err) {
-          response.writeHead(500, {&quot;Content-Type&quot;: &quot;text/plain&quot;})
-          response.write(err + &quot;\n&quot;)
-          response.end()
-        } else {
-          response.writeHead(200)
-          response.write(file, &quot;binary&quot;)
-          response.end()
-        }
-      })
-    }
-  })
-}).listen(parseInt(port, 80))
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">})</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">err</span> <span class="o">+</span> <span class="s2">&quot;\n&quot;</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="s2">&quot;binary&quot;</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
 
-console.log(&quot;file server running at http://localhost:&quot; + port + &quot;/&quot;)
-</pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;file server running at http://localhost:&quot;</span> <span class="o">+</span> <span class="nx">port</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
 <p>This highlights basic Node concepts; Upon receiving a request, the server makes an asynchronous check via the OS to ensure the file exists.
 The asynchronicity is indicated by the callback that gets sent to <tt class="docutils literal">path.exists()</tt>.
 Then, again asynchronously (note the callback sent into <tt class="docutils literal">fs.readFile()</tt>), Node reads the file, and if this job completes successfully, sends the file (data) to the response handler.
@@ -158,44 +157,42 @@ yes
 $ npm install
 </pre>
 <p>We will use the following <tt class="docutils literal">broker.js</tt> script, placed in this same directory:</p>
-<pre class="literal-block">
-/* a &quot;blocking&quot; query */
-function query(ms) {
-  var start = new Date().getTime()
-  console.log(&quot;&quot; + start + &quot;: query started&quot;)
-  while ((new Date().getTime() - start) &lt; ms) {}
-  console.log(&quot;&quot; + new Date().getTime() + &quot; query finished&quot;)
-}
+<div class="highlight"><pre><span class="cm">/* a &quot;blocking&quot; query */</span>
+<span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">start</span> <span class="o">+</span> <span class="s2">&quot;: query started&quot;</span><span class="p">)</span>
+  <span class="k">while</span> <span class="p">((</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">ms</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; query finished&quot;</span><span class="p">)</span>
+<span class="p">}</span>
 
 
-process.on('message', function(m) {
-  // normally, here would probably be:
-  // process.send(query(m))
+<span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// normally, here would probably be:</span>
+  <span class="c1">// process.send(query(m))</span>
 
-  query(Math.floor(Math.random()*200+900))
-  process.send(m)
-  process.exit()
-})
-</pre>
+  <span class="nx">query</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">200</span><span class="o">+</span><span class="mi">900</span><span class="p">))</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+<span class="p">})</span>
+</pre></div>
 <p>Obviously, this is quite a a toy example, because our worker receives and returns only one single message before shutting down.
 Similarly, our server API for this broker in <tt class="docutils literal">app.js</tt> will be just as simple:</p>
-<pre class="literal-block">
-var broker = require('child_process')
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">broker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">)</span>
 
-function query(bucket, query, cb) {
-  var channel = broker.fork(__dirname + '/db.js')
-  channel.send(query)
+<span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">bucket</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">channel</span> <span class="o">=</span> <span class="nx">broker</span><span class="p">.</span><span class="nx">fork</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/db.js&#39;</span><span class="p">)</span>
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span>
 
-  channel.on('message', function(result) {
-    cb(null, result)
-  })
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+  <span class="p">})</span>
 
-  channel.on('error', function(err) {
-    console.log(err)
-    cb(err)
-  })
-}
-</pre>
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
 <p>Go ahead and replace everything in <tt class="docutils literal">app.js</tt> with this code.
 In a real-world program, you would use a pool of workers and, each time you start a <tt class="docutils literal">query</tt>, use another channel from your pool.
 As a matter of fact, most Node libraries will provide you with non-blocking versions of the API they wrap, so you might need no workers at all.
@@ -210,29 +207,28 @@ Upon receiving the user's ID, the server should query the broker for the user's 
 In other words, we have a serial flow of fetching user and the an parallel step of fetching post and comment data.
 Once all this data is collected, the server should respond with a JSON object containing this data.</p>
 <p>In the simplest case, you would string a few calls to your query API together and return the results, maybe like this (<em>anti-pattern</em>):</p>
-<pre class="literal-block">
-var app = require('express')()
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)()</span>
 
-app.get('/sync/:userId', function(req, res, next) {
-  var userId = req.params.userId
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/sync/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
 
-  db_query('users', userId, function(err, user) {
-    if (err) return next(err)
+  <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 
-    db_query('posts', {poster: user}, function(err, posts) {
-      if (err) return next(err)
+    <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">posts</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 
-      db_query('comments', {commenter: user}, function(err, comments) {
-        if (err) return next(err)
-        else return res.json({user: user, posts: posts, comments: comments})
-      })
-    })
-  })
-})
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="o">:</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="o">:</span> <span class="nx">comments</span><span class="p">})</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
 
 
-app.listen(8000)
-</pre>
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+</pre></div>
 <p>(Again, you can append this to the app.js you created earlier, just as all following code snippets.)
 The above example gives rise to the (wrong) argument why callbacks are a Bad Idea (you will learn the true reason why callbacks are evil later):
 By placing one CB inside the former, or returning (think &quot;break&quot;) early if an error occurred, we end up in <a class="reference external" href="http://callbackhell.com/">callback hell</a>.
@@ -256,44 +252,43 @@ This takes us straight into the realm of asynchronous programming.</p>
 <div class="section" id="home-brew-asynchronicity">
 <h2>Home-brew Asynchronicity</h2>
 <p>While this certainly is not the cleanest code, here is a quick shot at solving the problem of concurrently running these three queries:</p>
-<pre class="literal-block">
-app.get('/brew/:userId', function(req, res, next) {
-  var userId = req.params.userId
-  var result = {}
-  var cbCounter = 0
-  var gotError = false
+<div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/brew/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="kd">var</span> <span class="nx">cbCounter</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="kd">var</span> <span class="nx">gotError</span> <span class="o">=</span> <span class="kc">false</span>
 
-  function checkError(err, cb) {
-    if (gotError) return
-    if (err) {
-      gotError = true
-      return next(err)
-    }
-    cbCounte))r++
-    return cb()
-  }
+  <span class="kd">function</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">gotError</span><span class="p">)</span> <span class="k">return</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">gotError</span> <span class="o">=</span> <span class="kc">true</span>
+      <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">cbCounte</span><span class="p">))</span><span class="nx">r</span><span class="o">++</span>
+    <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span>
+  <span class="p">}</span>
 
-  db_query('users', userId, function(err, user) {
-    return checkError(err,  function() {
-      result.user = user
+  <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span>  <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">result</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span>
 
-      db_query('posts', {poster: user}, function(err, posts) {
-        return checkError(err, function() {
-          result.posts = posts
-          if (cbCounter == 3) return res.json(result)
-        })
-      })
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">posts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">result</span><span class="p">.</span><span class="nx">posts</span> <span class="o">=</span> <span class="nx">posts</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">cbCounter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
 
-      db_query('comments', {commenter: user}, function(err, comments) {
-        return checkError(err, function() {
-          result.comments = comments
-          if (cbCounter == 3) return res.json(result)
-        })
-      })
-    })
-  })
-})
-</pre>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">result</span><span class="p">.</span><span class="nx">comments</span> <span class="o">=</span> <span class="nx">comments</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">cbCounter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
 <p>While this version now runs the last two queries concurrently, and, if you have more than one CPU core at least, in parallel, the code has become quite bloated.
 You need to ensure that all three calls have completed before returning a valid result.
 You need to ensure to only return the error once.
@@ -307,28 +302,27 @@ Luckily, these issues have been solved with the second most popular node module 
 <p>We wil use the <a class="reference external" href="https://github.com/caolan/async#auto">auto</a> method of <a class="reference external" href="https://github.com/caolan/async">async</a> to make the code more readable, leaving all the mentioned issues up to the library to take care of.
 <tt class="docutils literal">auto</tt> takes a &quot;tasks object&quot; (an object where each property is a function considered a task) and returns an equally shaped object with the results if all tasks were run without errors.
 In addition to the tasks, you can list any other tasks you handed to auto that have to be completed before that specific task is run:</p>
-<pre class="literal-block">
-var async = require('async')
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">)</span>
 
-app.get('/async/:userId', function(req, res, next) {
-  var userId = req.params.userId
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/async/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
 
-  async.auto({
-    user: function(cb) {
-      db_query('users', userId, cb)
-    },
-    posts: ['user', function(cb, res) {
-      db_query('posts', {poster: res.user}, cb)
-    }],
-    comments: ['user', function(cb, res) {
-      db_query('posts', {commenter: res.user}, cb)
-    }]
-  }, function(err, result) {
-    if (err) next(err)
-    else res.json(result)
-  })
-})
-</pre>
+  <span class="nx">async</span><span class="p">.</span><span class="nx">auto</span><span class="p">({</span>
+    <span class="nx">user</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="nx">posts</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">user</span><span class="p">},</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">}],</span>
+    <span class="nx">comments</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">user</span><span class="p">},</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">}]</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="k">else</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
 <p>As shown, we send the auto function an object with three tasks, <tt class="docutils literal">user</tt>, <tt class="docutils literal">posts</tt>, and <tt class="docutils literal">comments</tt>.
 Both the <tt class="docutils literal">posts</tt> and <tt class="docutils literal">comments</tt> tasks require that the <tt class="docutils literal">user</tt> task has been run successfully before them, as indicated by the array value they map to.
 The tasks (functions) have to accept a standard Node callback (<tt class="docutils literal">function(err, result)</tt>) and should delegate that to some asynchronous task.
@@ -349,45 +343,43 @@ So far, we were using callbacks, that is, functions that do not return a value. 
 This means that both <em>function composition</em> and <em>unit testing</em> of these callbacks is rather a pain.
 And it means that you have to manually control the &quot;flow&quot; of your data through these callbacks.
 For example, to read a file in Node, the idiomatic structure is:</p>
-<pre class="literal-block">
-var _ = require('underscore');
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
 
-function finish(res, data) {
-  res.write(data)
-  res.end()
-}
+<span class="kd">function</span> <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+<span class="p">}</span>
 
-function sendData(res, data) {
-  res.writeHead(200)
-  finish(res, data)
-}
+<span class="kd">function</span> <span class="nx">sendData</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+  <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
 
-function reportError(res, err) {
-  res.writeHead(500)
-  console.log(err)
-  finish(res, data)
-}
+<span class="kd">function</span> <span class="nx">reportError</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
 
-function onResult(res, err, data) {
-  if (err) reportError(res, err)
-  else sendData(res, data)
-}
+<span class="kd">function</span> <span class="nx">onResult</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reportError</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+  <span class="k">else</span> <span class="nx">sendData</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
 
-function(req, res) {
-  var callback = _.partial(onResult, res)
+<span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">callback</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">onResult</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
 
-  fs.readFile(req.params.filename, callback)
-}
-</pre>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
 <p>Instead, if the <tt class="docutils literal">readFile</tt> function were to return a value, this could be expressed in a much cleaner way, without having to nest (structure) the tasks into callback chains.
 However, as we know, at the time of calling <tt class="docutils literal">readFile</tt>, no such value exists - as a matter of fact, we do not even know if we will be able to read the file at all.
 So the only thing we can return is a &quot;future&quot; value, or a &quot;promise&quot; to return such a value (hence the name of these data structures).
 For this reason, such a data type would have to provide three methods:</p>
-<pre class="literal-block">
-promise.resolve(result)
-promise.reject(reason)
-result = promise.then(onFulfilled(result), onRejected(error))
-</pre>
+<div class="highlight"><pre><span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+<span class="nx">promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">onFulfilled</span><span class="p">(</span><span class="nx">result</span><span class="p">),</span> <span class="nx">onRejected</span><span class="p">(</span><span class="nx">error</span><span class="p">))</span>
+</pre></div>
 <p>The called function that returned the promise will, in the future, decide to resolve or reject the promise.
 And that new promise will <tt class="docutils literal">then</tt> have to describe what the program should do if the promise has been <em>fulfilled</em> or <em>rejected</em>.
 The most important concept is that promises are <strong>propagating</strong>:
@@ -401,30 +393,29 @@ The return value of <tt class="docutils literal">then</tt> (<tt class="docutils 
 </blockquote>
 <p>This means you can comfortably chain promises, while you can rely on <em>return values</em> (instead of side effects).
 With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:</p>
-<pre class="literal-block">
-var _ = require('_')
-var Promise = require('q')
-// wrap fs.readFile as a &quot;promise-returning function&quot;:
-var readFile = Promise.nfbind(fs.readFile)
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">Promise</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="c1">// wrap fs.readFile as a &quot;promise-returning function&quot;:</span>
+<span class="kd">var</span> <span class="nx">readFile</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">)</span>
 
-function setHeader(header, res, data) {
-  res.setHeader(header)
-  return data
-}
+<span class="kd">function</span> <span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span>
+  <span class="k">return</span> <span class="nx">data</span>
+<span class="p">}</span>
 
-var set200 = _.partial(setHeader, 200)
-var set500 = _.partial(setHeader, 500)
+<span class="kd">var</span> <span class="nx">set200</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">setHeader</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">set500</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">setHeader</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
 
-function(req, res) {
-  var data = readFile(req.params.filename)
-  var error = _.partial(set500, res)
-  var send = _.partial(set200, res)
+<span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">readFile</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">filename</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">set500</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">send</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">set200</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
 
-  data.then(send, error)
-    .then(res.write, console.log)
-    .fin(function() { res.end() })
-}
-</pre>
+  <span class="nx">data</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">send</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">fin</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span> <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
 <p>Promises therefore make it possible to resolve function values in a <em>time-independent</em> manner:
 We can call the <tt class="docutils literal">then</tt> method after or <em>before</em> either <tt class="docutils literal">resolve</tt> or <tt class="docutils literal">reject</tt> have been executed.
 Furthermore, libraries that implement promises must guarantee that no matter how often we check the promise' state (call <tt class="docutils literal">then</tt>), that promise always will be resolved or rejected the same way.
@@ -451,32 +442,31 @@ $ npm install q
 $ npm install underscore
 </pre>
 <p>Without much fanfare, this is how our JSON-REST service looks like using promises and some functional trickery:</p>
-<pre class="literal-block">
-var Q = require('q')
-var _ = require('underscore')
-var q_query = Q.nfbind(db_query)
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Q</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">q_query</span> <span class="o">=</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">db_query</span><span class="p">)</span>
 
-function fetchPostsAndComments(user) {
-  return Q.all([
-    user,
-    q_query('posts', {poster: user}),
-    q_query('comments', {commenter: user})
-  ])
-}
+<span class="kd">function</span> <span class="nx">fetchPostsAndComments</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+    <span class="nx">user</span><span class="p">,</span>
+    <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">}),</span>
+    <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">})</span>
+  <span class="p">])</span>
+<span class="p">}</span>
 
-function respond(res, user, posts, comments) {
-  res.json({user: user, posts: posts, comments: comments})
-}
+<span class="kd">function</span> <span class="nx">respond</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="o">:</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="o">:</span> <span class="nx">comments</span><span class="p">})</span>
+<span class="p">}</span>
 
-app.get('/promise/:userId', function(req, res, next) {
-  var userId = req.params.userId
-  var response = _.partial(respond, res)
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/promise/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">respond</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
 
-  q_query('users', userId)
-    .then(fetchPostsAndComments, next)
-    .spread(response, next)
-})
-</pre>
+  <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">fetchPostsAndComments</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">spread</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
 <p>So what has changed?
 Admittedly, except for the main function itself being a bit shorter, this code is longer than the asynchronous version.
 Nonetheless, after introducing you to the benefits of promises, you should be able to see the elegance of this final solution.
