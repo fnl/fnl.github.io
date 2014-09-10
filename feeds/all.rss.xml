@@ -948,7 +948,18 @@ propaganda crusades against a country nowadays have the same
 socioeconomic impact as the largest &amp;quot;real&amp;quot; war in decades if measured by
 the daily cost. Keep this in mind the next time you read news about
 swines from pigs.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Thu, 30 Apr 2009 00:00:00 +0200</pubDate><guid>tag:fnl.es,2009-04-30:news-swines-pigs.html</guid><category>politics</category></item><item><title>Why I love Python 3.0: Unicode + UTF-8</title><link>http://fnl.es/why-i-love-python-30-unicode-utf-8.html</link><description>&lt;p&gt;This change in Python 3.0 might be more than useful for
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Thu, 30 Apr 2009 00:00:00 +0200</pubDate><guid>tag:fnl.es,2009-04-30:news-swines-pigs.html</guid><category>politics</category></item><item><title>Why I love Python 3.0: Unicode + UTF-8</title><link>http://fnl.es/why-i-love-python-30-unicode-utf-8.html</link><description>&lt;div class="section" id="tl-dr-summary"&gt;
+&lt;h2&gt;tl;dr summary&lt;/h2&gt;
+&lt;table&gt; &lt;tbody&gt;
+&lt;tr&gt; &lt;th align="left"&gt; &lt;strong&gt;Python pre-3.0&lt;/strong&gt; &lt;/th&gt;
+     &lt;th align="left"&gt; &lt;strong&gt;Python post-3.0&lt;/strong&gt; &lt;/th&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; str.encode &lt;/td&gt; &lt;td&gt; bytes.translate or (new) str.encode &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; str.decode &lt;/td&gt; &lt;td&gt; bytes.decode &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; unicode &lt;/td&gt; &lt;td&gt; str &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; unicode.encode &lt;/td&gt; &lt;td&gt; str.encode &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; unicode.decode &lt;/td&gt; &lt;td&gt; *n/a* &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td&gt; str("x") == unicode("x") &amp;nbsp;&amp;nbsp; &lt;/td&gt; &lt;td&gt; bytes("x") != str("x") &lt;/td&gt; &lt;/tr&gt;
+&lt;/tbody&gt; &lt;/table&gt;&lt;p&gt;This change in Python 3.0 might be more than useful for
 anybody intending to write programs that use more than the ASCII
 characters (A-z, 0-9, and some symbols), which, given how i18n'ed most
 applications are today, is rather the norm than the exception. I also
@@ -980,13 +991,12 @@ the desired String representation (encode them) - while working with
 Unicode internally to avoid bugs and possible exploits. A (rather
 stupid, but you can interpolate the danger, I hope) snippet from
 Python's Unicode HOWTO might exemplify this:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-def read_file(filename, encoding):
-    if '/' in filename:
-        raise ValueError(u&amp;quot;'/' not allowed in filename&amp;quot;)
-    else:
-        return open(filename.decode(encoding), 'r')
-&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;read_file&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;encoding&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;u&amp;quot;&amp;#39;/&amp;#39; not allowed in filename&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;encoding&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Looks good at first, but what about sending that function a String not
 in any standard encoding? For example, the UTF-7 encoding for
 u&amp;quot;/etc/passwd&amp;quot; is &amp;quot;+AC8-etc+AC8-passwd&amp;quot; - a nasty mistake if that file
@@ -1095,18 +1105,7 @@ time used for creating and garbage collecting those temporary lists),&lt;/li&gt;
 literals (&amp;quot;my_set = {1, 2}&amp;quot;),&lt;/li&gt;
 &lt;li&gt;and tons of streamlining the syntax and Standard Library.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="section" id="tl-dr-summary"&gt;
-&lt;h2&gt;tl;dr summary&lt;/h2&gt;
-&lt;table&gt; &lt;tbody&gt;
-&lt;tr&gt; &lt;th align="left"&gt; &lt;strong&gt;Python pre-3.0&lt;/strong&gt; &lt;/th&gt;
-     &lt;th align="left"&gt; &lt;strong&gt;Python post-3.0&lt;/strong&gt; &lt;/th&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; str.encode &lt;/td&gt; &lt;td&gt; bytes.translate or (new) str.encode &lt;/td&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; str.decode &lt;/td&gt; &lt;td&gt; bytes.decode &lt;/td&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; unicode &lt;/td&gt; &lt;td&gt; str &lt;/td&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; unicode.encode &lt;/td&gt; &lt;td&gt; str.encode &lt;/td&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; unicode.decode &lt;/td&gt; &lt;td&gt; *n/a* &lt;/td&gt; &lt;/tr&gt;
-&lt;tr&gt; &lt;td&gt; str("x") == unicode("x") &amp;nbsp;&amp;nbsp; &lt;/td&gt; &lt;td&gt; bytes("x") != str("x") &lt;/td&gt; &lt;/tr&gt;
-&lt;/tbody&gt; &lt;/table&gt;&lt;/div&gt;
+&lt;/div&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Mon, 27 Apr 2009 00:00:00 +0200</pubDate><guid>tag:fnl.es,2009-04-27:why-i-love-python-30-unicode-utf-8.html</guid><category>unicode</category><category>python</category></item><item><title>Zeitgeist Addendum: The Venus Project</title><link>http://fnl.es/zeitgeist-addendum-the-venus-project.html</link><description>&lt;p&gt;I just sent a mail to some of my friends of whom I hope they might be
 interested in this subject. I am sure this will be a very hot topic in
 certain circles very soon; So I was giving this some thought if I should

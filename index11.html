@@ -52,7 +52,18 @@ alt="hit counter"></a></div></noscript>
                         <a href="http://fnl.es/why-i-love-python-30-unicode-utf-8.html" rel="bookmark" title="Permanent Link to &quot;Why I love Python 3.0: Unicode + UTF-8&quot;">Why I love Python 3.0: Unicode + UTF-8</a>
                     </h2>
 
-                    <p>This change in Python 3.0 might be more than useful for
+                    <div class="section" id="tl-dr-summary">
+<h2>tl;dr summary</h2>
+<table> <tbody>
+<tr> <th align="left"> <strong>Python pre-3.0</strong> </th>
+     <th align="left"> <strong>Python post-3.0</strong> </th> </tr>
+<tr> <td> str.encode </td> <td> bytes.translate or (new) str.encode </td> </tr>
+<tr> <td> str.decode </td> <td> bytes.decode </td> </tr>
+<tr> <td> unicode </td> <td> str </td> </tr>
+<tr> <td> unicode.encode </td> <td> str.encode </td> </tr>
+<tr> <td> unicode.decode </td> <td> *n/a* </td> </tr>
+<tr> <td> str("x") == unicode("x") &nbsp;&nbsp; </td> <td> bytes("x") != str("x") </td> </tr>
+</tbody> </table><p>This change in Python 3.0 might be more than useful for
 anybody intending to write programs that use more than the ASCII
 characters (A-z, 0-9, and some symbols), which, given how i18n'ed most
 applications are today, is rather the norm than the exception. I also
@@ -84,13 +95,12 @@ the desired String representation (encode them) - while working with
 Unicode internally to avoid bugs and possible exploits. A (rather
 stupid, but you can interpolate the danger, I hope) snippet from
 Python's Unicode HOWTO might exemplify this:</p>
-<pre class="literal-block">
-def read_file(filename, encoding):
-    if '/' in filename:
-        raise ValueError(u&quot;'/' not allowed in filename&quot;)
-    else:
-        return open(filename.decode(encoding), 'r')
-</pre>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">u&quot;&#39;/&#39; not allowed in filename&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+</pre></div>
 <p>Looks good at first, but what about sending that function a String not
 in any standard encoding? For example, the UTF-7 encoding for
 u&quot;/etc/passwd&quot; is &quot;+AC8-etc+AC8-passwd&quot; - a nasty mistake if that file
@@ -199,18 +209,7 @@ time used for creating and garbage collecting those temporary lists),</li>
 literals (&quot;my_set = {1, 2}&quot;),</li>
 <li>and tons of streamlining the syntax and Standard Library.</li>
 </ul>
-<div class="section" id="tl-dr-summary">
-<h2>tl;dr summary</h2>
-<table> <tbody>
-<tr> <th align="left"> <strong>Python pre-3.0</strong> </th>
-     <th align="left"> <strong>Python post-3.0</strong> </th> </tr>
-<tr> <td> str.encode </td> <td> bytes.translate or (new) str.encode </td> </tr>
-<tr> <td> str.decode </td> <td> bytes.decode </td> </tr>
-<tr> <td> unicode </td> <td> str </td> </tr>
-<tr> <td> unicode.encode </td> <td> str.encode </td> </tr>
-<tr> <td> unicode.decode </td> <td> *n/a* </td> </tr>
-<tr> <td> str("x") == unicode("x") &nbsp;&nbsp; </td> <td> bytes("x") != str("x") </td> </tr>
-</tbody> </table></div>
+</div>
 
 
                     <div class="clear"></div>
