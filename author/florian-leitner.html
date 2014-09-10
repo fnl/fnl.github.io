@@ -54,8 +54,8 @@ alt="hit counter"></a></div></noscript>
                     </h2>
 
                     <p>If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to MEDLINE.
-In my now nearly eight years of &quot;BioNLP&quot; (natural language processing for biology), I have not been able to locate a simple set of command-line tools to manage a MEDLINE DB mirror.
-As I am inherently lazy, I therefore have worked out a number of highly useful BASH commands I regularly get back to and have written my own tool to create a DB mirror in <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a>.</p>
+In my now nearly eight years of BioNLP (natural language processing for biology) work, I have not been able to locate a simple set of command-line tools to manage a MEDLINE DB mirror.
+As I am inherently lazy, I therefore have worked out a number of highly useful BASH commands I regularly get back to and have written my own tool to create a DB mirror for either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a>.</p>
 <div class="section" id="synchronizing-the-medline-archives">
 <h2>Synchronizing the MEDLINE archives</h2>
 <p>First you will most likely need to actually download the MEDLINE archives, given that your institute has a (free) subscription to the archives.
@@ -82,20 +82,20 @@ rsync -r -t -v --progress ftp_mount/* updates/
 </li>
 </ol>
 <p>To unmount the FTP directories once rsync is done, you can use <tt class="docutils literal">fusermount <span class="pre">-u</span> ftp_mount</tt> on Linux and <tt class="docutils literal">umount ftp_mount</tt> on a Mac.
-If you want to do the latter process regularly (MEDLINE by now supports daily updates), you might consider placing these commands into a script and adding it to your crontab.
-With this, you now have the recipe to easily maintain an up-to-date copy of the MEDLINE FTP directory on your workstation.
-And because you are using rsync, you do not have to worry about broken connections or errors - if the process breaks midway, it will restart exactly where it left off.</p>
+If you want to do the latter process regularly (MEDLINE sports daily updates), you might consider placing the update command series into a script and add it to your daily cron jobs.</p>
+<p>With this, you now have created the foundations to easily maintain a 24-hourly updated copy of all of MEDLINE on your site.
+And because of using rsync, you do not have to worry about broken connections or communication errors - if the process breaks halfway, rsync will restart exactly where it left off.</p>
 </div>
 <div class="section" id="creating-a-local-medline-database-from-the-archives">
 <h2>Creating a local MEDLINE database from the archives</h2>
-<p>Once the MEDLINE files are installed, it is possible to simply parse the XML and extract whatever you might need from them.
-However, working this way will get cumbersome very fast, so placing the data into a well-structured database schema could help.
-To do this, I have created <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a>, a Python command-line tool to bootstrap and manage a local MEDLINE repository.
-All you need to have installed to get this tool to work is <a class="reference external" href="https://www.python.org/downloads/">Python3</a>; to install <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> you then only need to execute <tt class="docutils literal">pip install medic</tt> (possible with the option <tt class="docutils literal"><span class="pre">--user</span></tt> if you are not allowed to administer the machine you are on).
+<p>Once the MEDLINE files are installed, it would be possible to parse (or grep...) the XML and manually extract whatever you need from them.
+However, working this way will become cumbersome very fast, while placing the data into a well-structured database schema would help immensly.
+To do this on the fly, I have created <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a>, a Python command-line tool to bootstrap and manage a local MEDLINE repository.
+All you need to have installed to get this tool to work is <a class="reference external" href="https://www.python.org/downloads/">Python</a> (3.x); You can install <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> with Python's own package manager: <tt class="docutils literal">pip install medic</tt> (possibly with the option <tt class="docutils literal"><span class="pre">--user</span></tt> if you are not allowed to administer the machine you are working on).
 Second, you need to decide which database you want to use for MEDLINE.
-You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the backend with <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> (medic uses SQL Alchemy as its ORM, so in theory, it should be possible to use medic with other DBs, too.)
-Once you have the database installed and running (and CREATEd the DATABASE itself, in the case of Postgres), you are ready to load the baseline files.
-As loading the DB through the ORM can be cumbersome for <a class="reference external" href="http://www.postgresql.org/">Postgres</a>, it is better to parse the data into text files and then load those in one go:</p>
+You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the backend for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)
+Once you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
+As loading all of MEDLINE through the ORM can be very slow for <a class="reference external" href="http://www.postgresql.org/">Postgres</a>, it is better to parse the data into text files and then load them in one go:</p>
 <pre class="literal-block">
 medic parse baseline/medline1?n*.xml.gz
 
@@ -104,11 +104,11 @@ for table in citations abstracts authors chemicals databases descriptors \
   do psql medline -c &quot;COPY $table FROM '`pwd`/${table}.tab';&quot;;
 done
 </pre>
-<p>If you are loading the files into <a class="reference external" href="http://sqlite.org/">SQLite</a>, you can load the data directly with <tt class="docutils literal">medic insert</tt>, although it will be considerably slower than the <a class="reference external" href="http://www.postgresql.org/">Postgres</a> option:</p>
+<p>If you are loading the files into <a class="reference external" href="http://sqlite.org/">SQLite</a>, you can load the data directly with <tt class="docutils literal">medic insert</tt>, although it will be considerably slower than the <a class="reference external" href="http://www.postgresql.org/">Postgres</a> parse-and-dump method:</p>
 <pre class="literal-block">
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 </pre>
-<p>Finally, to update the <a class="reference external" href="http://www.postgresql.org/">Postgres</a> database to the latest state from the <tt class="docutils literal">updates</tt> directory, you can run:</p>
+<p>Finally, to update the <a class="reference external" href="http://www.postgresql.org/">Postgres</a> database to the latest state of MEDLINE, you can parse the <tt class="docutils literal">updates</tt> directory:</p>
 <pre class="literal-block">
 for file in updates/medline1?n*.xml.gz;
   do medic --update parse $file;
@@ -124,17 +124,18 @@ done;
 <pre class="literal-block">
 medic --url sqlite:///MEDLINE.db update updates/medline1?n*.xml.gz
 </pre>
-<p>In theory, the insert/update commands can be used for Postgres, too, but that is only recommended if you are loading records in the thousands, not millions.</p>
+<p>In theory, the insert/update commands can be used for Postgres, too, but that is only recommended if you are loading records in the thousands, not millions.
+Note that if you want to cron-job this, you should only <tt class="docutils literal">medic update</tt> the latest files (no need to parse-and-dump for a single file, not even for Postgres), and not work through all files in the <tt class="docutils literal">updates</tt> directory every day.</p>
 </div>
 <div class="section" id="extracting-medline-records-with-medic">
 <h2>Extracting MEDLINE records with medic</h2>
-<p>Right now, medic has no interface to query the full-text.
-You can index the full-text with Postgres, but that is not particularly efficient.
-The right way would be to index the abstracts with Lucene, but so far I have not gotten around to write an indexer for the data.
+<p>Right now, medic has no interface to query the abstracts.
+You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index as in the case of MEDLINE.
+The right way would be to index the abstracts with Lucene, but so far I have not gotten around to write an indexer for medic.
 In other words, right now, you will have to find out on your own which PubMed citations (i.e., PMIDs) you want to work with.
 Given one or a list of PMIDs, however, medic allows you to quickly pull the records in a number of formats:</p>
 <ol class="arabic simple">
-<li><tt class="docutils literal">medline</tt>: write the records, one per citation, in the official MEDLINE format.</li>
+<li><tt class="docutils literal">medline</tt>: write the records, one file per citation, in the official MEDLINE format.</li>
 <li><tt class="docutils literal">tiab</tt>: only put the title and abstract, one pair per citations, into the files.</li>
 <li><tt class="docutils literal">html</tt>: write all records into one large HTML file (&quot;corpus&quot;).</li>
 <li><tt class="docutils literal">tsv</tt>: write the PMID, title, and abstract into one large TSV file, one citation per line.</li>
@@ -150,8 +151,9 @@ for doi in `cat dois.txt`;
   echo $doi $pmid &gt;&gt; doi2pmid.txt;
 done
 </pre>
-<p>If you use this much, you even might want to put that into a little script maybe.</p>
-<p>Overall, this collection of tools should give you everything you need to quickly and efficiently work with MEDLINE's PubMed records. If you have not done already, please check out the &quot;full capabilities&quot; of <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> and decide for yourself.</p>
+<p>If you use this much, you might even want to put that into a little script.</p>
+<p>Unlukily enough, converting PMIDs to DOIs is a lot more trickier: First, the download of MEDLINE from the FTP site does not contain all PubMed mappings of PMIDs to DOIs that the NLM has access to (why not is a mystery to me...). Second, there are still scores of PMIDs that even NLM did not recieve the correct DOI mapping from the publisher. So overall, no matter what you do, there will be holes if trying to go the direct PMID-to-DOI way. The best method right now is probably to query with the title and Authors and see if you find an exact, unique match to a DOI on <a class="reference external" href="http://www.crossref.org/">CrossRef</a>, but that API is commercial and you need to pay for any serious query volume.</p>
+<p>Overall, this collection of tools should give you everything you need to quickly and efficiently work with MEDLINE's PubMed citations. If you have not done already, you can check out the &quot;full capabilities&quot; of <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> and decide for yourself if my approach is suitable for you, too.</p>
 </div>
 
 
