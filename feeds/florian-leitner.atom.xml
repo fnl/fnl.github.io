@@ -708,50 +708,46 @@ in Google, I managed to get the necessary snippets. To avoid that the
 same tedious task might befall you, here's what you need to add, e.g.,
 to your spec_helpers directory - I called the file
 &amp;quot;controller_helpers.rb&amp;quot;:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-module SessionHelper
-  def current_user(stubs = {})
-    &amp;#64;current_user ||= mock_model(User, stubs)
-  end
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;SessionHelper&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;current_user&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stubs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+    &lt;span class="vi"&gt;@current_user&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="n"&gt;mock_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stubs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-  def user_session(stubs = {}, user_stubs = {})
-    &amp;#64;current_user_session ||= mock_model(
-      UserSession, { :user =&amp;gt; current_user(user_stubs) }.merge(stubs)
-    )
-  end
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;user_session&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stubs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="n"&gt;user_stubs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+    &lt;span class="vi"&gt;@current_user_session&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="n"&gt;mock_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="no"&gt;UserSession&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:user&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;current_user&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user_stubs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stubs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-  def login(session_stubs = {}, user_stubs = {})
-    UserSession.stub!(:find).and_return(
-      user_session(session_stubs, user_stubs)
-    )
-  end
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;login&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;session_stubs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="n"&gt;user_stubs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+    &lt;span class="no"&gt;UserSession&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stub!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:find&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="n"&gt;user_session&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;session_stubs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_stubs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-  def logout()
-    &amp;#64;user_session = nil
-  end
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;logout&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="vi"&gt;@user_session&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-  def disable_authorization()
-    Authorization.ignore_access_control(true)
-  end
-end
-&lt;/pre&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;disable_authorization&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="no"&gt;Authorization&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ignore_access_control&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The trick is that, for AuthLogic, you can now &amp;quot;authenticate&amp;quot; the user
 by the stubbed UserSession that returns a mocked User model. DA is less
 complicated: the &lt;tt class="docutils literal"&gt;disable_authorization()&lt;/tt&gt; method is all that is
 needed. Now, in your &amp;quot;spec_helper.rb&amp;quot;, you add this line to the top:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-require File.dirname(__FILE__) + '/spec_helpers/controller_helpers'
-&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="no"&gt;File&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dirname&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/spec_helpers/controller_helpers&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;And this line somewhere in the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;Spec::Runner.configure&lt;/span&gt;&lt;/tt&gt; loop:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-config.include(SessionHelper)
-&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;SessionHelper&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now, in your controller specs, it is more than trivial to disable
 authorization and authentication at once - simply add the following
 line, e.g., to your &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;before(:each)&lt;/span&gt;&lt;/tt&gt; definitions:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-disable_authorization &amp;amp;&amp;amp; login
-&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;disable_authorization&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Voila - your GET requests pass; and you can even add stubs to your
 User model, if needed, by adding them as key-value pairs to the
 &lt;tt class="docutils literal"&gt;login()&lt;/tt&gt; call above! So now you can get back to make your specs
