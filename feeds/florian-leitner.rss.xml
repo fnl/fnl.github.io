@@ -42,30 +42,28 @@ Second, you need to decide which database you want to use for MEDLINE.
 You can use either &lt;a class="reference external" href="http://www.postgresql.org/"&gt;Postgres&lt;/a&gt; or &lt;a class="reference external" href="http://sqlite.org/"&gt;SQLite&lt;/a&gt; as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)&lt;/p&gt;
 &lt;p&gt;As soon as you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
 As loading all of MEDLINE through the ORM can be very slow for &lt;a class="reference external" href="http://www.postgresql.org/"&gt;Postgres&lt;/a&gt;, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-medic parse baseline/medline1?n*.xml.gz
+&lt;div class="highlight"&gt;&lt;pre&gt;medic parse baseline/medline1?n*.xml.gz
 
-for table in citations abstracts authors chemicals databases descriptors \
+&lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
              identifiers keywords publication_types qualifiers sections;
-  do psql medline -c &amp;quot;COPY $table FROM '`pwd`/${table}.tab';&amp;quot;;
-done
-&lt;/pre&gt;
+  &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you are loading the files into &lt;a class="reference external" href="http://sqlite.org/"&gt;SQLite&lt;/a&gt;, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 &lt;/pre&gt;
 &lt;p&gt;Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the &lt;tt class="docutils literal"&gt;updates&lt;/tt&gt; directory:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-for file in updates/medline1?n*.xml.gz;
-  do medic --update parse $file;
-  # NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;file in updates/medline1?n*.xml.gz;
+  &lt;span class="k"&gt;do &lt;/span&gt;medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;;
+  &lt;span class="c"&gt;# NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)&lt;/span&gt;
   medic delete delete.txt
-  for table in citations abstracts authors chemicals databases descriptors\
+  &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors&lt;span class="se"&gt;\&lt;/span&gt;
                identifiers keywords publication_types qualifiers sections;
-    do psql medline -c &amp;quot;COPY $table FROM '`pwd`/${table}.tab';&amp;quot;;
-  done;
-done;
-&lt;/pre&gt;
+    &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
+  &lt;span class="k"&gt;done&lt;/span&gt;;
+&lt;span class="k"&gt;done&lt;/span&gt;;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;With SQLite you can again take the direct, but slower &lt;tt class="docutils literal"&gt;medic update&lt;/tt&gt; route:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 medic --url sqlite:///MEDLINE.db update updates/medline1?n*.xml.gz
@@ -115,12 +113,11 @@ Ideally, you should select random IDs from your collection, not the whole numeri
 &lt;div class="section" id="converting-dois-to-pmids"&gt;
 &lt;h2&gt;Converting DOIs to PMIDs&lt;/h2&gt;
 &lt;p&gt;To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-for doi in `cat dois.txt`;
-  do pmid=`wget &amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot; -O - 2&amp;gt; /dev/null | grep &amp;quot;&amp;lt;Id&amp;gt;&amp;quot; | sed -E 's|&amp;lt;/?Id&amp;gt;||g' | cut -f3`;
-  echo $doi $pmid &amp;gt;&amp;gt; doi2pmid.txt;
-done
-&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you use this much, you might even want to put that into a little script:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env sh&lt;/span&gt;
 &lt;span class="c"&gt;# for a argument list of DOIs, print each DOI and matching PubMed ID&lt;/span&gt;
