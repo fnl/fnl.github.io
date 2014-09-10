@@ -130,7 +130,7 @@ Note that if you want to cron-job this, you should only <tt class="docutils lite
 <p>Right now, medic has no interface to query the abstracts.
 You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index as in the case of MEDLINE.
 The right way would be to index the abstracts with Lucene, but so far I have not gotten around to write an indexer for medic.
-The best way right now is to query eUtils directly, uisng the standard PubMed query syntax;
+The best way right now is to query eUtils directly, using the standard PubMed query syntax;
 Note that eSearch queries to the eUtils API are capped, at most a 100,000 IDs can be returned at once.
 To fetch more, you need to page results with <tt class="docutils literal">retmax</tt> and <tt class="docutils literal">retmin</tt>; Also by default (without setting <tt class="docutils literal">retmax</tt>) only the first 20 results are returned by eUtils:</p>
 <pre class="literal-block">
@@ -143,7 +143,7 @@ QUERY=&quot;p53+AND+cancer&quot;; wget &quot;http://eutils.ncbi.nlm.nih.gov/entr
 <span class="nb">echo</span> <span class="s2">&quot;$QUERY&quot;</span> 1&gt;&amp;2
 wget <span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;retmax=99999&amp;term=$QUERY&quot;</span> -O - 2&gt; /dev/null | grep <span class="s2">&quot;^&lt;Id&gt;&quot;</span> | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> | cut -f3
 </pre></div>
-<p>Note that the query now can contain space characters, e.g.: <tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt> produces the same output as before (with far more PMIDs, however, so please do not try this particulary query too often).</p>
+<p>Note that the query now can contain space characters, e.g.: <tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt> produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often).</p>
 <p>Given one or a list of PMIDs, however, medic allows you to quickly pull the records in a number of formats:</p>
 <ol class="arabic simple">
 <li><tt class="docutils literal">medline</tt>: write the records, one file per citation, in the official MEDLINE format.</li>
@@ -152,7 +152,7 @@ wget <span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch
 <li><tt class="docutils literal">tsv</tt>: write the PMID, title, and abstract into one large TSV file, one citation per line.</li>
 </ol>
 <p>For example: <tt class="docutils literal">medic <span class="pre">--format</span> tiab <span class="pre">--pmid-lists</span> selected_pmids.txt</tt>, where <tt class="docutils literal">selected_pmids.txt</tt> is a file with one PMID per line, will create one file per citation, named <tt class="docutils literal"><span class="pre">&lt;PMID&gt;.txt</span></tt>.</p>
-<p>If you do not care too much about the actual IDs and yust need a few random citations to work with, here is an easy way to select 999 random PMIDs from MEDLINE; on a Mac or FreeBSD machine:</p>
+<p>If you do not care too much about the actual IDs and just need a few random citations to work with, here is an easy way to select 999 random PMIDs from MEDLINE; on a Mac or FreeBSD machine:</p>
 <pre class="literal-block">
 jot 999 100000 25000000 &gt; pmids.rnd_test.txt
 </pre>
