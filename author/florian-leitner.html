@@ -149,8 +149,9 @@ jot 999 100000 25000000 &gt; pmids.rnd_test.txt
 <pre class="literal-block">
 shuf -i 100000-25000000 | head -999 &gt; pmids.rnd_test.txt
 </pre>
-<p>Note, however, that we are cheating: if the PMID does not exist, you have a non-existing ID in your list.
-From a mathematical perspective, if the PMIDs are not evenly distributed over the range you are drawing integers from, you will not have the <em>perfect</em> random sample.</p>
+<p>Note, however, that this is cheating a bit: if the PMID does not exist, you have a non-existing ID in your list.
+From a mathematical perspective, if the PMIDs are not evenly distributed over the range you are drawing integers from, you will not have the <em>perfect</em> random sample.
+Ideally, you should select random IDs from your collection, not the whole numeric range.</p>
 </div>
 <div class="section" id="converting-dois-to-pmids">
 <h2>Converting DOIs to PMIDs</h2>
