@@ -58,6 +58,7 @@ medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
   &lt;span class="k"&gt;do &lt;/span&gt;medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;;
   &lt;span class="c"&gt;# NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)&lt;/span&gt;
   medic delete delete.txt
+
   &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
                identifiers keywords publication_types qualifiers sections;
     &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
@@ -80,8 +81,10 @@ The best way right now is to query eUtils directly, using the standard PubMed qu
 Note that eSearch queries to the eUtils API are capped, at most a 100,000 IDs can be returned at once.
 To fetch more, you need to page results with &lt;tt class="docutils literal"&gt;retmax&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;retmin&lt;/tt&gt;; Also by default (without setting &lt;tt class="docutils literal"&gt;retmax&lt;/tt&gt;) only the first 20 results are returned by eUtils:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-QUERY=&amp;quot;p53+AND+cancer&amp;quot;;
-wget &amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;amp;retmax=99&amp;amp;term=$QUERY&amp;quot; -O - 2&amp;gt; /dev/null \
+QUERY=&amp;quot;p53+AND+cancer&amp;quot;
+URL=&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;
+
+wget &amp;quot;$URL?db=PubMed&amp;amp;retmax=99&amp;amp;term=$QUERY&amp;quot; -O - 2&amp;gt; /dev/null \
 | grep &amp;quot;^&amp;lt;Id&amp;gt;&amp;quot; \
 | sed -E 's|&amp;lt;/?Id&amp;gt;||g' \
 | cut -f3 \
@@ -90,9 +93,12 @@ wget &amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubM
 &lt;p&gt;Again, if you do this often, you might want to stick this into a little script, for example:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env bash&lt;/span&gt;
 &lt;span class="c"&gt;# for a given query (one term per argument), retrieve (up to retmax) matching PMIDs&lt;/span&gt;
-&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
-&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$QUERY&amp;quot;&lt;/span&gt; 1&amp;gt;&amp;amp;2
+
+&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$@&amp;quot;&lt;/span&gt; | tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$QUERY&amp;quot;&lt;/span&gt; 1&amp;gt;&amp;amp;2
+
 wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmax=99999&amp;amp;term=$QUERY&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
 | grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
 | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
@@ -122,15 +128,22 @@ Ideally, you should select random IDs from your collection, not the whole numeri
 &lt;div class="section" id="converting-dois-to-pmids"&gt;
 &lt;h2&gt;Converting DOIs to PMIDs&lt;/h2&gt;
 &lt;p&gt;To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
-  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
   &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you use this much, you might even want to put that into a little script:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env sh&lt;/span&gt;
 &lt;span class="c"&gt;# for a argument list of DOIs, print each DOI and matching PubMed ID&lt;/span&gt;
+
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
+
 &lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="nv"&gt;$@&lt;/span&gt;; &lt;span class="k"&gt;do&lt;/span&gt;
 &lt;span class="k"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
   | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
