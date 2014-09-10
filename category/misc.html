@@ -89,11 +89,11 @@ And because of using rsync, you do not have to worry about broken connections or
 <div class="section" id="creating-a-local-medline-database-from-the-archives">
 <h2>Creating a local MEDLINE database from the archives</h2>
 <p>Once the MEDLINE files are installed, it would be possible to parse (or grep...) the XML and manually extract whatever you need from them.
-However, working this way will become cumbersome very fast, while placing the data into a well-structured database schema would help immensly.
+However, working this way will become cumbersome very fast, while placing the data into a well-structured database schema would help immensely.
 To do this on the fly, I have created <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a>, a Python command-line tool to bootstrap and manage a local MEDLINE repository.
 All you need to have installed to get this tool to work is <a class="reference external" href="https://www.python.org/downloads/">Python</a> (3.x); You can install <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> with Python's own package manager: <tt class="docutils literal">pip install medic</tt> (possibly with the option <tt class="docutils literal"><span class="pre">--user</span></tt> if you are not allowed to administer the machine you are working on).
 Second, you need to decide which database you want to use for MEDLINE.
-You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the backend for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)
+You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)
 Once you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
 As loading all of MEDLINE through the ORM can be very slow for <a class="reference external" href="http://www.postgresql.org/">Postgres</a>, it is better to parse the data into text files and then load them in one go:</p>
 <pre class="literal-block">
@@ -152,7 +152,7 @@ for doi in `cat dois.txt`;
 done
 </pre>
 <p>If you use this much, you might even want to put that into a little script.</p>
-<p>Unlukily enough, converting PMIDs to DOIs is a lot more trickier: First, the download of MEDLINE from the FTP site does not contain all PubMed mappings of PMIDs to DOIs that the NLM has access to (why not is a mystery to me...). Second, there are still scores of PMIDs that even NLM did not recieve the correct DOI mapping from the publisher. So overall, no matter what you do, there will be holes if trying to go the direct PMID-to-DOI way. The best method right now is probably to query with the title and Authors and see if you find an exact, unique match to a DOI on <a class="reference external" href="http://www.crossref.org/">CrossRef</a>, but that API is commercial and you need to pay for any serious query volume.</p>
+<p>Unluckily enough, converting PMIDs to DOIs is a lot more trickier: First, the download of MEDLINE from the FTP site does not contain all PubMed mappings of PMIDs to DOIs that the NLM has access to (why not is a mystery to me...). Second, there are still scores of PMIDs that even the NLM did not receive the correct DOI mapping from the publisher. So overall, no matter what you do, there will be holes if trying to go the direct PMID-to-DOI way. The best method right now is probably to query with the title and Authors and see if you find an exact, unique match to a DOI on <a class="reference external" href="http://www.crossref.org/">CrossRef</a>, but that API is commercial and you need to pay for any serious query volume.</p>
 <p>Overall, this collection of tools should give you everything you need to quickly and efficiently work with MEDLINE's PubMed citations. If you have not done already, you can check out the &quot;full capabilities&quot; of <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> and decide for yourself if my approach is suitable for you, too.</p>
 </div>
 
