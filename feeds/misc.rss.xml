@@ -81,7 +81,7 @@ If you whish to cron-job this, you should only &lt;tt class="docutils literal"&g
 You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index as in the case of MEDLINE.
 The right way would be to index the abstracts with Lucene, but so far I have not gotten around to write an indexer for medic.
 The best way right now is to query eUtils directly, using the standard PubMed query syntax;
-Note that eSearch queries to the eUtils API are capped, at most a 100,000 IDs can be returned at once.
+Note that eSearch queries to the eUtils API are capped, at most 100,000 IDs can be returned at once.
 To fetch more, you need to page results with &lt;tt class="docutils literal"&gt;retmax&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;retmin&lt;/tt&gt;; Also by default (without setting &lt;tt class="docutils literal"&gt;retmax&lt;/tt&gt;) only the first 20 results are returned by eUtils:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 QUERY=&amp;quot;p53+AND+cancer&amp;quot;
