@@ -77,30 +77,29 @@ imports PKGNAME: unrecognized import path &quot;PATH&quot;
 </pre>
 <p>They probably occur while running <tt class="docutils literal">go get SOME_PKG</tt>, and it most likely just means that your <tt class="docutils literal">GOROOT</tt> is wrong or unset.
 Finally, you want to quickly bootstrap a &quot;virtual&quot; development environment for Go.
-For this, I use a simple shell script (that I call <tt class="docutils literal">goinit</tt>) to set up the directory structure and an &quot;<tt class="docutils literal">activate</tt>-able&quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]:</p>
-<pre class="literal-block">
-#!/bin/sh
+For this, I use a simple shell script (that I call <tt class="docutils literal">goinit</tt>) to set up the directory structure and an &quot;<tt class="docutils literal">activate</tt>-able&quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]</p>
+<div class="highlight"><pre><span class="c">#!/bin/sh</span>
 
-# setup a directory structure for programming in go
-VCS_HUB=github.com/username
-PROJECT=`basename &quot;$1&quot;`
+<span class="c"># setup a directory structure for programming in go</span>
+<span class="nv">VCS_HUB</span><span class="o">=</span>github.com/username
+<span class="nv">PROJECT</span><span class="o">=</span><span class="sb">`</span>basename <span class="s2">&quot;$1&quot;</span><span class="sb">`</span>
 
-mkdir -p &quot;$1&quot;
-cd &quot;$1&quot;
-mkdir -p &quot;src/$VCS_HUB/$PROJECT&quot;
+mkdir -p <span class="s2">&quot;$1&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;$1&quot;</span>
+mkdir -p <span class="s2">&quot;src/$VCS_HUB/$PROJECT&quot;</span>
 mkdir bin
 mkdir pkg
-GOPATH=`pwd`
+<span class="nv">GOPATH</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
 go get github.com/nsf/gocode
 go get github.com/jstemmer/gotags
 go get github.com/davecheney/godoc2md
 go get github.com/grobins2/gobrew
-cat &lt;&lt; ACTIVATE &gt; bin/activate
-export GOPATH=&quot;`pwd`&quot;
-export PATH=&quot;\$GOPATH/bin:\$PATH&quot;
-export PS1=&quot;($PROJECT)\$PS1&quot;
-ACTIVATE
-</pre>
+cat <span class="s">&lt;&lt; ACTIVATE &gt; bin/activate</span>
+<span class="s">export GOPATH=&quot;`pwd`&quot;</span>
+<span class="s">export PATH=&quot;\$GOPATH/bin:\$PATH&quot;</span>
+<span class="s">export PS1=&quot;($PROJECT)\$PS1&quot;</span>
+<span class="s">ACTIVATE</span>
+</pre></div>
 <p>Put this script somewhere on you <tt class="docutils literal">PATH</tt>, replace with your own GitHub <tt class="docutils literal">username</tt> (or any other version control system you use), make it executable (<tt class="docutils literal">chmod 755 goinit</tt>), and ensure you have the <tt class="docutils literal">GOROOT</tt> set in your environment and <tt class="docutils literal">goinit</tt> on your path.
 For example, let's assume you want to start with the Go Tour to learn about the language itself (<em>highly</em> recommendable!);
 With this setup, bootstrapping your next Go project (simply called &quot;<tt class="docutils literal">project</tt>&quot; here) now is as simple as:</p>

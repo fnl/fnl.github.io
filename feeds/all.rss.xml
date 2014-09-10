@@ -53,30 +53,29 @@ imports PKGNAME: unrecognized import path &amp;quot;PATH&amp;quot;
 &lt;/pre&gt;
 &lt;p&gt;They probably occur while running &lt;tt class="docutils literal"&gt;go get SOME_PKG&lt;/tt&gt;, and it most likely just means that your &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; is wrong or unset.
 Finally, you want to quickly bootstrap a &amp;quot;virtual&amp;quot; development environment for Go.
-For this, I use a simple shell script (that I call &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt;) to set up the directory structure and an &amp;quot;&lt;tt class="docutils literal"&gt;activate&lt;/tt&gt;-able&amp;quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-#!/bin/sh
+For this, I use a simple shell script (that I call &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt;) to set up the directory structure and an &amp;quot;&lt;tt class="docutils literal"&gt;activate&lt;/tt&gt;-able&amp;quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/sh&lt;/span&gt;
 
-# setup a directory structure for programming in go
-VCS_HUB=github.com/username
-PROJECT=`basename &amp;quot;$1&amp;quot;`
+&lt;span class="c"&gt;# setup a directory structure for programming in go&lt;/span&gt;
+&lt;span class="nv"&gt;VCS_HUB&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;github.com/username
+&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 
-mkdir -p &amp;quot;$1&amp;quot;
-cd &amp;quot;$1&amp;quot;
-mkdir -p &amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;&lt;/span&gt;
 mkdir bin
 mkdir pkg
-GOPATH=`pwd`
+&lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 go get github.com/nsf/gocode
 go get github.com/jstemmer/gotags
 go get github.com/davecheney/godoc2md
 go get github.com/grobins2/gobrew
-cat &amp;lt;&amp;lt; ACTIVATE &amp;gt; bin/activate
-export GOPATH=&amp;quot;`pwd`&amp;quot;
-export PATH=&amp;quot;\$GOPATH/bin:\$PATH&amp;quot;
-export PS1=&amp;quot;($PROJECT)\$PS1&amp;quot;
-ACTIVATE
-&lt;/pre&gt;
+cat &lt;span class="s"&gt;&amp;lt;&amp;lt; ACTIVATE &amp;gt; bin/activate&lt;/span&gt;
+&lt;span class="s"&gt;export GOPATH=&amp;quot;`pwd`&amp;quot;&lt;/span&gt;
+&lt;span class="s"&gt;export PATH=&amp;quot;\$GOPATH/bin:\$PATH&amp;quot;&lt;/span&gt;
+&lt;span class="s"&gt;export PS1=&amp;quot;($PROJECT)\$PS1&amp;quot;&lt;/span&gt;
+&lt;span class="s"&gt;ACTIVATE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Put this script somewhere on you &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt;, replace with your own GitHub &lt;tt class="docutils literal"&gt;username&lt;/tt&gt; (or any other version control system you use), make it executable (&lt;tt class="docutils literal"&gt;chmod 755 goinit&lt;/tt&gt;), and ensure you have the &lt;tt class="docutils literal"&gt;GOROOT&lt;/tt&gt; set in your environment and &lt;tt class="docutils literal"&gt;goinit&lt;/tt&gt; on your path.
 For example, let's assume you want to start with the Go Tour to learn about the language itself (&lt;em&gt;highly&lt;/em&gt; recommendable!);
 With this setup, bootstrapping your next Go project (simply called &amp;quot;&lt;tt class="docutils literal"&gt;project&lt;/tt&gt;&amp;quot; here) now is as simple as:&lt;/p&gt;
