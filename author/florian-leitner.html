@@ -112,7 +112,7 @@ medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
   <span class="k">do </span>medic --update parse <span class="nv">$file</span>;
   <span class="c"># NB: the above command created the file &quot;delete.txt&quot; (a list of PMIDs to delete)</span>
   medic delete delete.txt
-  <span class="k">for </span>table in citations abstracts authors chemicals databases descriptors<span class="se">\</span>
+  <span class="k">for </span>table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
                identifiers keywords publication_types qualifiers sections;
     <span class="k">do </span>psql medline -c <span class="s2">&quot;COPY $table FROM &#39;`pwd`/${table}.tab&#39;;&quot;</span>;
   <span class="k">done</span>;
@@ -134,14 +134,23 @@ The best way right now is to query eUtils directly, using the standard PubMed qu
 Note that eSearch queries to the eUtils API are capped, at most a 100,000 IDs can be returned at once.
 To fetch more, you need to page results with <tt class="docutils literal">retmax</tt> and <tt class="docutils literal">retmin</tt>; Also by default (without setting <tt class="docutils literal">retmax</tt>) only the first 20 results are returned by eUtils:</p>
 <pre class="literal-block">
-QUERY=&quot;p53+AND+cancer&quot;; wget &quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;retmax=99&amp;term=$QUERY&quot; -O - 2&gt; /dev/null | grep &quot;^&lt;Id&gt;&quot; | sed -E 's|&lt;/?Id&gt;||g' | cut -f3 &gt; pmids.txt
+QUERY=&quot;p53+AND+cancer&quot;;
+wget &quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;retmax=99&amp;term=$QUERY&quot; -O - 2&gt; /dev/null \
+| grep &quot;^&lt;Id&gt;&quot; \
+| sed -E 's|&lt;/?Id&gt;||g' \
+| cut -f3 \
+&gt; pmids.txt
 </pre>
 <p>Again, if you do this often, you might want to stick this into a little script, for example:</p>
 <div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
 <span class="c"># for a given query (one term per argument), retrieve (up to retmax) matching PMIDs</span>
 <span class="nv">QUERY</span><span class="o">=</span><span class="s2">&quot;$1&quot;</span>
 <span class="nb">echo</span> <span class="s2">&quot;$QUERY&quot;</span> 1&gt;&amp;2
-wget <span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;retmax=99999&amp;term=$QUERY&quot;</span> -O - 2&gt; /dev/null | grep <span class="s2">&quot;^&lt;Id&gt;&quot;</span> | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> | cut -f3
+<span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+wget <span class="s2">&quot;$URL?db=PubMed&amp;retmax=99999&amp;term=$QUERY&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+| grep <span class="s2">&quot;^&lt;Id&gt;&quot;</span> <span class="se">\</span>
+| sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
+| cut -f3
 </pre></div>
 <p>Note that the query now can contain space characters, e.g.: <tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt> produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often).</p>
 <p>Given one or a list of PMIDs, however, medic allows you to quickly pull the records in a number of formats:</p>
@@ -175,8 +184,12 @@ Ideally, you should select random IDs from your collection, not the whole numeri
 <p>If you use this much, you might even want to put that into a little script:</p>
 <div class="highlight"><pre><span class="c">#!/usr/bin/env sh</span>
 <span class="c"># for a argument list of DOIs, print each DOI and matching PubMed ID</span>
+<span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 <span class="k">for </span>doi in <span class="nv">$@</span>; <span class="k">do</span>
-<span class="k">  </span><span class="nb">echo</span> <span class="nv">$doi</span> <span class="sb">`</span>wget <span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&amp;retmode=xml&amp;term=$doi&quot;</span> -O - 2&gt; /dev/null | grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> | cut -f3<span class="sb">`</span>
+<span class="k">  </span><span class="nb">echo</span> <span class="nv">$doi</span> <span class="sb">`</span>wget <span class="s2">&quot;$URL?db=PubMed&amp;retmode=xml&amp;term=$doi&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+  | grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> <span class="se">\</span>
+  | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
+  | cut -f3<span class="sb">`</span>
 <span class="k">done</span>
 </pre></div>
 <p>Alternatively, you might want the script to take a file with DOIs as input.
