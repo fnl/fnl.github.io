@@ -124,6 +124,8 @@ shuf -i 100000-25000000 | head -999 &amp;gt; pmids.rnd_test.txt
 &lt;p&gt;Note, however, that this is cheating a bit: if the PMID does not exist, you have a non-existing ID in your list.
 From a mathematical perspective, if the PMIDs are not evenly distributed over the range you are drawing integers from, you will not have the &lt;em&gt;perfect&lt;/em&gt; random sample.
 Ideally, you should select random IDs from your collection, not the whole numeric range.&lt;/p&gt;
+&lt;p&gt;Note that I chose 999 PMIDs not just by chance - SQLite has 999 set as a hard limit for the number of arguments for a &amp;quot;prepared statement&amp;quot;.
+This means that if you want to fetch more than 999 PMIDs from a SQLite database, you will have to do that in several rounds.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="converting-dois-to-pmids"&gt;
 &lt;h2&gt;Converting DOIs to PMIDs&lt;/h2&gt;
