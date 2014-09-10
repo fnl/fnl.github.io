@@ -44,7 +44,7 @@ All you need to have installed to get this tool to work is &lt;a class="referenc
 Second, you need to decide which database you want to use for MEDLINE.
 You can use either &lt;a class="reference external" href="http://www.postgresql.org/"&gt;Postgres&lt;/a&gt; or &lt;a class="reference external" href="http://sqlite.org/"&gt;SQLite&lt;/a&gt; as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)&lt;/p&gt;
 &lt;p&gt;As soon as you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
-As loading all of MEDLINE through the ORM can be very slow for &lt;a class="reference external" href="http://www.postgresql.org/"&gt;Postgres&lt;/a&gt;, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
+As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;medic parse baseline/medline1?n*.xml.gz
 
 &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
@@ -52,7 +52,7 @@ As loading all of MEDLINE through the ORM can be very slow for &lt;a class="refe
   &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you are loading the files into &lt;a class="reference external" href="http://sqlite.org/"&gt;SQLite&lt;/a&gt;, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
+&lt;p&gt;If you are loading the files into SQLite, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 &lt;/pre&gt;

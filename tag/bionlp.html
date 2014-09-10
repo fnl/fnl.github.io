@@ -98,7 +98,7 @@ All you need to have installed to get this tool to work is <a class="reference e
 Second, you need to decide which database you want to use for MEDLINE.
 You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)</p>
 <p>As soon as you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
-As loading all of MEDLINE through the ORM can be very slow for <a class="reference external" href="http://www.postgresql.org/">Postgres</a>, it is better to parse the data into text files and then load them in one go:</p>
+As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:</p>
 <div class="highlight"><pre>medic parse baseline/medline1?n*.xml.gz
 
 <span class="k">for </span>table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
@@ -106,7 +106,7 @@ As loading all of MEDLINE through the ORM can be very slow for <a class="referen
   <span class="k">do </span>psql medline -c <span class="s2">&quot;COPY $table FROM &#39;`pwd`/${table}.tab&#39;;&quot;</span>;
 <span class="k">done</span>
 </pre></div>
-<p>If you are loading the files into <a class="reference external" href="http://sqlite.org/">SQLite</a>, you can load the data directly with <tt class="docutils literal">medic insert</tt>, although it will be considerably slower than the Postgres parse-and-dump method:</p>
+<p>If you are loading the files into SQLite, you can load the data directly with <tt class="docutils literal">medic insert</tt>, although it will be considerably slower than the Postgres parse-and-dump method:</p>
 <pre class="literal-block">
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 </pre>
