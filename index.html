@@ -157,7 +157,7 @@ wget <span class="s2">&quot;$URL?db=PubMed&amp;retmax=99999&amp;term=$QUERY&quot
 | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
 | cut -f3
 </pre></div>
-<p>Note that the query now can contain space characters, e.g.: <tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt> produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often).</p>
+<p>Note that the query now can contain space characters, e.g., &quot;<tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt>&quot; produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often; and using <tt class="docutils literal">search_pubmed.sh</tt> as the name of the above script).</p>
 <p>Given one or a list of PMIDs, however, medic allows you to quickly pull the records in a number of formats:</p>
 <ol class="arabic simple">
 <li><tt class="docutils literal">medline</tt>: write the records, one file per citation, in the official MEDLINE format.</li>
