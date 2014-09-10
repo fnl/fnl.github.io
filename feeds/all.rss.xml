@@ -87,6 +87,14 @@ Given one or a list of PMIDs, however, medic allows you to quickly pull the reco
 &lt;li&gt;&lt;tt class="docutils literal"&gt;tsv&lt;/tt&gt;: write the PMID, title, and abstract into one large TSV file, one citation per line.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;For example: &lt;tt class="docutils literal"&gt;medic &lt;span class="pre"&gt;--format&lt;/span&gt; tiab &lt;span class="pre"&gt;--pmid-lists&lt;/span&gt; selected_pmids.txt&lt;/tt&gt;, where &lt;tt class="docutils literal"&gt;selected_pmids.txt&lt;/tt&gt; is a file with one PMID per line, will create one file per citation, named &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;&amp;lt;PMID&amp;gt;.txt&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;If you do not care too much about the actual IDs and yust need a few random citations to work with, here is an easy way to select 999 random PMIDs from MEDLINE; on a Mac or FreeBSD machine:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+jot 999 100000 25000000 &amp;gt; pmids.rnd_test.txt
+&lt;/pre&gt;
+&lt;p&gt;And when running a Linux or Cygwin OS:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+shuf -i 100000-25000000 | head -999 &amp;gt; pmids.rnd_test.txt
+&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="converting-dois-to-pmids"&gt;
 &lt;h2&gt;Converting DOIs to PMIDs&lt;/h2&gt;
