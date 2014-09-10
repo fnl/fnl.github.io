@@ -42,7 +42,7 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">Aug 2011</h4>
+                <h4 class="date">Feb 2013</h4>
 
 								<div class="mobile-hide">
 									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
@@ -50,23 +50,188 @@ alt="hit counter"></a></div></noscript>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/no-smart-phone-please.html" rel="bookmark" title="Permanent Link to &quot;No &quot;Smart&quot;-Phone, Please&quot;">No &quot;Smart&quot;-Phone, Please</a>
+                        <a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html" rel="bookmark" title="Permanent Link to &quot;Installing a full stack Python data analysis environment on OSX&quot;">Installing a full stack Python data analysis environment on OSX</a>
                     </h2>
 
-                    <p>Out of my strong opinions about privacy, I avoid the total exposure of my private life to governmental organizations and trans-national cooperations that you (maybe unconciously) subdue yourself by owning a &quot;smart&quot; phone and storing your whole life's data in the Cloud.
-And no, I am not being paranoid: There is hard evidence for the <a class="reference external" href="http://www.zeit.de/digital/datenschutz/2011-03/data-protection-malte-spitz/seite-1">tracking</a> (<em>and</em> now [EDIT in 2013] the <a class="reference external" href="http://www.guardian.co.uk/world/prism">sniffing</a>) going on - <a class="reference external" href="http://www.onread.com/book/Brave-New-World-191056/">Huxley</a> and <a class="reference external" href="http://www.george-orwell.org/1984">Orwell</a> didn't even scratch the surface of what was to come…
-So don't waste your time trying to &quot;Whats-App&quot; me or convince me to contribute &quot;content&quot; via my mobile to &quot;people marketing&quot; (social network) sites.
-Yet another argument: my old-school phone cost me 20 Euros to buy, contract free, and costs be 9 Euros to run, per month - roughly, about one quarter the cost of &quot;smart&quot;-phones.
-In other words, I am saving a small holiday every year, or about 500 Euros.
-Don't tell me again you are saving money because you now have Whats-App...
-On top of all that, it frightens me to see - in restaurants and bars, at dinner tables at home, or in any other place people normally would talk to each other - more and more people turn into &quot;Matrix dummys&quot; that rather stare at their gadget than actually interact with each other.</p>
+                    <p><strong>UPDATE</strong>: Installing the Scientific Python stack from &quot;source&quot; has become a lot simpler recently and this tutorial was updated accordingly in November 2013 to use with OSX Mavericks and, in particular, <strong>Python 3</strong>.</p>
+<p>Installing a full-stack scientific data analysis environment on Mac OSX for Python 3 and making sure the correct, underlying Fortran and C libraries are used is (was?) not trivial.
+Thanks to Apple, parts of the required libraries are already on your box when you install XCode (code-named the &quot;<a class="reference external" href="https://developer.apple.com/library/ios/documentation/Accelerate/Reference/AccelerateFWRef/_index.html">Accelerate</a> Framework&quot;), and the remaining pieces can easily be installed due to the great <a class="reference external" href="http://brew.sh/">Homebrew</a> project.
+In other words, for the <a class="reference external" href="http://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms">BLAS</a> optimizations this setup will use Apple's pre-installed <a class="reference external" href="https://developer.apple.com/library/ios/documentation/Accelerate/Reference/AccelerateFWRef/_index.html">Accelerate</a> framework and you can choose to add the <a class="reference external" href="http://www.cise.ufl.edu/research/sparse/SuiteSparse/">SuiteSparse</a> and <a class="reference external" href="http://www.fftw.org/">FFTW</a> libraries via Homebrew for some extra speed when factorizing sparse matrices and doing Fourier transforms.
+This guide will describe how to properly install the following software stack on Mac OSX from their sources and ensuring all the relevant C/Fortran &quot;acceleration&quot; is available:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.numpy.org/">NumPy</a></li>
+<li><a class="reference external" href="http://www.scipy.org/scipylib">SciPy</a></li>
+<li><a class="reference external" href="http://matplotlib.org/">matplotlib</a></li>
+<li><a class="reference external" href="http://ipython.org/">IPython</a></li>
+</ul>
+<p>With this stack, it is a breeze to add other cool data analysis tools such as <a class="reference external" href="http://scikit-learn.org/stable">scikit-learn</a>, <a class="reference external" href="http://pandas.pydata.org/">pandas</a>, <a class="reference external" href="http://sympy.org/en/index.html">SymPy</a>, or <a class="reference external" href="http://github.com/pymc-devs/pymc">PyMC</a> in your <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a>.</p>
+<div class="section" id="preparatory-setup">
+<h2>Preparatory Setup</h2>
+<p>First, you need to make sure you have <a class="reference external" href="http://brew.sh/">Homebrew</a> installed and running without any issues:</p>
+<pre class="literal-block">
+brew doctor
+</pre>
+<p>If that produces any other output than:</p>
+<pre class="literal-block">
+Your system is ready to brew.
+</pre>
+<p>you need to stop <em>right now</em> and fix the issues or install <a class="reference external" href="http://brew.sh/">Homebrew</a> first.
+Note that if you <em>upgraded</em> to OSX Mavericks, you also need to upgrade your XCode command line tools (or download them if you have not installed them) by executing:</p>
+<pre class="literal-block">
+xcode-select --install
+</pre>
+<p>(And this means that you will have to re-install/compile most brew libraries, too, because of a change of XCode libraries...)
+Once you have a clean version of Homebrew up and running, you can proceed to install the actual requirements.</p>
+<p>First, you need to install a Fortran compiler and <a class="reference external" href="http://docs.python.org/3">Python3</a> itself:</p>
+<pre class="literal-block">
+brew tag homebrew/science
+brew install gfortran
+brew install python3
+</pre>
+<p>All of these commands should work nicely and you should encounter no issues.</p>
+<p>Second, it is obviously necessary to set up a minimal Python environment.
+This tutorial will be using <strong>distribute</strong> and <strong>pip</strong> to install Python packages:</p>
+<pre class="literal-block">
+curl -O http://python-distribute.org/distribute_setup.py
+python3 distribute_setup.py
+curl -O https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py
+python3 get-pip.py
+</pre>
+<p>Note that you <em>do not</em> need to prefix <tt class="docutils literal">sudo</tt> to any of this - because you installed Python 3 using <a class="reference external" href="http://brew.sh/">Homebrew</a>, you are relieved from having to &quot;root&quot; everything.
+And you should consider using <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a> and <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> for your Python development, too:</p>
+<pre class="literal-block">
+pip3 install virtualenv
+pip3 install nose
+</pre>
+<p>With this setup, you have Homebrew plus Python 3000 with <strong>pip</strong>,  <strong>nosetests</strong>, and <strong>virtualenv</strong> all set up.
+This is a great start for any kind of Python development;
+Normally, it is suggested to &quot;stop&quot; here and install all further Python packages only in each &quot;virtual environment&quot;.
+However, this scientific stack you are building is quite a lot of work to set up (compile-wise), so it is a time-saver to have this stack installed globally and then make use of it via <tt class="docutils literal"><span class="pre">--system-site-packages</span></tt> when creating a new virtual environment instead of having to install it each time.</p>
+</div>
+<div class="section" id="numpy">
+<h2><a class="reference external" href="http://www.numpy.org/">NumPy</a></h2>
+<p>First, download the latest stable <a class="reference external" href="http://sourceforge.net/projects/numpy/files/NumPy/">NumPy sources from SourceForge</a>.
+By installing from source, NumPy will automatically detect that you are using OSX and therefore configure itself to use the <em>Accelerate</em> framework for the BLAS/LAPACK optimizations:</p>
+<pre class="literal-block">
+python3 setup.py config
+</pre>
+<p>Below <tt class="docutils literal">atlas_info</tt>, at the end the config output, you should see the following message:</p>
+<pre class="literal-block">
+FOUND:
+  extra_link_args = ['-Wl,-framework', '-Wl,Accelerate']
+  extra_compile_args = ['-msse3']
+  define_macros = [('NO_ATLAS_INFO', 3)]
+</pre>
+<p>As NumPy recognized Accelerate, you can proceed with the installation:</p>
+<pre class="literal-block">
+python3 setup.py build
+python3 setup.py install
+</pre>
+<p>If you installed <a class="reference external" href="http://nose.readthedocs.org/en/latest">nose</a> (as advised), you also can test that your installation is working correctly (note that you must <em>move to another directory</em> than where you build NumPy before running the tests):</p>
+<blockquote>
+python3 -c &quot;import numpy; numpy.test('full')&quot;</blockquote>
+<p>All tests should pass without errors or issues.</p>
+</div>
+<div class="section" id="scipy">
+<h2><a class="reference external" href="http://www.scipy.org/scipylib">SciPy</a></h2>
+<p>To use SciPy, you need to install <a class="reference external" href="http://cython.org/">Cython</a> and <a class="reference external" href="http://swig.org/">SWIG</a> first:</p>
+<pre class="literal-block">
+pip3 install Cython
+brew install swig
+</pre>
+<p>Optionally, you can also install <a class="reference external" href="http://www.openblas.net/">OpenBLAS</a>, <a class="reference external" href="http://www.fftw.org/">FFTW</a> and <a class="reference external" href="http://www.cise.ufl.edu/research/sparse/SuiteSparse/">SuiteSparse</a> (for the AMD and UMFPACK libraries) for some extra speedups on Fourier Transform and sparse asymmetric matrix factorizations:</p>
+<pre class="literal-block">
+brew install openblas
+brew install fftw --with-fortran
+brew install suite-sparse --with-openblas
+</pre>
+<p>This step is probably recommended (although it is entirely optional).</p>
+<p>Next you now can fetch the <a class="reference external" href="http://sourceforge.net/projects/scipy/files/scipy/">SciPy sources from SourceForge</a> and build them:</p>
+<pre class="literal-block">
+python3 setup.py config
+python3 setup.py build
+python3 setup.py install
+</pre>
+<p>The <tt class="docutils literal">config</tt> step is only there so you can make sure SciPy found the Accelerate framework and the UMFPACK/AMD SuiteSparse libraries.
+The <a class="reference external" href="http://www.fftw.org/">FFTW</a> library you installed earlier with Homebrew is not listed in this output, but will be used during the build, too.</p>
+<p>As with NumPy, you can run some tests to ensure our installation is working properly after moving to another directory:</p>
+<pre class="literal-block">
+python3 -c &quot;import scipy; scipy.test()&quot;
+</pre>
+<p>None of the tests should fail (except for KNOWNFAIL and SKIP tests, naturally).</p>
+<p>If you have come this far, congratulations! Everything from here on will be a <a class="reference external" href="http://en.wikipedia.org/wiki/Cakewalk">cake-walk</a>.</p>
+</div>
+<div class="section" id="matplotlib">
+<h2><a class="reference external" href="http://matplotlib.org/">matplotlib</a></h2>
+<p>The next step is the installation of matplotlib:</p>
+<pre class="literal-block">
+pip3 install matplotlib
+</pre>
+<p>As it is trivial to install and only takes a few minutes, you might consider adding it to your virtual environments only.
+However, the next packge that will be installed, IPython, makes use of matplotlib and is quite a hassle to install in every virtual environment.</p>
+<p>To ensure the plotting library is working, try this in an interpreter:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; from pylab import \*; plot([1,2,3]); show()
+</pre>
+<p>You should see a plot with a straight diagonal.</p>
+</div>
+<div class="section" id="ipython">
+<h2><a class="reference external" href="http://ipython.org/">IPython</a></h2>
+<p>Now it is time to install a great MATLAB-like interpreter and environment.
+The first, optional, step is to install PyQt4 so you can use IPython's <tt class="docutils literal">qtconsole</tt>.
+This is not required, but it is nice to render plots inline in a Qt terminal window, making the IPython &quot;experience&quot; more like MATLAB:</p>
+<pre class="literal-block">
+brew install sip --with-python3
+brew install qt --HEAD # currently, on Mavericks, the --HEAD option is required
+</pre>
+<p>Finally, you need to <a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/download">download</a> and install PyQt4 using:</p>
+<pre class="literal-block">
+python3 configure-ng.py
+make &amp;&amp; make install
+</pre>
+<p>Apart from PyQt4, installing IPython itself is again straightforward:</p>
+<pre class="literal-block">
+pip3 install ipython[zmq,qtconsole,notebook,test]
+</pre>
+<p>To make sure the installation worked, execute the newly installed <tt class="docutils literal">iptest3</tt> script.
+Again as before, there should be no failures.</p>
+<p>From now on, instead of <tt class="docutils literal">python3</tt>, you should be using <tt class="docutils literal">ipython3</tt> if you want to work in a Python interpreter and you have reached the &quot;holy grail&quot; of having set up a MATLAB-like scientific computing environment:</p>
+<pre class="literal-block">
+ipython3 qtconsole --pylab=inline
+</pre>
+</div>
+<div class="section" id="additional-data-science-libraries">
+<h2>Additional Data Science Libraries</h2>
+<p>Finally, here is a list of mature, interesting data science libraries that all will use the stack you just installed.
+These could all go either into the global site-packages, or you can just add them to your projects in your virtual environments as needed.
+In the latter case, do not forget to enable the globabl stack with <tt class="docutils literal"><span class="pre">--system-site-packages</span></tt> when creating a new <a class="reference external" href="http://www.virtualenv.org/">VirtualEnv</a>.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://scikit-learn.org/stable">scikit-learn</a> machine learning library: <tt class="docutils literal">pip3 install <span class="pre">scikit-learn</span></tt></li>
+<li><a class="reference external" href="http://pandas.pydata.org/">pandas</a> statistical data analysis: <tt class="docutils literal">pip3 install pandas</tt></li>
+<li><a class="reference external" href="http://sympy.org/en/index.html">SymPy</a> symbolic computer algebra system: <tt class="docutils literal">pip3 install sympy</tt></li>
+<li><a class="reference external" href="http://github.com/pymc-devs/pymc">PyMC</a> probabilistic programming environment (see this <a class="reference external" href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers">PyMC tutorial</a>):
+<tt class="docutils literal">pip3 install pymc</tt></li>
+</ul>
+<p>Other noteworthy analytical tools include:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.pytables.org/">PyTables</a> large data management: <tt class="docutils literal">pip3 install tables</tt></li>
+<li><a class="reference external" href="http://rpy.sourceforge.net/">RPy2</a> Python-R interface: <tt class="docutils literal">pip3 install rpy2</tt> (assuming you have R installed)</li>
+<li><a class="reference external" href="http://github.com/pydata/patsy">patsy</a> and <a class="reference external" href="http://statsmodels.sourceforge.net/">StatsModels</a> statistical models:
+<tt class="docutils literal">pip3 install patsy &amp;&amp; pip3 install statsmodels</tt></li>
+</ul>
+<p><em>E voilà</em> - you now have a fully functioning environment for running
+all kinds and sorts of statistical data analyses and developing machine
+learning algorithms!</p>
+</div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-<a href="http://fnl.es/no-smart-phone-please.html">posted at %l:00 %P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
+<a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html">posted at %l:00 %P</a>&nbsp;&middot;&nbsp;<a href="http://fnl.es/category/misc.html" rel="tag">Misc</a>
                         <div class="tags">
-                            <a href="http://fnl.es/tag/privacy.html">privacy</a>
+                            <a href="http://fnl.es/tag/python.html">python</a>
+                            <a href="http://fnl.es/tag/apple.html">apple</a>
+                            <a href="http://fnl.es/tag/data-mining.html">data mining</a>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -76,7 +241,7 @@ On top of all that, it frightens me to see - in restaurants and bars, at dinner 
                 <div class="pages">
                     <a href="http://fnl.es/category/misc5.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/category/misc7.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 6 of 22</span>
+                    <span>Page 6 of 23</span>
                 </div>
 
                 <div class="clear"></div>
