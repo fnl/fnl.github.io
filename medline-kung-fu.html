@@ -52,15 +52,16 @@ alt="hit counter"></a></div></noscript>
                         <a href="http://fnl.es/medline-kung-fu.html" rel="bookmark" title="Permanent Link to &quot;MEDLINE Kung-Fu&quot;">MEDLINE Kung-Fu</a>
                     </h2>
 
-                    <p>If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to MEDLINE.
-Right now, MEDLINE contains nearly 25 million records, all with titles, author names, etc., and the majority of those records (officially called <strong>citations</strong>) also have an abstract (on average about 10 sentences long).
-This means you are looking at a significantly sized text collection with plenty of metadata (links, author names, MeSH terms, chemicals, etc.) you will need to handle to make use of in your own data mining application.</p>
+                    <p>If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to <a class="reference external" href="http://www.nlm.nih.gov/bsd/pmresources.html">MEDLINE</a>.
+Right now, the MEDLINE <a class="reference external" href="http://www.nlm.nih.gov/pubs/factsheets/dif_med_pub.html">subset</a> (&quot;baseline&quot;) of PubMed contains nearly <a class="reference external" href="http://www.nlm.nih.gov/bsd/licensee/baselinestats.html">23 million records</a>, all with titles, author names, etc..
+The majority of those records (officially called <strong>citations</strong>) also have an abstract (on average about 10 sentences long).
+This means you are looking at a significantly sized text collection with plenty of metadata (links, author names, MeSH terms, chemicals, etc.) you will need to handle if you want to make use of all this information your own data mining application.</p>
 <p>In my now about eight years of BioNLP (natural language processing for biology) work, I have not been able to locate a simple, up-to-date set of command-line tools to manage a MEDLINE DB mirror with all its metadata.
 As I am an innately lazy guy, I have worked out a number of useful shell scripts I regularly use to work with MEDLINE data that I am documenting here.
 To make this all work locally, and during a less lazy week, I wrote a tool called <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> to create and manage an up-to-date (i.e., running daily, automatic updates) mirror of MEDLINE with the option of storing the citations either in a <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> database.</p>
 <div class="section" id="synchronizing-the-medline-archives">
 <h2>Synchronizing the MEDLINE archives</h2>
-<p>First you will most likely need to actually download the MEDLINE archives, given that your institute has a (free) subscription to the archives.
+<p>First you will most likely need to actually download the MEDLINE archives, given that your institute has a (<a class="reference external" href="http://www.nlm.nih.gov/databases/journal.html">free</a>) subscription to the archives.
 If you are on a Mac, you are already provided with the necessary tools:
 <tt class="docutils literal">mount_ftp</tt> and <tt class="docutils literal">rsync</tt> should be installed on every Mac.
 If you are on Linux, the <tt class="docutils literal">curlftpfs</tt> package simulates a file system for a FTP site accessed with with the cURL library, doing the same thing as <tt class="docutils literal">mount_ftp</tt> on a Mac.
