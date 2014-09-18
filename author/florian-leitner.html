@@ -146,7 +146,7 @@ medic --url sqlite:///MEDLINE.db --pmid-lists insert pmid_list.txt
 <div class="section" id="extracting-medline-citations-with-medic">
 <h2>Extracting MEDLINE citations with medic</h2>
 <p>Right now, medic has no interface to query the abstracts.
-You can add a Postgres full-text index, but according to my own experience Pthat is not particularly efficient if you have millions of records to index, as in the case of MEDLINE.
+You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index, as in the case of MEDLINE.
 The right way would be to index the abstracts with a &quot;real&quot; search engine, for example, Lucene, but so far I have not gotten around to write an indexer for medic.
 The best way right now is to query eUtils directly, using the standard PubMed query syntax, which is pretty powerful, anyways;
 Note that eSearch queries to the eUtils API are capped, at most 100,000 IDs can be returned at once.
