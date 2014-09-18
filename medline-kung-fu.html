@@ -129,12 +129,25 @@ medic --url sqlite:///MEDLINE.db update updates/medline1?n*.xml.gz
 <p>In theory, the simpler insert/update commands can be used for Postgres, too, but that is only recommended if you are loading citations in the thousands, not millions.
 If you whish to cron-job this, you should only <tt class="docutils literal">medic update</tt> the latest file(s) - no need to parse-and-dump for a single file, not even for Postgres. In other words, make sure you are not working through all the files in the <tt class="docutils literal">updates</tt> directory every day...</p>
 </div>
+<div class="section" id="quickly-bootstrapping-a-subset-of-medline">
+<h2>Quickly bootstrapping a subset of MEDLINE</h2>
+<p>Often I find myself only needing a tiny subset of MEDLINE that I am interested in analyzing.
+In this case, you do not want to actually download, parse, and/or load all of PubMed into a heavy-weight Postgres DB, but rather have a small, single-file SQLite DB with the relevant citations.
+To do this, medic provides an interface to effortlessly download and bootstrap a database right into the current directory.
+Assuming you have the list of PubMed IDs (PMIDs) in a file called <tt class="docutils literal">pmid_list.txt</tt> (one ID per line),
+and you want to bootstrap a SQLite DB file in the current directory called <tt class="docutils literal">MEDLINE.db</tt>,
+you call medic like this:</p>
+<pre class="literal-block">
+medic --url sqlite:///MEDLINE.db --pmid-lists insert pmid_list.txt
+</pre>
+<p>With this, you have now quickly sampled that subset of MEDLINE citaitons relevant to your work, but still have them properly structured, stored in a single file, and easy to access as we will see next.</p>
+</div>
 <div class="section" id="extracting-medline-citations-with-medic">
 <h2>Extracting MEDLINE citations with medic</h2>
 <p>Right now, medic has no interface to query the abstracts.
-You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index as in the case of MEDLINE.
-The right way would be to index the abstracts with Lucene, but so far I have not gotten around to write an indexer for medic.
-The best way right now is to query eUtils directly, using the standard PubMed query syntax;
+You can add a Postgres full-text index, but according to my own experience Pthat is not particularly efficient if you have millions of records to index, as in the case of MEDLINE.
+The right way would be to index the abstracts with a &quot;real&quot; search engine, for example, Lucene, but so far I have not gotten around to write an indexer for medic.
+The best way right now is to query eUtils directly, using the standard PubMed query syntax, which is pretty powerful, anyways;
 Note that eSearch queries to the eUtils API are capped, at most 100,000 IDs can be returned at once.
 To fetch more, you need to page results with <tt class="docutils literal">retmax</tt> and <tt class="docutils literal">retmin</tt>; Also by default (without setting <tt class="docutils literal">retmax</tt>) only the first 20 results are returned by eUtils:</p>
 <pre class="literal-block">
