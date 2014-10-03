@@ -114,6 +114,7 @@ That same benchmark claims that CRF Suite is faster than Wapiti, but not only ha
 Being a free software advocate in the sense of all its aspects - cost, freedom of usage, modifiability, and open source - I feel very uncomfortable about using software with a license that tries to restrict my freedom, including its commercial application.
 Therefore, I discarded FlexCRFs, LingPipe, MEGAM, and TreeTagger from the list because of their non-free nature (only being &quot;free for research&quot;, or GPL'ed).
 While the GPL is not strictly out of my scope, it creates too many headaches for too many use-cases because it still poses usage restrictions (that I nonetheless support as a necessary evil given the overall copyright SNAFU).
+Moreover, excluding the GPL only affects FlexCRFs, which anyways is very similar to CRF++ or CRF Suite.
 Two of the already discarded tools would also not make it across this &quot;free software barrier&quot;, by the way (Stanford Tagger and SVM Tool).</p>
 <p>So this left me with CRF Suite, Factorie, OpenNLP, and Wapiti to compare against each other.
 Given these harsh pre-filtering criteria, to be honest, I was astonished that I was left with not just one, but four viable and completely free &quot;tools of the trade&quot;!</p>
@@ -122,18 +123,18 @@ Given these harsh pre-filtering criteria, to be honest, I was astonished that I 
 <h2>Implementation Considerations</h2>
 <p>CRF Suite and Wapiti are both written in C, while Factorie is being coded in Scala, and OpenNLP is based on Java.
 So this makes for yet another classical &quot;binary, platform-specific code versus the Java Virtual Machine&quot; comparison!
-(Spoiler alert: it does not matter - as you should know, already...)
-But there a real, noteworthy differences between the taggers; starting with the implemented <strong>graphical models</strong>:
+(Spoiler alert: it does not matter - as you should know already...)
+But there a real, noteworthy differences between the taggers; starting with the implemented graphical models and optimization procedures:
 Factorie's PoS tagger implementation only makes use of a forward learning procedure, while the other three use the more common (and more expensive) <a class="reference external" href="http://en.wikipedia.org/wiki/Forward%E2%80%93backward_algorithm">forward-backward optimization</a> approach during training.
 So this difference makes up for an interesting test: will forward learning alone be good enough in terms of accuracy, and if so, how much faster will training be?
 (You could also read a <a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf">paper</a> about this...)
 Furthermore, Factorie is a library that allows you to design <em>any kind</em> of graphical models from basic factor classes (let that sink in if you know what I mean...), so it actually can represent any model you want (including non-linear models).
 For the PoS tagging, Factorie uses this forward-only learning approach to maximize a first-order linear-chain CRF.
 Next up, Wapiti allows you to choose between a (non-dynamic, pure) MaxEnt model, a MEMM or a CRF model.
-Similar to the <a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf">paper</a> linked to, Wapiti can even do dynamic model selection, falling back to simpler models where feasible in the sequence
-(Note that the Factorie PoS model does not use dynamic selection.)
-Finally, OpenNLP only provides a MEMM implementation, not a CRF, while CRF Suite only provides a CRF;
-Overall implementation details alone might be enough to make your decision:
+Similar to the above <a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf">paper</a> linked to, Wapiti can even do dynamic model selection, falling back on simpler models where feasible in the sequence
+(Note that Factorie's PoS tagger does not use dynamic model selection.)
+Finally, OpenNLP only provides a MEMM implementation, while CRF Suite only provides a CRF.
+These implementation details alone might be enough to make your decision:
 If you want more than a first-order linear-chain model (say, second-order, or a non-linear graph), your only choice is Factorie.</p>
 <p>One main question of my review was:
 Is there any perceivable difference in tagging throughput with any of those four tools given the model and feature selection differences, and how does this influence tagging accuracy?
