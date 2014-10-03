@@ -134,12 +134,10 @@ For NER tagging, your entities might have unique morphological or orthographic p
 For example, gene names might be used not just as nouns, but as adjectives, too (as in &amp;quot;p53-activated DNA repair&amp;quot;) and contain Roman or Arab numbers, Greek symbols, non-standard dashes and a few other orthographic surprises.
 In addition, the entity tag might depend on &amp;quot;knowing the future&amp;quot;, such as the up-coming head token of the noun phrase currently being tagged (e.g., the head &amp;quot;gene&amp;quot; in &amp;quot;the ABC transporter gene&amp;quot; when looking at the token &amp;quot;ABC&amp;quot;).&lt;/p&gt;
 &lt;p&gt;The predefined &lt;strong&gt;Factorie&lt;/strong&gt; features are, however, pretty good - so rich indeed, that they are more complete than any other set of features I used or provided myself in the experiments here (see &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;FowardPosTagger.scala::features&lt;/span&gt;&lt;/tt&gt; for PoS tagging).
-That means training could be slow for Factorie, because it needs to optimize over a much larger indicator (feature) function space (turns out it is not, however - see below).
-As with all systems except for Wapiti, this means you need to do some coding of your own to adapt the features, while it probably is not necessary for PoS tagging and phrase chunking tasks.
-The only beef I experienced with Factorie was that it does not explain input errors and problems; It just throws some obscure exception at you.
-This means you will have to figure out what went wrong when you get errors on your own.
-The other issue is figuring out how to define your own NER tagger, as the documentation so far only covers PoS taggers.
-More generally speaking, the documentation on generating features for your taggers is rather thin (see User Guide - Learning).&lt;/p&gt;
+That means training could be slow for Factorie, because it needs to optimize over a much larger indicator (feature) function space (turns out it is not, as we will see).
+As with all systems except for Wapiti, this means you need to do some coding of your own to adapt the features for NER, while it might or might not be necessary for PoS tagging and phrase chunking tasks.
+The real issue with Factorie is figuring out how to define your own NER tagger, as the documentation so far only covers PoS taggers.
+More generally speaking, the documentation on generating features and models for your taggers is rather thin in terms of &amp;quot;applied&amp;quot; examples (see User Guide - Learning).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;OpenNLP&lt;/strong&gt;, too, comes with a pre-selected list of feature templates for standard NLP tasks.
 To change this list, you either have to write your own Java code or, at least for NER tagging, the documentation states that you can conjure up XML configuration files to extract different features.
 As I am allergic to any use of XML other than its intended use-case - providing structure to unstructured data - and particularly against the use of XML as a vehicle for configuration files (hello Java/Maven world!), I did not even try this path.
@@ -185,9 +183,11 @@ At the end of the day, in terms of feature generation, once you learn how to use
 To make an equal, but simple comparison, I used the &lt;a class="reference external" href="http://www.cnts.ua.ac.be/conll2000/chunking/"&gt;CoNLL 2000&lt;/a&gt; PoS tags to train the models using the default feature templates of each tool as discussed above.
 Both Factorie and OpenNLP needed slight, but simple modifications to the downloaded CoNLL files.
 For Factorie, the reversed parenthesis tags in the CoNLL files had to be fixed.
-The main observation here is that Factorie is not very helpful in terms of error messages to understand the problem.
-OpenNLP's problem was simpler to identify: as documented, it expects one sentence per line, with token-tag pairs separated by underscores instead of the de facto standard OWPL format.
-To train the the taggers for &lt;em&gt;Part-of-Speech&lt;/em&gt;, the commands I used were:&lt;/p&gt;
+The main observation here is that Factorie is not very helpful in terms of error messages to understand the problem;
+It just throws some obscure exception at you.
+This means you will have to figure out what went wrong when you get errors on your own.
+OpenNLP's problem was simpler to identify: as documented, it expects one sentence per line, with token-tag pairs separated by underscores instead of the de facto standard OWPL format.&lt;/p&gt;
+&lt;p&gt;To train the the taggers for &lt;em&gt;Part-of-Speech&lt;/em&gt;, the commands I used were:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 # CRF Suite
 crfsuite learn -m pos.model train.txt
