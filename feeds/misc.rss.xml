@@ -373,8 +373,8 @@ But then, if that were your case, you probably would not have read until here...
 Because there is no conceivable advantage in terms of training times, tagging throughput, or accuracy, no support for mixed transition/state features, and as the code seems unmaintained, I would not recommend the use of CRF Suite, however.&lt;/p&gt;
 &lt;p&gt;At the end of the day, if you are interested in generating high-performance quality annotations while using mixture (state + transition) features, there really is only the choice between Wapiti and Factorie:
 An error rate reduction of about 25% on the &amp;quot;solved&amp;quot; PoS tagging problem at no cost in throughput is not to be underestimated.
-Wapiti definitely is the most attractive tagger in terms of off-the-shelf usability: feature generation is simple and there is no need for doing any coding, and the overall implementation complexity vs. usability tradeoff is excellent.
-The only possible tradeoff are possibly longer training times (than Factorie), so you will need to develop and combine your feature templates with care.
+Wapiti definitely is the most attractive tagger in terms of off-the-shelf usability: feature generation is simple and there is no need for doing any coding, and the overall implementation complexity vs. usability balance is excellent.
+The only tradeoff are possibly longer training times (than Factorie), so you will need to develop and combine your feature templates with care.
 Finally, if you also are looking for true flexibility and the full power of graphical models, or want to venture into higher order Markov space, I see no way around Factorie.
 In this case, it might be worth living with the sparse documentation and having to study Scala source code (with a &amp;quot;scientist's handwriting&amp;quot; ;-)).
 However, the team around McCallum are very actively working on this library, so the spaghetti-like code pieces will hopefully be refactored some day and the documentation is certainly getting better and more extensive every other time I come back and a few months have passed.
