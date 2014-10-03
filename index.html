@@ -77,8 +77,8 @@ However, the devil lays in the details:
 The implementations I am interested in here are for &quot;information-sparse sequences&quot;, such as text.
 The difference is the element (and resulting feature) sparsity: while there are easily 20,000 different tokens contained in any average text collection (such as a book), there are only four DNA bases and twenty-something amino acids (depending on the species).
 All amino acids and bases will be - compared to text tokens, at least - frequently used in their respective sequences, with the obviously lowest sparsity for the four <em>standard</em> DNA bases (long story hidden here...).
-So to define the scope of this review, I am interested in learning patterns from highly sparse data;
-If your data is &quot;dense&quot;, you might be better off looking into more general models, such as hidden Markov models (HMMs).</p>
+So to define some scope of this review, I am interested in learning patterns from extremely sparse data;
+If your data is &quot;dense&quot;, you might be better off looking into more general algorithms, such as hidden Markov models (HMMs).</p>
 <p>You can play around with a few example NLP taggers by following the <a class="reference external" href="http://text-processing.com/demo/tag/">tagging</a> link, and you will see that depending on the system and its training data, results can vary widely.
 This is due to implementation details, graphical model capabilities, and the sequence features used by the particular model instance.
 The common approach to this kind of problem is learning a <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model">discriminative</a>, dynamic graphical model; commonly, a maximum entropy (MaxEnt, aka. logistic regression) based decision function worked into a reverse <a class="reference external" href="http://en.wikipedia.org/wiki/Markov_model">Markov model</a> or into the more complex Markov random field, in this particular case called a <em>Conditional Random Field</em> (<strong>CRF</strong>).
