@@ -82,9 +82,12 @@ If your data is &quot;dense&quot;, you might be better off looking into more gen
 <p>You can play around with a few example NLP taggers by following the <a class="reference external" href="http://text-processing.com/demo/tag/">tagging</a> link, and you will see that depending on the system and its training data, results can vary widely.
 This is due to implementation details, graphical model capabilities, and the sequence features used by the particular model instance.
 The common approach to this kind of problem is learning a <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model">discriminative</a>, dynamic graphical model; commonly, a maximum entropy (MaxEnt, aka. logistic regression) based decision function worked into a reverse <a class="reference external" href="http://en.wikipedia.org/wiki/Markov_model">Markov model</a> or into the more complex Markov random field, in this particular case called a <em>Conditional Random Field</em> (<strong>CRF</strong>).
-For the former <em>MaxEnt Markov model</em> (<strong>MEMM</strong>) this means that you are only allowed to use the current state (element in your sequence, including any meta-data assigned to that element) and the last tag(s) with these models to predict the current tag (aka. label).
-The latter CRF allows you to model features not just from the current state, but from any state in the sequence being labeled.
+In the former <em>MaxEnt Markov model</em> (<strong>MEMM</strong>) scenario, you are only allowed to use the current state (element in your sequence, including any meta-data assigned to that element) and the last tag(s) with these models to predict the current tag (aka. label).
+The latter CRF model allows you to integrate features not just from the current state, but from any state in the sequence being labeled.
 So with CRFs you can even use states from the &quot;future&quot; (i.e., elements later in the sequence that the one currently being tagged) to predict the current label (aka. tag).</p>
+<p>While outside the scope of this article, in case you are now asking yourself &quot;Why do I then even want a MEMM instead of a CRF?&quot;:
+Defenders of MEMMs claim that &quot;their&quot; model has an edge because it does not tend to overfit the data (we say, it has a weaker &quot;domain adaptation&quot;) as easily as a CRF can (due to the way features can be generated from any part of the sequence) and therefore produces better tagging results on input that is not similar to (of a &quot;different domain&quot; than) the training data.
+Second, due to its feature selection limitation, training of a MEMM tends to be faster than training a CRF with &quot;long-range&quot; features from distant positions in the sequence.</p>
 <p>Both regular Markov models and random fields use the notion of <em>Markov order</em>.
 That is, the number of former (already assigned) labels in a linear chain (sequence) that may be used to calculate the probabilities of each possible label on the current state.
 To be more precise, it is the <em>transition probability</em> from one (first order) or more (second, third, ... order) former labels to the label on the current state that is the statistic being modeled.
@@ -132,9 +135,6 @@ Similar to the <a class="reference external" href="http://aclweb.org/anthology//
 Finally, OpenNLP only provides a MEMM implementation, not a CRF, while CRF Suite only provides a CRF;
 Overall implementation details alone might be enough to make your decision:
 If you want more than a first-order linear-chain model (say, second-order, or a non-linear graph), your only choice is Factorie.</p>
-<p>While outside the scope of this article, in case you were asking yourself &quot;Why do I want a MEMM instead of a CRF after all what you told me?&quot;
-Defenders of MEMMs claim that &quot;their&quot; model has an edge because it does not tend to overfit the data (we say, it has a weaker &quot;domain adaptation&quot;) as easily as a CRF can (due to the way features can be generated from any part of the sequence) and therefore produces better tagging results on input that is not similar to (of a &quot;different domain&quot; than) the training data.
-Second, due to its feature selection limitation, training of a MEMM tends to be faster than training a CRF with &quot;long-range&quot; features from distant positions in the sequence.</p>
 <p>One main question of my review was:
 Is there any perceivable difference in tagging throughput with any of those four tools given the model and feature selection differences, and how does this influence tagging accuracy?
 Resolving this question and regarding each toolkit's implementation details should help you with your choice of the &quot;right&quot; system for your own sequence labeling work.
