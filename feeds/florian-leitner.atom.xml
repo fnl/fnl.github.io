@@ -117,8 +117,15 @@ However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP i
 &lt;div class="section" id="feature-modeling"&gt;
 &lt;h2&gt;Feature modeling&lt;/h2&gt;
 &lt;p&gt;This leads to the next important consideration: modeling features; for example, via templates (or &amp;quot;patterns&amp;quot;) that define the features used by a model's binary indicator functions.
-For example, an indicator function for assigning the PoS tag &amp;quot;VBZ&amp;quot; might be triggered when observing the bigram &amp;quot;I went&amp;quot; and having already assigned the PoS label &amp;quot;PRP&amp;quot; to the token &amp;quot;I&amp;quot;: &lt;tt class="docutils literal"&gt;f(last_tag, current_tag, states, pos) = last_tag == &amp;quot;PRP&amp;quot; &amp;amp;&amp;amp; current_tag == &amp;quot;VBZ&amp;quot; &amp;amp;&amp;amp; &lt;span class="pre"&gt;states[pos-1]&lt;/span&gt; == &amp;quot;I&amp;quot; &amp;amp;&amp;amp; states[pos] == &amp;quot;went&amp;quot;&lt;/tt&gt;
-This example is called a &amp;quot;combined (bigram) transition/label and state/token feature&amp;quot;
+For example, an indicator function for assigning the PoS tag &amp;quot;VBZ&amp;quot; might be triggered when observing the bigram &amp;quot;I went&amp;quot; and having already assigned the PoS label &amp;quot;PRP&amp;quot; to the token &amp;quot;I&amp;quot;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+f(last_tag, current_tag, states, pos) =
+    last_tag == &amp;quot;PRP&amp;quot; &amp;amp;&amp;amp;
+    current_tag == &amp;quot;VBZ&amp;quot; &amp;amp;&amp;amp;
+    states[pos-1] == &amp;quot;I&amp;quot; &amp;amp;&amp;amp;
+    states[pos] == &amp;quot;went&amp;quot;
+&lt;/pre&gt;
+&lt;p&gt;This example is called a &amp;quot;combined (bigram) transition/label and state/token feature&amp;quot;
 (And would be minimally encoded as &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;b:%x[-1,0]/%x[0,0]&lt;/span&gt;&lt;/tt&gt; in Wapiti's pattern template language.)
 It is a rather &amp;quot;expensive&amp;quot; feature template, as it can easily lead to millions of individual indicator functions:
 The number of indicator functions created from this template will be the squared number of PoS tags (label transitions or &amp;quot;bigrams&amp;quot;) times the number of unique token bigrams in the whole training data.
