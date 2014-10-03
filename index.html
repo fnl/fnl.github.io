@@ -173,10 +173,8 @@ However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP i
 For example, an indicator function for assigning the PoS tag &quot;VBZ&quot; might be triggered when observing the bigram &quot;I went&quot; and having already assigned the PoS label &quot;PRP&quot; to the token &quot;I&quot;:</p>
 <pre class="literal-block">
 f(last_tag, current_tag, states, pos) =
-    last_tag == &quot;PRP&quot; &amp;&amp;
-    current_tag == &quot;VBZ&quot; &amp;&amp;
-    states[pos-1] == &quot;I&quot; &amp;&amp;
-    states[pos] == &quot;went&quot;
+    last_tag == &quot;PRP&quot; &amp;&amp; current_tag == &quot;VBZ&quot; &amp;&amp;
+    states[pos-1] == &quot;I&quot; &amp;&amp; states[pos] == &quot;went&quot;
 </pre>
 <p>This example is called a &quot;combined (bigram) transition/label and state/token feature&quot;
 (And would be minimally encoded as <tt class="docutils literal"><span class="pre">b:%x[-1,0]/%x[0,0]</span></tt> in Wapiti's pattern template language.)
