@@ -16,13 +16,13 @@ PoS refers to a word's morphology, e.g., if it is used a noun or an adjective, o
 Words of the same morphology can often be grouped (we say, &lt;strong&gt;chunked&lt;/strong&gt;) into phrases, such as &amp;quot;a noun phrase&amp;quot;.
 As for the semantic meaning, text miners are usually interested in identifying the relevant entity class/type (such as person, location, date/time, ...) the word refers to.
 Furthermore, in NLP, words are commonly called &lt;strong&gt;tokens&lt;/strong&gt; to use a name that also covers symbols and numbers, including dots, brackets, or commas.
-These tokens form the &amp;quot;atomic&amp;quot; sequence units for many statistical NLP methods.&lt;/p&gt;
+These tokens form the atomic sequence units for many statistical NLP methods.&lt;/p&gt;
 &lt;p&gt;Similarly, in bioinformatics, you might want to identify properties of biological sequences, e.g., DNA binding sites or predict locations of post-translational modifications in proteins.
 In general, any sequence tagger could be used to classify elements in any kind of sequence you can split into discrete units.
-So for bioinformatics those units might be nucleic acids (DNA bases) or amino acids (proteins), and so on.
+Therefore, in bioinformatics, those units might be nucleic acids (DNA bases) or amino acids (proteins).
 However, the devil lays in the details:
 The implementations I am interested in here are for &amp;quot;information-sparse sequences&amp;quot;, such as text.
-The difference is the data sparsity: while there are easily 20,000 different tokens contained in any average text collection (such as a book), there are only four DNA bases and twenty-something amino acids (depending on the species).
+The difference is the element (and resulting feature) sparsity: while there are easily 20,000 different tokens contained in any average text collection (such as a book), there are only four DNA bases and twenty-something amino acids (depending on the species).
 All amino acids and bases will be - compared to text tokens, at least - frequently used in their respective sequences, with the obviously lowest sparsity for the four &lt;em&gt;standard&lt;/em&gt; DNA bases (long story hidden here...).
 So to define the scope of this review, I am interested in learning patterns from highly sparse data;
 If your data is &amp;quot;dense&amp;quot;, you might be better off looking into more general models, such as hidden Markov models (HMMs).&lt;/p&gt;
