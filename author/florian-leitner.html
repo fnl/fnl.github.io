@@ -340,8 +340,8 @@ The remaining question in this respect will be if OpenNLP and Factorie can keep 
 <p>This section will resolve the final remaining question:
 Which implementation can provide you with the most efficient tagger?
 I have a SATA-3-attached SSD drive where the data is read from (but a slow i5 CPU...) and took the CoNLL 2000 test set sequences to measure accuracy on the 47,377 tokens using the models I had trained in the last step.
-So while my measurements do not include writing the tagged tokens back to the device and reading data should not be an issue on this SSD, my CPU isn't exactly &quot;Speedy Gonzales&quot;...
-Then I timed each system while tagging 100 times those 47,377 tokens in a single row, read from one file (i.e., about 200,000 sentences or roughly 30,000 scientific abstracts) to make a fair comparison of each system's token throughput, marginalizing any warm-up &quot;penalties&quot;.</p>
+So while my measurements do not include writing the tagged tokens back to the device and reading data should not be an issue with a SSD, my CPU isn't exactly &quot;Speedy Gonzales...&quot;
+I timed each system while tagging 100 times those 47,377 tokens in a single row, read from one file (i.e., about 200,000 sentences or roughly 30,000 scientific abstracts) to make a fair comparison of each system's token throughput, marginalizing any warm-up &quot;penalties&quot;.</p>
 <p>To run the the taggers on the generated models, the commands I used were:</p>
 <pre class="literal-block">
 # CRF Suite
@@ -404,8 +404,8 @@ wapiti label -m pos.model -c test.txt &gt; /dev/null
 </tbody>
 </table>
 <p>Note that for the CRF Suite, I pre-generated the features from the Python script.
-If I would not have separated out that step from its throughput, as the whole feature extraction process using the <tt class="docutils literal">pos.py</tt> script is several times slower than the actual tagger!
-This is another indicator that the underlying Python code could probably use some polish...
+If not, the numbers would look quite bad, as the whole Python-based feature extraction process using the <tt class="docutils literal">pos.py</tt> script is several times slower than the tagger itself!
+(A good indicator that the underlying Python code could arguably use some polish...)
 In terms of tagging throughput, rather to my astonishment, it seems fair to say that the libraries perform roughly equal and there are by and large no noteworthy differences.
 It seems that CRF Suite is faster, but then we actually cheated, because we pre-generated the label features.
 So at best there is a minor chance that the CRF Suite could be faster than the others, if it had a very fast feature extraction mechanism.
