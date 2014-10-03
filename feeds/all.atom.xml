@@ -264,9 +264,7 @@ Each training process is run thrice and the shortest measured time is the one I 
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;absolute runtime (&amp;quot;real&amp;quot;) in multi-threaded mode using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-t&lt;/span&gt; 4&lt;/tt&gt; switch to make full use of my hyper-threaded dual-core i5 processor&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;[* absolute runtime (&amp;quot;real&amp;quot;) in multi-threaded mode using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-t&lt;/span&gt; 4&lt;/tt&gt; switch to make full use of my hyper-threaded dual-core i5 processor]&lt;/p&gt;
 &lt;p&gt;As mentioned earlier, with respect to initial feature template richness, CRF Suite and Factorie are taking the lead, with Wapiti and OpenNLP using less templates.
 The models' feature sizes shown here are as reported by each tool &lt;em&gt;after&lt;/em&gt; all feature pruning steps (compaction;
 For Wapiti that number is calculated from &amp;quot;initial features&amp;quot; minus &amp;quot;removed features&amp;quot;.)
