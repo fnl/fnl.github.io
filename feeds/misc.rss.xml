@@ -1,5 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fnl.es</title><link>http://fnl.es/</link><description>&lt;a href = "mailto:flo@fnl.es" id="webmaster"&gt;fnl&lt;/a&gt; en España</description><atom:link href="http://fnl.es/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 11 Sep 2014 00:00:00 +0200</lastBuildDate><item><title>MEDLINE Kung-Fu</title><link>http://fnl.es/medline-kung-fu.html</link><description>&lt;p&gt;If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to &lt;a class="reference external" href="http://www.nlm.nih.gov/bsd/pmresources.html"&gt;MEDLINE&lt;/a&gt;.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fnl.es</title><link>http://fnl.es/</link><description>&lt;a href = "mailto:flo@fnl.es" id="webmaster"&gt;fnl&lt;/a&gt; en España</description><atom:link href="http://fnl.es/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 25 Sep 2014 00:00:00 +0200</lastBuildDate><item><title>A review of current sparse sequence taggers</title><link>http://fnl.es/a-review-of-current-sparse-sequence-taggers.html</link><description>&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;
+Use &lt;a class="reference external" href="http://wapiti.limsi.fr/"&gt;Wapiti&lt;/a&gt; unless you want to go beyond first-order and/or linear models, need to do research and feature experimentation (training times!), or are already a Scala crack, in which case you would clearly be better off with &lt;a class="reference external" href="http://factorie.cs.umass.edu/"&gt;Factorie&lt;/a&gt;.
+OK, so that's that for a stressed out generation;
+Read on if you want to know why I recommend those two tools.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Overview:&lt;/strong&gt;
+In this blog post, the goal is to identify the most elegant (first-order) CRF- or MEMM-based sequence tagger implementation that is both high performing and flexible.
+I am only taking into account discriminative models here, so if your beef are generative models and/or non-sparse data (e.g., HMMs), you have come to the wrong place.
+This post will look into the ability to define and generate features, training times, tagging throughput, and tagging performance of various free and open software libraries by way of a common sequence labeling problem: part-of-speech tagging of natural language.&lt;/p&gt;
+&lt;p&gt;Nearly any interesting natural language processing (NLP) task starts with word &lt;a class="reference external" href="http://text-processing.com/demo/tag/"&gt;tagging&lt;/a&gt;:
+That is, resolving each word's grammatical sense - it's &lt;em&gt;part-of-speech&lt;/em&gt; (&lt;strong&gt;PoS&lt;/strong&gt;), the phrases they group into, and the semantic meaning the words carry.
+PoS refers to a word's morphology, e.g., if it is used a noun or an adjective, or the inflection of the verb.
+Words of the same morphology can often be grouped (we say, &lt;strong&gt;chunked&lt;/strong&gt;) into phrases, such as &amp;quot;a noun phrase&amp;quot;.
+As for the semantic meaning, we are usually interested in identifying the relevant entity class/type (such as person, location, date/time, ...) the word refers to.
+Furthermore, in NLP, words are commonly called &lt;strong&gt;tokens&lt;/strong&gt; to use a name that also covers generic &amp;quot;words&amp;quot; such as a sentence end dot or a comma.
+This means, tokens are the &amp;quot;atomic&amp;quot; sequence unit used for many common NLP.&lt;/p&gt;
+&lt;p&gt;Similarly, in bioinformatics, you might want to identify properties of biological sequences, e.g., DNA binding sites or predict locations of post-translational modifications in proteins.
+In general, any sequence tagger could be used to classify elements in any kind of sequence you can split into discrete units.
+So for bioinformatics those units might be nucleic acids (DNA bases) or amino acids (proteins), and so on.
+However, the devil lays in the details:
+The implementations I am interested in here are for &amp;quot;information-sparse sequences&amp;quot;, such as text.
+The difference is the data sparsity: while there are easily 20,000 different tokens contained in any average text collection (such as a book), there are only four DNA bases and twenty-something amino acids (depending on the species).
+All amino acids and bases will be - compared to text tokens, at least - frequently used in their respective sequences, with the obviously lowest sparsity for the four &lt;em&gt;standard&lt;/em&gt; DNA bases (long story hidden here...).
+So the scope we are looking into here is how to &amp;quot;learn&amp;quot; patterns from highly sparse patterns;
+If your data is &amp;quot;dense&amp;quot;, you might be better off looking into more general models, such as hidden Markov models (HMMs).&lt;/p&gt;
+&lt;p&gt;You can play around with a few example NLP taggers by following the &lt;a class="reference external" href="http://text-processing.com/demo/tag/"&gt;tagging&lt;/a&gt; link, and you will see that depending on the system and its training data, results can vary widely.
+The most common approach to this kind of problem is by learning some &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model"&gt;discriminative&lt;/a&gt;, dynamic graphical model, either a maximum entropy (MaxEnt, aka. logistic regression) based decision function worked into a reverse &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Markov_model"&gt;Markov model&lt;/a&gt; or the more complex Markov random field, in this particular case a &lt;em&gt;Conditional Random Field&lt;/em&gt; (&lt;strong&gt;CRF&lt;/strong&gt;).
+For the former &lt;em&gt;MaxEnt Markov model&lt;/em&gt; (&lt;strong&gt;MEMM&lt;/strong&gt;) this means that you are only allowed to use the current state (element in your sequence, including any meta-data assigned to that element) and the last tag(s) with these models to predict the current tag (aka. label).
+The latter CRF allows you to model features not just from the current state, but from any state in the sequence being labeled.
+So with CRFs you can even use states from the &amp;quot;future&amp;quot; (i.e., elements later in the sequence that the one currently being tagged) to predict the current label (aka. tag).&lt;/p&gt;
+&lt;p&gt;Both regular Markov models and random fields use the notion of &lt;em&gt;Markov order&lt;/em&gt;.
+That is, the number of former (already assigned) labels in a linear chain (sequence) that may be used to calculate the probabilities of each possible label on the current state.
+To be more precise, it is the &lt;em&gt;transition probability&lt;/em&gt; from one (first order) or more (second, third, ... order) former labels to the label on the current state that is the statistic being modeled.
+This &amp;quot;&lt;tt class="docutils literal"&gt;n&lt;/tt&gt;th-order Markov&amp;quot; limit defines how many prior tags the model will consider when tagging the current state:
+For first order Markov chains you only can make use of the last tag, for second order models you get to use the last two tags, and so forth.
+Due to the expense of going beyond first-order models, all but one tool we will be looking at do not support more than first-order models:
+Linear chain models scale exponentially in the Markov order + 1, meaning that a second order model already has &amp;quot;number of labels&amp;quot;-cubed possible label transitions.
+Going beyond second-order Markov models is only desirable if the number of labels, and for special features (as we will see), even the number of different states, is small (and therefore, usually dense).
+In language processing the states normally are all the unique, observed tokens, also known as the &lt;em&gt;vocabulary&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;A quick, shameless self-plug: if you are not familiar with these concepts, have a look at my &lt;a class="reference external" href="http://fnl.es/an-introduction-to-statistical-text-mining.html"&gt;introduction to text mining&lt;/a&gt; slides - or come visit the class the next time it is open! The lecture will take you from basic Bayesian statistics all the way to dynamic, graphical models.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="sequence-tagger-selection"&gt;
+&lt;h2&gt;Sequence Tagger Selection&lt;/h2&gt;
+&lt;p&gt;I was interested in comparing the feature modeling abilities for training and the resulting tagging speeds (tokens/second) as well as the accuracy of the selected tools.
+As a matter of fact, accuracy for PoS tagging at least is rather similar and the issue might seem rather &lt;a class="reference external" href="http://aclweb.org/aclwiki/index.php?title=POS_Tagging_%28State_of_the_art%29"&gt;academic&lt;/a&gt;.
+Similarly, nearly all tools use the same optimization procedures for the learning process, that is L-BFGS and a few light-weight gradient descent implementations as alternative.
+However, the graphical model abilities, the features the system can work with, the facilities it provides to generate them, the system's throughput, the provided documentation, and its availability (both in open source and free software terms) varies greatly.
+Available software for this task that I considered were &lt;a class="reference external" href="http://crfpp.sourceforge.net/"&gt;CRF++&lt;/a&gt; (Kudo), &lt;a class="reference external" href="http://www.chokkan.org/software/crfsuite/"&gt;CRF Suite&lt;/a&gt; (Okazaki), &lt;a class="reference external" href="http://factorie.cs.umass.edu/"&gt;Factorie&lt;/a&gt; (McCallum &amp;amp;al.), &lt;a class="reference external" href="http://flexcrfs.sourceforge.net/"&gt;FlexCRFs&lt;/a&gt; (Phan, Nguyen &amp;amp; Nguyen), &lt;a class="reference external" href="http://alias-i.com/lingpipe/index.html"&gt;LingPipe&lt;/a&gt; (Carpenter &amp;amp;al.), &lt;a class="reference external" href="http://mallet.cs.umass.edu/"&gt;MALLET&lt;/a&gt; (McCallum &amp;amp;al.), &lt;a class="reference external" href="http://www.umiacs.umd.edu/~hal/megam/"&gt;MEGAM&lt;/a&gt; (Daume III), [Apache] &lt;a class="reference external" href="http://opennlp.apache.org/"&gt;OpenNLP&lt;/a&gt; (Kottmann &amp;amp;al.), &lt;a class="reference external" href="http://nlp.stanford.edu/software/tagger.shtml"&gt;Stanford Tagger&lt;/a&gt; (Manning, Jurafsky &amp;amp; Liang), &lt;a class="reference external" href="http://www.lsi.upc.edu/~nlp/SVMTool/"&gt;SVM Tool&lt;/a&gt; (Giménez &amp;amp; Marquez), &lt;a class="reference external" href="http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/"&gt;TreeTagger&lt;/a&gt; (Schmidt), and &lt;a class="reference external" href="http://wapiti.limsi.fr/"&gt;Wapiti&lt;/a&gt; (Lavergne).
+There are other options around, particular in C# and/or for the .Net platform, but as I do not have the money to pay for the Windows tax, I did not consider them.
+If you know of a relevant, &lt;em&gt;generic&lt;/em&gt; sparse sequence tagger implementation I missed (see my filtering criteria below), please &lt;a class="reference external" href="http://fnl.es/pages/about.html"&gt;contact me&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I immediately discarded the Stanford Tagger and the SVM Tool, because they are both orders of magnitude &lt;a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf"&gt;slower&lt;/a&gt; than most other tools considered (and the same goes for MALLET, &lt;a class="reference external" href="http://www.chokkan.org/software/crfsuite/benchmark.html"&gt;too&lt;/a&gt;).
+It is worth mentioning that the Stanford Tagger was one of the earliest tools with the software made available for research and a very high accuracy, and as such usually serves as the performance &amp;quot;baseline&amp;quot; for newcomers.
+Second, CRF Suite claims to be the fastest first order CRF around and &lt;a class="reference external" href="http://www.chokkan.org/software/crfsuite/benchmark.html"&gt;demonstrates&lt;/a&gt; that CRF++ is significantly slower, leading me to discard the latter.
+That same benchmark claims that CRF Suite is faster than Wapiti, but not only has Lavergne developed several newer versions since then, the difference is far less pronounced, so that tool was not out of the race for me.
+Being a free software advocate in the sense of all its aspects - cost, freedom of usage, modifiability, and open source - I feel very uncomfortable about using software with a license that tries to restrict my freedom, including a commercial application.
+Therefore, I discarded FlexCRFs, LingPipe, MEGAM, and TreeTagger from the list because of their non-free nature (only being &amp;quot;free for research&amp;quot;, or GPL'ed).
+Two of the already discarded tools would also not make it across this &amp;quot;free software barrier&amp;quot;, by the way (Stanford Tagger and SVM Tool).
+So this left me with CRF Suite, Factorie, OpenNLP, and Wapiti to compare against each other.
+Given these harsh pre-filtering criteria, to be honest, I was astonished that I was left with not just one, but four viable and completely free &amp;quot;tools of the trade&amp;quot;!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="implementation-considerations"&gt;
+&lt;h2&gt;Implementation Considerations&lt;/h2&gt;
+&lt;p&gt;CRF Suite and Wapiti are both written in C, while Factorie is being coded in Scala, and OpenNLP is based on Java.
+So this makes for yet another classical &amp;quot;binary, platform-specific code versus the Java Virtual Machine&amp;quot; comparison!
+(Spoiler alert: it does not matter - as you should know, already...)
+But there a real, noteworthy differences between the taggers; starting with the implemented &lt;strong&gt;graphical models&lt;/strong&gt;:
+Factorie's PoS tagger implementation only makes use of a forward learning procedure, while the other three use the more common (and more expensive) &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Forward%E2%80%93backward_algorithm"&gt;forward-backward optimization&lt;/a&gt; approach during training.
+So this difference makes up for an interesting test: will forward learning alone be good enough in terms of accuracy, and if so, how much faster will training be?
+(You could also read a &lt;a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf"&gt;paper&lt;/a&gt; about this...)
+Furthermore, Factorie is a library that allows you to design &lt;em&gt;any kind&lt;/em&gt; of graphical models from basic factor classes (let that sink in if you know what I mean...), so it actually can represent any model you want (including non-linear models).
+For the PoS tagging, Factorie uses this forward-only learning approach to maximize a first-order linear-chain CRF.
+Next up, Wapiti allows you to choose between a (non-dynamic, pure) MaxEnt model, a MEMM or a CRF model.
+Similar to the &lt;a class="reference external" href="http://aclweb.org/anthology//P/P12/P12-2071.pdf"&gt;paper&lt;/a&gt; linked to, Wapiti can even do dynamic model selection, falling back to simpler models where feasible in the sequence
+(Note that the Factorie PoS model does not use dynamic selection.)
+Finally, OpenNLP only provides a MEMM implementation, not a CRF, while CRF Suite only provides a CRF;
+Overall implementation details alone might be enough to make your decision:
+If you want more than a first-order linear-chain model (say, second-order, or a non-linear graph), your only choice is Factorie.&lt;/p&gt;
+&lt;p&gt;While outside the scope of this article, in case you were asking yourself &amp;quot;Why do I want a MEMM instead of a CRF after all what you told me?&amp;quot;
+Defenders of MEMMs claim that &amp;quot;their&amp;quot; model has an edge because it does not tend to overfit the data (we say, it has a weaker &amp;quot;domain adaptation&amp;quot;) as easily as a CRF can (due to the way features can be generated from any part of the sequence) and therefore produces better tagging results on input that is not similar to (of a &amp;quot;different domain&amp;quot; than) the training data.
+Second, due to its feature selection limitation, training of a MEMM tends to be faster than training a CRF with &amp;quot;long-range&amp;quot; features from distant positions in the sequence.&lt;/p&gt;
+&lt;p&gt;One main question of my review was:
+Is there any perceivable difference in tagging throughput with any of those four tools given the model and feature selection differences, and how does this influence tagging accuracy?
+Resolving this question and regarding each toolkit's implementation details should help you with your choice of the &amp;quot;right&amp;quot; system for your own sequence labeling work.
+First, a quick look at the code, implementation, the documentation, and each tool's multi-processor capabilities.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="software-state-and-documentation"&gt;
+&lt;h2&gt;Software state and documentation&lt;/h2&gt;
+&lt;p&gt;Two remarkable things about &lt;strong&gt;Wapiti&lt;/strong&gt; are how simple and lean the interface is, and its capability of running in multi-threaded mode.
+While code is the typical, long spaghetti-code of C, it is clean and well documented.
+(Or, in other words, the &amp;quot;classic&amp;quot; C code SNAFU...)
+The only main downside is that the documentation is a bit sparse; Everything is in there, but they could have done a bit better detailing some of the capabilities, and/or providing examples.
+I had to figure out myself that you always should use the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-c&lt;/span&gt; &lt;span class="pre"&gt;-s&lt;/span&gt;&lt;/tt&gt; switches when doing (feature-sparse) text labeling and it took me some time to understand how to do feature extraction (&amp;quot;patterns&amp;quot;).
+The Wapiti authors do not provide a default set of feature pattern templates, only a few pre-trained PoS models for English, German, and Arabic newswire text.&lt;/p&gt;
+&lt;p&gt;Similarly, &lt;strong&gt;Factorie&lt;/strong&gt; is able to run in multi-threaded mode, however, the code base is a bit of a mess and it sometimes honestly feels like the code could have just as well been written in plain, old imperative Java:
+Despite being coded in Scala, the code-base shows to little use of functional programming paradigms and contains many long, imperative code blocks.
+However, given that it is heavily used by McCallum's group and several other groups, too, being applied to large corpora, I think it is safe to assume that despite any perceived lesser code quality, the overall functionality should be unaffected.
+One should also note that this judgment is purely subjective, so you might be better of deciding on this issue for yourself.
+To use Factorie, I often have to refer back to the code-base, because few of the specifics of Factorie are entirely documented for now.
+This means, to use Factorie, you should better know some Scala, as it might be tough having to go through the code otherwise.
+Finally, the documentation certainly assumes you are an expert for graphical models with plenty of background knowledge in that domain.
+Given its state and direction, in comparison to the other tools here, it is probably safe to judge that this library is targeted at the probabilistic programming crack with a background on graphical models, not someone looking for a quick and dirty sequence tagging solution.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CRF Suite&lt;/strong&gt; comes with a nice interface, and although it does not support multi-threading, the C code is well written and very clear.
+The functions are short and precise, so it is a nice example how C code can look if you put some effort into it.
+The only code-wise downside I detected was the accompanying Python code for preparing and pruning data and benchmarking.
+It is clearly written by a C expert with little knowledge of idiomatic Python, no offense intended (see the performance issues for feature extraction below).
+However, I think this is a minor issue given the good documentation and high-quality C code, which in the end is the part that matters.
+The worst issue with CRF Suite, however, seems to be that the original author has stopped maintaining the code.
+The repository on GitHub has a handful of very good pull requests from serious developers that fix things like a minor memory leak and two or three other issues, but the author has never accepted the requests.
+Neither have there been any updates to the library.
+To me this means that CRF Suite development seems dead and it would have to be significantly better than the other tools here to make it worth using it.&lt;/p&gt;
+&lt;p&gt;Finally, &lt;strong&gt;OpenNLP&lt;/strong&gt; has the expected high quality code found in Apache projects, and it is well documented, too.
+The only real downsides are that there is no built-in parallel processing support and that it only comes with a MaxEnt Markov model.
+This absence of multi-threaded support in the CRF Suite and OpenNLP libraries might seem deal-breakers, but I would not make my decision based on that issue (for now...)&lt;/p&gt;
+&lt;p&gt;Unique capabilities of Wapiti are its built-in template-based feature extraction mechanism and its ability to quickly choose either CRF or MEMM as the target model (more on this below).
+A unique capability of Factorie is that it provides you with the necessary classes (traits) to implement your own graphical models of any Markov order, both linear and non-linear.
+However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP in terms of documentation and source code readability.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="feature-modeling"&gt;
+&lt;h2&gt;Feature Modeling&lt;/h2&gt;
+&lt;p&gt;This leads to the next important consideration: modeling features, for example, via templates (or &amp;quot;patterns&amp;quot;) that lead to features that are subsequently wrapped as binary indicator functions.
+For example, an indicator function for assigning the PoS tag &amp;quot;VBZ&amp;quot; might be triggered when observing the bigram &amp;quot;I went&amp;quot; and having already assigned the PoS label &amp;quot;PRP&amp;quot; to the token &amp;quot;I&amp;quot;.
+This example is called a &amp;quot;combined (bigram) transition/label and state/token feature&amp;quot;
+(And would be minimally encoded as &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;b:%x[-1,0]/%x[0,0]&lt;/span&gt;&lt;/tt&gt; in Wapiti's pattern template language.)
+It is a rather &amp;quot;expensive&amp;quot; feature template, as it can easily lead to millions of individual indicator functions:
+The number of indicator functions created from this template will be the squared number of PoS tags (label transitions or &amp;quot;bigrams&amp;quot;) times the number of unique token bigrams in the whole training data.
+In general, for any template - even a constant one - there will be at least as many indicator functions as there are different tags.&lt;/p&gt;
+&lt;p&gt;Except for Wapiti, all taggers come with a pre-defined set of feature templates for common NLP tasks.
+Depending on your point-of-view, this might be good or annoying, particularly for NER tagging.
+For NER tagging, your entities might have unique morphological or orthographic properties;
+For example, gene names might be used not just as nouns, but as adjectives, too (as in &amp;quot;p53-activated DNA repair&amp;quot;) and contain Roman or Arab numbers, Greek symbols, dashes and a few other orthographic surprises.
+In addition, a entity tag might depend on &amp;quot;future&amp;quot; context, such as the head token of a noun phrase (e.g., &amp;quot;gene&amp;quot; in &amp;quot;the ABC transporter gene&amp;quot; when looking at &amp;quot;ABC&amp;quot;).&lt;/p&gt;
+&lt;p&gt;The predefined &lt;strong&gt;Factorie&lt;/strong&gt; features are, however, pretty good - so rich indeed, that they are more complete than any other set of features I used or provided myself in the experiments here (see &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;FowardPosTagger.scala::features&lt;/span&gt;&lt;/tt&gt; for PoS tagging).
+That means training could be slow for Factorie, because it needs to optimize over a much larger indicator (feature) function space (turns out it is not, however - see below).
+As with all systems except for Wapiti, this means you need to do some coding of your own to adapt the features, while it probably is not necessary for PoS tagging and phrase chunking tasks.
+The only beef I experienced with Factorie was that it does not explain input errors and problems; It just throws some obscure exception at you.
+This means you will have to figure out what went wrong when you get errors on your own.
+The other issue is figuring out how to define your own NER tagger, as the documentation so far only covers PoS taggers.
+More generally speaking, the documentation on generating features for your taggers is rather thin (see User Guide - Learning).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;OpenNLP&lt;/strong&gt;, too, comes with a pre-selected list of feature templates for standard NLP tasks.
+To change this list, you either have to write your own Java code or, at least for NER tagging, the documentation states that you can conjure up XML configuration files to extract different features.
+As I am allergic to any use of XML other than its intended use-case - providing structure to unstructured data - and particularly against the use of XML as a vehicle for configuration files (hello Java/Maven world!), I did not even try this path.
+In other words, for OpenNLP I will be using the predefined features and have not experimented with the &amp;quot;XML feature configuration&amp;quot; option, so I cannot tell how well it works or how easy it is to use.
+As for PoS tagging, OpenNLP uses pretty much the &lt;em&gt;de facto&lt;/em&gt; standard features (prefixes, suffixes, orthographic features, and a window size of 5 [-2,+2] for the n-grams; see the &lt;tt class="docutils literal"&gt;DefaultPOSContextGenerator&lt;/tt&gt; class), so that seemed good enough for this test.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CRF Suite&lt;/strong&gt; comes with a set of Python scripts to convert simple OWPL files (one word [state] per line, with sentences [sequences] separated by an extra empty line, such as the CoNLL format) into the &amp;quot;per-label feature list files&amp;quot; CRF Suite uses as input.
+To create different features, you modify the &amp;quot;template&amp;quot; defined inside the relevant Python script.
+For most cases, I think the predefined templates do a pretty good job at generating features for standard NLP tagging tasks.
+Additional features uniquely generated by CRF Suite and not OpenNLP or Factorie (for PoS tagging) are quadrigrams, pentagrams, and &amp;quot;long-range interactions&amp;quot;.
+The latter are bigrams created from the current word and a word at position +/- 2 to 9 from the current word.
+If you commonly work with Python, you might even easily assimilate the Python feature generation process, adapting it to your own needs.
+CRF Suite's feature handling has an important shortcoming, however:
+It is impossible to work with combined &amp;quot;label bigrams&amp;quot; (1st order Markov transition features) together with other (state) features from the token stream to form more advanced indicator functions.
+In other words, CRF Suite (vs. Wapiti and Factorie, at least) cannot create mixed bigram label (transition) features with state elements from the token stream.
+That is, CRF Suite only models either label transitions or the features from the current state, but does not allow you to model a feature as described in the beginning of this section (&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;b:%s[-1,0]/%x[0,0]&lt;/span&gt;&lt;/tt&gt;).
+This might be important, because it is not possible to define features that condition on both the previous label and an element in the current sequence, including the current token itself.&lt;/p&gt;
+&lt;p&gt;As for &lt;strong&gt;Wapiti&lt;/strong&gt;, you have to figure out how to generate features for each task on your own;
+The authors do not provide any predefined templates for the tasks we are looking into.
+But Wapiti provides you with a mechanism to define &amp;quot;patterns&amp;quot;, much like CRF++' feature templates.
+Once you fully understand the mechanism, this is indeed quite powerful and it felt like I &amp;quot;missed&amp;quot; it in the other tools.
+To provide an even playing field, at first I defined the same features &amp;quot;patterns&amp;quot; as CRF Suite does via its Python feature generation scripts.
+The problem is that Wapiti uses all possible label and state combinations for its initial training matrix, not just all combinations present in the data.
+In other words, it is the only tool that does no feature space reduction prior to going into training.
+For example, if you define a pattern such as the current token (&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;u:%[0,0]&lt;/span&gt;&lt;/tt&gt;), it creates one feature for each label in you training set times the number of unique tokens in your data, no matter if a token is observed with that label in the data or not.
+So for token n-grams or label bigrams, the training matrix can quickly grow to extraordinary sizes.
+While Wapiti does compacting and supports sparse matrices during training, as it initially starts of with all features, training becomes rather sluggish when a very large feature space was defined.
+By using the same feature templates as CRF Suite, I ended up with an initial matrix containing a few hundred million features.
+This was too much for my weak dual-core i5 processor to handle in realistic time.
+In the end, I decided to cut down on the number of PoS feature templates with respect to CRF Suite or Factorie.
+In particular, I removed the unique feature templates only the CRF Suite has, reducing the initial search space to 44 million indicator functions.
+After compacting, Wapiti's final model contained 1.8 million indicator functions (&amp;quot;features functions&amp;quot;, or worse, sometimes just called &amp;quot;features&amp;quot;) for the PoS tagging trials (see below).&lt;/p&gt;
+&lt;p&gt;In summary, with OpenNLP, Factorie, and CRF Suite you will need to work with their respective feature generation API (in Java, Scala, and Python, respectively) for anything but PoS tagging, phrase chunking, and very basic NER.
+CRF Suite, similar to Factorie, has rich, pre-defined feature templates and can handle them, because unused indicator functions are dropped before the actual training starts, thereby keeping the initial feature matrix manageable.
+Pre-training feature (space) &lt;em&gt;reduction&lt;/em&gt; is done by all tools except Wapiti.
+Feature &lt;em&gt;compaction&lt;/em&gt; after training is done by all tools except OpenNLP, where I could not confirm if any compaction had occurred.
+Wapiti provides a very powerful pattern language to define feature templates, including mixed state and transition label templates, which are otherwise only possible to generate with Factorie.
+While Wapaiti's template (pattern) language lends to a great flexibility when modeling features, it has to be used with care unless training times are not an issue due to the maximal (non-reduced) feature matrix used for the first training cycles.
+At the end of the day, in terms of feature generation, once you learn how to use Wapiti's pattern &amp;quot;language&amp;quot;, it will be very efficient and spares you from writing code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="training-times"&gt;
+&lt;h2&gt;Training Times&lt;/h2&gt;
+&lt;p&gt;Next, I looked into the training run-times to see how long it takes each tool to create a PoS model.
+To make an equal, but simple comparison, I used the &lt;a class="reference external" href="http://www.cnts.ua.ac.be/conll2000/chunking/"&gt;CoNLL 2000&lt;/a&gt; PoS tags to train the models using the default feature templates of each tool as discussed above.
+Both Factorie and OpenNLP needed slight, but simple modifications to the downloaded CoNLL files.
+For Factorie, the reversed parenthesis tags in the CoNLL files had to be fixed.
+The main observation here is that Factorie is not very helpful in terms of error messages to understand the problem.
+OpenNLP's problem was simpler to identify: as documented, it expects one sentence per line, with token-tag pairs separated by underscores instead of the de facto standard OWPL format.
+To train the the taggers for &lt;em&gt;Part-of-Speech&lt;/em&gt;, the commands I used were:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# CRF Suite
+crfsuite learn -m pos.model train.txt
+
+# Factorie
+java -Xmx2g -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
+     cc.factorie.app.nlp.pos.ForwardPosTrainer \
+     --owpl --train-file=train.txt --test-file=empty.txt \
+     --model=pos.model --save-model=true
+
+# OpenNLP
+opennlp POSTaggerTrainer -type maxent -model pos.model -data train.txt
+
+# Wapiti
+wapiti train -c -s -p patterns.txt train.txt pos.model
+&lt;/pre&gt;
+&lt;p&gt;The input data is provided in &lt;tt class="docutils literal"&gt;train.txt&lt;/tt&gt;, and the models are saved to &lt;tt class="docutils literal"&gt;pos.model&lt;/tt&gt;.
+To measure the training times, I prefixed each command with &lt;tt class="docutils literal"&gt;time&lt;/tt&gt; and used &lt;a class="reference external" href="http://stackoverflow.com/a/556411"&gt;the sum of user+sys&lt;/a&gt; as the measured, total time it took each process to complete.
+This means, the measurement includes all relevant CPU time (i.e., over all processor cores) that was consumed by the run.
+This might seem unfair to multi-threaded code, which might have an actual runtime lower than the result.
+However, this is entirely depended on your machine and its cores, so a direct &amp;quot;total CPU time&amp;quot; comparison seemed fair to me.
+There are other opinions about performance measurements, e.g., that one should only measure post-warm-up training time (minus JVM, input data reading, etc.) or only a single training cycle/iteration should be measured.
+I think it is more practical to measure and compare whatever the &amp;quot;out-of-the-box&amp;quot; performance of each tool is.
+Each training process is run thrice and the shortest measured time is the one I report here.&lt;/p&gt;
+&lt;p&gt;Software   # Features (M)  Training Time
+---------  --------------  -------------
+CRF Suite  3.63 M          10m 22s
+Factorie   0.34 M          02m 18s
+OpenNLP    ???? M          02m 03s
+Wapiti     1.56 M          19m 06s&lt;/p&gt;
+&lt;p&gt;As mentioned earlier, with respect to initial feature template richness, CRF Suite and Factorie are taking the lead, with Wapiti and OpenNLP using less templates.
+The models' feature sizes shown here are as reported by each tool &lt;em&gt;after&lt;/em&gt; all feature pruning steps (compaction;
+For Wapiti that number is calculated from &amp;quot;initial features&amp;quot; minus &amp;quot;removed features&amp;quot;.)
+While OpenNLP does not report final feature set sizes, I &lt;em&gt;assume&lt;/em&gt; it to be in a similar range (somewhere around a million features).
+So in terms of feature compaction, Factorie has a clear edge over the competition.&lt;/p&gt;
+&lt;p&gt;In terms of training times, Factorie and OpenNLP easily outpace both CRF Suite and Wapiti, but this should not be entirely surprising:
+OpenNLP uses a simpler model (MEMM), so it clearly must be faster.
+One noteworthy point is the training speed of Factorie - probably due to forward-only learning, it achieves similar training times for its CRF as OpenNLP on a MEMM.
+On the other end, as expected, Wapiti is by far the most resource-hungry tagger.
+While Wapiti's learning can be multi-threaded with a single switch, it was not clear to me how much actually gained in terms of absolute time from running Wapiti in that mode on my two (hyper-threaded) cores.
+To me, this means the &amp;quot;winner&amp;quot; in this section (model training) is clearly Factorie, and the slowest implementation is Wapiti.
+The remaining question in this respect will be if the Factorie model can keep up with the accuracy of the two CRFs and how fast it performs its tagging.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tagging-quality"&gt;
+&lt;h2&gt;Tagging Quality&lt;/h2&gt;
+&lt;p&gt;Finally, we are looking into the second main question (apart from feature generation) of this exercise:
+Which implementation can provide you with the most efficient tagger?
+I have a fast, SATA3-attached SSD drive where the data is read from (but a slow i5 CPU...) and took the CoNLL 2000 test set sequences to measure accuracy on the 47,377 tokens using the models I had trained in the last step.
+So while my measurements do not include writing the tagged tokens back to the device, my CPU isn't exactly fast...
+Then I timed each system while tagging 100 times those 47,377 tokens in a single row, read from one file (i.e., about 200,000 sentences or roughly 30,000 scientific abstracts) to make a fair comparison of each system's token throughput, marginalizing any warm-up &amp;quot;penalties&amp;quot;.&lt;/p&gt;
+&lt;p&gt;To run the the taggers on the generated models, the commands I used were:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# CRF Suite
+cat test.txt | pos.py &amp;gt; features.txt
+crfsuite tag -m pos.model -tq features.txt
+
+# Factorie
+java -Xmx2g -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
+     cc.factorie.app.nlp.pos.ForwardPosTester \
+     --owpl --model=pos.model --test-file=test.txt
+
+# OpenNLP
+opennlp POSTaggerEvaluator -model pos.model -data test.txt
+
+# Wapiti
+wapiti label -m pos.model -c test.txt &amp;gt; /dev/null
+&lt;/pre&gt;
+&lt;p&gt;And here are the results, in terms of error rate (&lt;tt class="docutils literal"&gt;1 - accuracy&lt;/tt&gt; over 47k tokens) and throughput (on 201k sentences with 4.7M tokens, as measured with &lt;tt class="docutils literal"&gt;time&lt;/tt&gt;, sys+user):&lt;/p&gt;
+&lt;p&gt;Software   error rate  tokens/second
+---------  ----------  -------------
+CRF Suite  3.00 %      30,000
+Factorie   2.19 %      23,800
+OpenNLP    2.88 %      19,500
+Wapiti     2.20 %      21,200&lt;/p&gt;
+&lt;p&gt;Note that for the CRF Suite, I pre-generated the features from the Python script.
+If I would not have separated out that step from its throughput, as the whole feature extraction process using the &lt;tt class="docutils literal"&gt;pos.py&lt;/tt&gt; script is several times slower than the actual tagger!
+This is another indicator that the underlying Python code could probably use some polish...
+In terms of tagging throughput, rather to my astonishment, it seems fair to say that the libraries perform roughly equal and there are by and large no noteworthy differences.
+It seems that CRF Suite is faster, but then we actually cheated, because we pre-generated the label features.
+So at best there is a minor chance that the CRF Suite could be faster than the others, if it had a very fast feature extraction mechanism.
+Another remark maybe is that Factorie automatically detects the available cores and equally distributes the tagging load among them.
+While the tagging process is an &amp;quot;embarrassingly parallel&amp;quot; problem (you could just split up the input between as many cores as you have and run a separate process for each), it is a nice little extra in the mix.
+So in terms of &lt;em&gt;both&lt;/em&gt; training time and tagging throughput Factorie seems the clear winner and definitely is ready-made for the multi-core area.&lt;/p&gt;
+&lt;p&gt;Probably due to the inability to use mixed features and because it does its feature compaction &lt;em&gt;prior&lt;/em&gt; to the training, the CRF Suite has the worst performance in terms of accuracy, closely followed by OpenNLP.
+So in terms of high quality tagging you will be better of with Factorie or Wapiti - not all that unexpected, given our feature modeling and model implementation discussions before.
+You might want to know that a baseline tagger (using the majority PoS tag and tagging all unseen words as noun) already achieves an accuracy of 90% (or, an error rate of 10%) in standard PoS scenarios.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusions"&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;If you only need to do standard PoS tagging, chunking, and NER, and don't mind the tagging quality or performance too much, just go with the tool in your favorite language: OpenNLP for Java developers, Factorie for Scala hackers, and Wapiti for C/C++ or Python programmers
+(There is a &lt;a class="reference external" href="https://github.com/adsva/python-wapiti"&gt;Python wrapper&lt;/a&gt; for Wapiti available, if Python (both, 2.x or 3.x) is your deal.)
+The trade-offs are simply not big enough to make a huge (order-of-magnitude) difference.
+But then, if that were your case, you probably would not have read until here...
+Because there is no conceivable advantage in terms of training times, tagging throughput, or accuracy, no support for mixed transition/state features, and as the code seems unmaintained, I would not recommend the use of CRF Suite, however.&lt;/p&gt;
+&lt;p&gt;At the end of the day, if you are interested in generating high-performance quality annotations with using mixture (state + transition) features, there really is only the choice between Wapiti and Factorie:
+An error rate reduction of about 25% on the &amp;quot;solved&amp;quot; PoS tagging problem at no cost in throughput is not to be underestimated.
+Wapiti definitely is the most attractive tagger in terms of off-the-shelf usability: feature generation is simple and there is no need for doing any coding, and the overall implementation complexity vs. usability tradeoff is excellent.
+The only possible downside are significantly larger training times, so you will need to develop and combine your feature templates with care.
+Finally, if you also are looking for true flexibility and the full power of graphical models, or want to risk using higher order Markov models, I see no way around Factorie.
+In this case, it might be worth living with the sparse documentation and having to study Scala source code (with a &amp;quot;scientist's handwriting&amp;quot; ;-)).
+However, the team around McCallum are very actively working on this library, so the code will hopefully become cleaner and more functional over time and the documentation is certainly getting better and more extensive each time I go back after a few months have passed.
+Nonetheless, if you'd ask me to declare a &lt;em&gt;global&lt;/em&gt; &amp;quot;winner&amp;quot;, unless you are a probabilistic programming or at least Scala expert, I'd say that honor right now still goes to &lt;a class="reference external" href="http://wapiti.limsi.fr/"&gt;Wapiti&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Thu, 25 Sep 2014 00:00:00 +0200</pubDate><guid>tag:fnl.es,2014-09-25:a-review-of-current-sparse-sequence-taggers.html</guid><category>text mining</category><category>nlp</category><category>probabilistic programming</category></item><item><title>MEDLINE Kung-Fu</title><link>http://fnl.es/medline-kung-fu.html</link><description>&lt;p&gt;If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to &lt;a class="reference external" href="http://www.nlm.nih.gov/bsd/pmresources.html"&gt;MEDLINE&lt;/a&gt;.
 Right now, the MEDLINE &lt;a class="reference external" href="http://www.nlm.nih.gov/pubs/factsheets/dif_med_pub.html"&gt;subset&lt;/a&gt; (&amp;quot;baseline&amp;quot;) of PubMed contains nearly &lt;a class="reference external" href="http://www.nlm.nih.gov/bsd/licensee/baselinestats.html"&gt;23 million records&lt;/a&gt;, all with titles, author names, etc..
 The majority of those records (officially called &lt;strong&gt;citations&lt;/strong&gt;) also have an abstract (on average about 5-8 sentences long).
 This means you are looking at a significantly sized text collection with plenty of metadata (links, author names, MeSH terms, chemicals, etc.) you will need to handle if you want to make use of all this information your own data mining application.&lt;/p&gt;
