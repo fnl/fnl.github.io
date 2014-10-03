@@ -154,17 +154,19 @@ It is impossible to work with combined &amp;quot;label bigrams&amp;quot; (1st or
 That is, CRF Suite only models either label transition probabilities or the features from the current state, but does not allow you to create &amp;quot;mixed&amp;quot; indicator functions as described in the beginning of this section (&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;b:%s[-1,0]/%x[0,0]&lt;/span&gt;&lt;/tt&gt;).
 This is an important conceptual shortcoming, because it is not possible to define features that condition on both the previous label and an element in the current sequence, including the current token itself.&lt;/p&gt;
 &lt;p&gt;As for &lt;strong&gt;Wapiti&lt;/strong&gt;, you have to figure out how to generate features for each task on your own;
-The authors do not provide any predefined templates for the tasks we are looking into.
+The authors do not provide any predefined templates for &amp;quot;standard&amp;quot; NLP tasks.
 But Wapiti provides you with a mechanism to define &amp;quot;patterns&amp;quot;, much like CRF++' feature templates.
 Once you fully understand the mechanism, this is indeed quite powerful and it felt like I &amp;quot;missed&amp;quot; it in the other tools.
 To provide an even playing field, at first I defined the same features &amp;quot;patterns&amp;quot; as CRF Suite does via its Python feature generation scripts.
 The problem is that Wapiti uses all possible label and state combinations for its initial training matrix, not just all combinations present in the data.
-In other words, it is the only tool that does no feature space reduction prior to going into training.
+In other words, it is the only tool that does no feature space reduction &lt;em&gt;prior&lt;/em&gt; to going into training.
 For example, if you define a pattern such as the current token (&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;u:%[0,0]&lt;/span&gt;&lt;/tt&gt;), it creates one feature for each label in you training set times the number of unique tokens in your data, no matter if a token is observed with that label in the data or not.
 So for token n-grams or label bigrams, the training matrix can quickly grow to extraordinary sizes.
-While Wapiti does compacting and supports sparse matrices during training, as it initially starts of with all features, training becomes rather sluggish when a very large feature space was defined.
+The advantage is that the optimizer might decide to transfer some probability mass to those zero observations.
+However, it is not clear to me if or how much performance Wapiti gains from such transfers, particularly when contrasting this unique feature with the greatly increased space penalty:
+While Wapiti does compacting and supports sparse matrices during training, as it initially starts of with all features, training becomes rather sluggish when very large feature spaces are defined.
 By using the same feature templates as CRF Suite, I ended up with an initial matrix containing a few hundred million features.
-This was too much for my weak dual-core i5 processor to handle in realistic time.
+This simply was too much for my weak dual-core i5 processor to handle in realistic time.
 In the end, I decided to cut down on the number of PoS feature templates with respect to CRF Suite or Factorie.
 In particular, I removed the unique feature templates only the CRF Suite has, reducing the initial search space to 44 million indicator functions.
 After compacting, Wapiti's final model contained 1.8 million indicator functions (&amp;quot;features functions&amp;quot;, or worse, sometimes just called &amp;quot;features&amp;quot;) for the PoS tagging trials (see below).&lt;/p&gt;
