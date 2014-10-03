@@ -183,10 +183,10 @@ It is a rather &quot;expensive&quot; feature template, as it can easily lead to 
 The number of indicator functions created from this template will be the squared number of PoS tags (label transitions or &quot;bigrams&quot;) times the number of unique token bigrams in the whole training data.
 In general, for any template - even a constant one - there will be at least as many indicator functions as there are different tags.</p>
 <p>Except for Wapiti, all taggers come with a pre-defined set of feature templates for common NLP tasks.
-Depending on your requirements, this might be very practical or useless, particularly for domain-specific language (tweets, for example) and/or NER tagging.
+Depending on your requirements, this might be either very practical or practically useless, particularly for domain-specific language (tweets, for example) and/or NER tagging.
 For NER tagging, your entities might have unique morphological or orthographic properties;
-For example, gene names might be used not just as nouns, but as adjectives, too (as in &quot;p53-activated DNA repair&quot;) and contain Roman or Arab numbers, Greek symbols, dashes and a few other orthographic surprises.
-In addition, a entity tag might depend on &quot;future&quot; context, such as the head token of a noun phrase (e.g., &quot;gene&quot; in &quot;the ABC transporter gene&quot; when looking at &quot;ABC&quot;).</p>
+For example, gene names might be used not just as nouns, but as adjectives, too (as in &quot;p53-activated DNA repair&quot;) and contain Roman or Arab numbers, Greek symbols, non-standard dashes and a few other orthographic surprises.
+In addition, the entity tag might depend on &quot;knowing the future&quot;, such as the up-coming head token of the noun phrase currently being tagged (e.g., the head &quot;gene&quot; in &quot;the ABC transporter gene&quot; when looking at the token &quot;ABC&quot;).</p>
 <p>The predefined <strong>Factorie</strong> features are, however, pretty good - so rich indeed, that they are more complete than any other set of features I used or provided myself in the experiments here (see <tt class="docutils literal"><span class="pre">FowardPosTagger.scala::features</span></tt> for PoS tagging).
 That means training could be slow for Factorie, because it needs to optimize over a much larger indicator (feature) function space (turns out it is not, however - see below).
 As with all systems except for Wapiti, this means you need to do some coding of your own to adapt the features, while it probably is not necessary for PoS tagging and phrase chunking tasks.
