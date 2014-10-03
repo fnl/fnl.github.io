@@ -41,8 +41,8 @@ This &amp;quot;&lt;tt class="docutils literal"&gt;n&lt;/tt&gt;th-order Markov&am
 For first order Markov chains you only can make use of the last tag, for second order models you get to use the last two tags, and so forth.
 Due to the expense of going beyond first-order models, all but one tool we will be looking at do not support more than first-order models:
 Linear chain models scale exponentially in the Markov order + 1, meaning that a second order model already has &amp;quot;number of labels&amp;quot;-cubed possible label transitions.
-Going beyond second-order Markov models is only desirable if the number of labels, and for special features (as we will see), even the number of different states, is small (and therefore, usually dense).
-In language processing the states normally are all the unique, observed tokens, also known as the &lt;em&gt;vocabulary&lt;/em&gt;.&lt;/p&gt;
+Going beyond second-order Markov models is only desirable if the number of labels and (as we will see) sometimes even states is small (i.e., &amp;quot;dense data&amp;quot;).
+In language processing, these states normally are all the unique, observed tokens, also known as the &lt;em&gt;vocabulary&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;A quick, shameless self-plug: if you are not familiar with these concepts, have a look at my &lt;a class="reference external" href="http://fnl.es/an-introduction-to-statistical-text-mining.html"&gt;introduction to text mining&lt;/a&gt; slides - or come visit the class the next time it is open! The lecture will take you from basic Bayesian statistics all the way to dynamic, graphical models.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="sequence-tagger-selection"&gt;
