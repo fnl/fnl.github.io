@@ -6,9 +6,9 @@ Right now, use &lt;a class="reference external" href="http://wapiti.limsi.fr/"&g
 OK, so that's that for a stressed out generation;
 Read on if you want to know why I recommend those two tools.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Overview:&lt;/strong&gt;
-In this blog post, the goal is to identify the most elegant (first-order) CRF- or MEMM-based sequence tagger implementation that is both high performing and flexible.
+The goal of this review is to identify the most elegant (first-order) CRF- or MEMM-based sequence tagger implementation with a free (MIT/BSD-like) license.
 I am only taking into account discriminative models here, so if your beef are generative models and/or non-sparse data (e.g., HMMs), you have come to the wrong place.
-This post will look into the ability to define and generate features, training times, tagging throughput, and tagging performance of various free and open software libraries by way of a common sequence labeling problem: part-of-speech tagging of natural language.&lt;/p&gt;
+This post will look into the ability to define and generate features, training times, tagging throughput, and tagging performance of various libraries by way of working through a common sequence labeling problem: tagging the part-of-speech of natural language.&lt;/p&gt;
 &lt;p&gt;Nearly any interesting natural language processing (NLP) task starts with word &lt;a class="reference external" href="http://text-processing.com/demo/tag/"&gt;tagging&lt;/a&gt;:
 That is, resolving each word's grammatical sense - it's &lt;em&gt;part-of-speech&lt;/em&gt; (&lt;strong&gt;PoS&lt;/strong&gt;), the phrases they group into, and the semantic meaning the words carry.
 PoS refers to a word's morphology, e.g., if it is used a noun or an adjective, or the inflection of the verb.
