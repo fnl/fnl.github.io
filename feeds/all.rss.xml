@@ -47,7 +47,7 @@ In language processing, these states normally are all the unique, observed token
 &lt;p&gt;A quick, shameless self-plug: if you are not familiar with these concepts, have a look at my &lt;a class="reference external" href="http://fnl.es/an-introduction-to-statistical-text-mining.html"&gt;introduction to text mining&lt;/a&gt; slides - or come visit my class in the context of the Madrid summer school on &lt;a class="reference external" href="http://www.dia.fi.upm.es/?q=es/ASDM"&gt;Advanced Statistics and Data Mining&lt;/a&gt; next summer (beginning of July)! The lecture will take you from basic Bayesian statistics all the way to the dynamic, graphical models being discussed here.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="sequence-tagger-selection"&gt;
-&lt;h2&gt;Sequence Tagger Selection&lt;/h2&gt;
+&lt;h2&gt;Sequence tagger selection&lt;/h2&gt;
 &lt;p&gt;Recently, I have become anxious to once and for all resolve my doubts about the &amp;quot;best&amp;quot; sparse sequence tagger in terms of ease of use (documentation/UI), feature modeling capabilities, training times, tagging throughput (tokens/second) and the resulting accuracy.
 All tools use the same optimization procedures for the learning process, that is a &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Limited-memory_BFGS"&gt;L-BFGS&lt;/a&gt; optimizer and a few light-weight gradient descent implementations as alternatives.
 However, implementation details, the graphical model abilities, the features the system can work with, the facilities it provides to generate them, the system's throughput, the provided documentation, and its availability (both in open source and free software terms) varies greatly between libraries.
@@ -67,7 +67,7 @@ Two of the already discarded tools would also not make it across this &amp;quot;
 Given these harsh pre-filtering criteria, to be honest, I was astonished that I was left with not just one, but four viable and completely free &amp;quot;tools of the trade&amp;quot;!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="implementation-considerations"&gt;
-&lt;h2&gt;Implementation Considerations&lt;/h2&gt;
+&lt;h2&gt;Implementation considerations&lt;/h2&gt;
 &lt;p&gt;CRF Suite and Wapiti are both written in C, while Factorie is being coded in Scala, and OpenNLP is based on Java.
 So this makes for yet another classical &amp;quot;binary, platform-specific code versus the Java Virtual Machine&amp;quot; comparison!
 (Spoiler alert: it does not matter - as you should know already...)
@@ -83,23 +83,18 @@ Similar to the above &lt;a class="reference external" href="http://aclweb.org/an
 Finally, OpenNLP only provides a MEMM implementation, while CRF Suite only provides a CRF.
 These implementation details alone might be enough to make your decision:
 If you want more than a first-order linear-chain model (say, second-order, or a non-linear graph), your only choice is Factorie.&lt;/p&gt;
-&lt;p&gt;One main question of my review was:
-Is there any perceivable difference in tagging throughput with any of those four tools given the model and feature selection differences, and how does this influence tagging accuracy?
-Resolving this question and regarding each toolkit's implementation details should help you with your choice of the &amp;quot;right&amp;quot; system for your own sequence labeling work.
-First, a quick look at the code, implementation, the documentation, and each tool's multi-processor capabilities.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="software-state-and-documentation"&gt;
 &lt;h2&gt;Software state and documentation&lt;/h2&gt;
-&lt;p&gt;Two remarkable things about &lt;strong&gt;Wapiti&lt;/strong&gt; are how simple and lean the interface is, and its capability of running in multi-threaded mode.
-While code is the typical, long spaghetti-code of C, it is clean and well documented.
-(Or, in other words, the &amp;quot;classic&amp;quot; C code SNAFU...)
+&lt;p&gt;First, a quick look at the code, implementation, the documentation, and each tool's multi-processor capabilities.
+Two remarkable things about &lt;strong&gt;Wapiti&lt;/strong&gt; are how simple and lean the interface is, and its capability of running in multi-threaded mode.
+While code is the typical, long spaghetti-code of C, it is clean and very well documented.
 The only main downside is that the documentation is a bit sparse; Everything is in there, but they could have done a bit better detailing some of the capabilities, and/or providing examples.
-I had to figure out myself that you always should use the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-c&lt;/span&gt; &lt;span class="pre"&gt;-s&lt;/span&gt;&lt;/tt&gt; switches when doing (feature-sparse) text labeling and it took me some time to understand how to do feature extraction (&amp;quot;patterns&amp;quot;).
+I had to figure out myself that you always need to use both the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-c&lt;/span&gt; &lt;span class="pre"&gt;-s&lt;/span&gt;&lt;/tt&gt; switches when doing (feature-sparse) text labeling and it took me some time to understand how to do feature extraction (designing &amp;quot;patterns&amp;quot;).
 The Wapiti authors do not provide a default set of feature pattern templates, only a few pre-trained PoS models for English, German, and Arabic newswire text.&lt;/p&gt;
-&lt;p&gt;Similarly, &lt;strong&gt;Factorie&lt;/strong&gt; is able to run in multi-threaded mode, however, the code base is a bit of a mess and it sometimes honestly feels like the code could have just as well been written in plain, old imperative Java:
-Despite being coded in Scala, the code-base shows to little use of functional programming paradigms and contains many long, imperative code blocks.
-However, given that it is heavily used by McCallum's group and several other groups, too, being applied to large corpora, I think it is safe to assume that despite any perceived lesser code quality, the overall functionality should be unaffected.
-One should also note that this judgment is purely subjective, so you might be better of deciding on this issue for yourself.
+&lt;p&gt;Similarly, &lt;strong&gt;Factorie&lt;/strong&gt; is able to run in multi-threaded mode, however, the code sometimes reads like it just as well could have been written in plain, old imperative Java.
+However, given that it is heavily used by McCallum's group and several other groups, too, being applied to large corpora, I think it still is safe to assume that despite any code quality issues, the libraries' functionality should be unaffected by this issue.
+One should also note that this opinion is purely subjective, so you might be better of judging for yourself.
 To use Factorie, I often have to refer back to the code-base, because few of the specifics of Factorie are entirely documented for now.
 This means, to use Factorie, you should better know some Scala, as it might be tough having to go through the code otherwise.
 Finally, the documentation certainly assumes you are an expert for graphical models with plenty of background knowledge in that domain.
@@ -107,23 +102,22 @@ Given its state and direction, in comparison to the other tools here, it is prob
 &lt;p&gt;&lt;strong&gt;CRF Suite&lt;/strong&gt; comes with a nice interface, and although it does not support multi-threading, the C code is well written and very clear.
 The functions are short and precise, so it is a nice example how C code can look if you put some effort into it.
 The only code-wise downside I detected was the accompanying Python code for preparing and pruning data and benchmarking.
-It is clearly written by a C expert with little knowledge of idiomatic Python, no offense intended (see the performance issues for feature extraction below).
+It is clearly written by a C expert with little knowledge of idiomatic Python, no offense (see the performance issues for feature extraction below).
 However, I think this is a minor issue given the good documentation and high-quality C code, which in the end is the part that matters.
 The worst issue with CRF Suite, however, seems to be that the original author has stopped maintaining the code.
 The repository on GitHub has a handful of very good pull requests from serious developers that fix things like a minor memory leak and two or three other issues, but the author has never accepted the requests.
 Neither have there been any updates to the library.
 To me this means that CRF Suite development seems dead and it would have to be significantly better than the other tools here to make it worth using it.&lt;/p&gt;
 &lt;p&gt;Finally, &lt;strong&gt;OpenNLP&lt;/strong&gt; has the expected high quality code found in Apache projects, and it is well documented, too.
-The only real downsides are that there is no built-in parallel processing support and that it only comes with a MaxEnt Markov model.
-This absence of multi-threaded support in the CRF Suite and OpenNLP libraries might seem deal-breakers, but I would not make my decision based on that issue (for now...)&lt;/p&gt;
-&lt;p&gt;Unique capabilities of Wapiti are its built-in template-based feature extraction mechanism and its ability to quickly choose either CRF or MEMM as the target model (more on this below).
-A unique capability of Factorie is that it provides you with the necessary classes (traits) to implement your own graphical models of any Markov order, both linear and non-linear.
-However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP in terms of documentation and source code readability.&lt;/p&gt;
+The only downsides worthwhile mentioning are that there is no built-in parallel processing support and that it only comes with a MaxEnt Markov model.&lt;/p&gt;
+&lt;p&gt;To summarize, unique capabilities of Wapiti are its built-in template-based feature extraction mechanism and its ability to quickly choose either CRF or MEMM as the target model (more on this below).
+A unique capability of Factorie is that it provides you with the necessary base classes to quickly code your own graphical models of any Markov order, both linear and non-linear.
+However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP in terms of documentation and in my opinion, Factorie is not consistently using idiomatic Scala, probably due to its many different developers.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feature-modeling"&gt;
-&lt;h2&gt;Feature Modeling&lt;/h2&gt;
-&lt;p&gt;This leads to the next important consideration: modeling features, for example, via templates (or &amp;quot;patterns&amp;quot;) that lead to features that are subsequently wrapped as binary indicator functions.
-For example, an indicator function for assigning the PoS tag &amp;quot;VBZ&amp;quot; might be triggered when observing the bigram &amp;quot;I went&amp;quot; and having already assigned the PoS label &amp;quot;PRP&amp;quot; to the token &amp;quot;I&amp;quot;.
+&lt;h2&gt;Feature modeling&lt;/h2&gt;
+&lt;p&gt;This leads to the next important consideration: modeling features; for example, via templates (or &amp;quot;patterns&amp;quot;) that define the features used by a model's binary indicator functions.
+For example, an indicator function for assigning the PoS tag &amp;quot;VBZ&amp;quot; might be triggered when observing the bigram &amp;quot;I went&amp;quot; and having already assigned the PoS label &amp;quot;PRP&amp;quot; to the token &amp;quot;I&amp;quot;: &lt;tt class="docutils literal"&gt;f(last_tag, current_tag, states, pos) = last_tag == &amp;quot;PRP&amp;quot; &amp;amp;&amp;amp; current_tag == &amp;quot;VBZ&amp;quot; &amp;amp;&amp;amp; &lt;span class="pre"&gt;states[pos-1]&lt;/span&gt; == &amp;quot;I&amp;quot; &amp;amp;&amp;amp; states[pos] == &amp;quot;went&amp;quot;&lt;/tt&gt;
 This example is called a &amp;quot;combined (bigram) transition/label and state/token feature&amp;quot;
 (And would be minimally encoded as &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;b:%x[-1,0]/%x[0,0]&lt;/span&gt;&lt;/tt&gt; in Wapiti's pattern template language.)
 It is a rather &amp;quot;expensive&amp;quot; feature template, as it can easily lead to millions of individual indicator functions:
@@ -180,8 +174,8 @@ Wapiti provides a very powerful pattern language to define feature templates, in
 While Wapaiti's template (pattern) language lends to a great flexibility when modeling features, it has to be used with care unless training times are not an issue due to the maximal (non-reduced) feature matrix used for the first training cycles.
 At the end of the day, in terms of feature generation, once you learn how to use Wapiti's pattern &amp;quot;language&amp;quot;, it will be very efficient and spares you from writing code.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="section" id="training-times"&gt;
-&lt;h2&gt;Training Times&lt;/h2&gt;
+&lt;div class="section" id="training-time"&gt;
+&lt;h2&gt;Training time&lt;/h2&gt;
 &lt;p&gt;Next, I looked into the training run-times to see how long it takes each tool to create a PoS model.
 To make an equal, but simple comparison, I used the &lt;a class="reference external" href="http://www.cnts.ua.ac.be/conll2000/chunking/"&gt;CoNLL 2000&lt;/a&gt; PoS tags to train the models using the default feature templates of each tool as discussed above.
 Both Factorie and OpenNLP needed slight, but simple modifications to the downloaded CoNLL files.
@@ -270,7 +264,7 @@ To me, this means the &amp;quot;winner&amp;quot; in this section (model training
 The remaining question in this respect will be if the Factorie model can keep up with the accuracy of the two CRFs and how fast it performs its tagging.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="tagging-quality"&gt;
-&lt;h2&gt;Tagging Quality&lt;/h2&gt;
+&lt;h2&gt;Tagging quality&lt;/h2&gt;
 &lt;p&gt;Finally, we are looking into the second main question (apart from feature generation) of this exercise:
 Which implementation can provide you with the most efficient tagger?
 I have a fast, SATA3-attached SSD drive where the data is read from (but a slow i5 CPU...) and took the CoNLL 2000 test set sequences to measure accuracy on the 47,377 tokens using the models I had trained in the last step.
