@@ -205,9 +205,8 @@ The latter are bigrams created from the current word and a word at position +/- 
 If you commonly work with Python, you might even easily assimilate the Python feature generation process, adapting it to your own needs.
 CRF Suite's feature handling has an important shortcoming, however:
 It is impossible to work with combined &quot;label bigrams&quot; (1st order Markov transition features) together with other (state) features from the token stream to form more advanced indicator functions.
-In other words, CRF Suite (vs. Wapiti and Factorie, at least) cannot create mixed bigram label (transition) features with state elements from the token stream.
-That is, CRF Suite only models either label transitions or the features from the current state, but does not allow you to model a feature as described in the beginning of this section (<tt class="docutils literal"><span class="pre">b:%s[-1,0]/%x[0,0]</span></tt>).
-This might be important, because it is not possible to define features that condition on both the previous label and an element in the current sequence, including the current token itself.</p>
+That is, CRF Suite only models either label transition probabilities or the features from the current state, but does not allow you to create &quot;mixed&quot; indicator functions as described in the beginning of this section (<tt class="docutils literal"><span class="pre">b:%s[-1,0]/%x[0,0]</span></tt>).
+This is an important conceptual shortcoming, because it is not possible to define features that condition on both the previous label and an element in the current sequence, including the current token itself.</p>
 <p>As for <strong>Wapiti</strong>, you have to figure out how to generate features for each task on your own;
 The authors do not provide any predefined templates for the tasks we are looking into.
 But Wapiti provides you with a mechanism to define &quot;patterns&quot;, much like CRF++' feature templates.
