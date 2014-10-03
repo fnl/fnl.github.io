@@ -60,8 +60,8 @@ OK, so that's that for a stressed out generation;
 Read on if you want to know why I recommend those two tools.</p>
 <p><strong>Overview:</strong>
 The goal of this review is to identify the &quot;best&quot; generic CRF- or MEMM-based sequence tagger software with a free (MIT/BSD-like) license.
-I am only taking into account discriminative models here, so if your beef are generative models and/or non-sparse data (e.g., HMMs), you have come to the wrong place.
-This post will look into the ability to define and generate features, training times, tagging throughput, and tagging performance of various libraries by way of working through a common sequence labeling problem: tagging the parts-of-speech of natural language.
+We will only take discriminative models into account, so if your beef are generative models and/or non-sparse data (e.g., HMMs), you have come to the wrong place.
+This article will look into their abilities to define and generate features, training times, tagging throughput, and tagging performance by way of working through a common sequence labeling problem: tagging the parts-of-speech of natural language.
 While PoS tagging can be considered a &quot;solved&quot; problem, PoS tagging performance differences are still a source of <a class="reference external" href="http://aclweb.org/aclwiki/index.php?title=POS_Tagging_%28State_of_the_art%29">academic</a> controversy and therefore an ideal testing ground.</p>
 <p>Nearly any interesting natural language processing (NLP) task starts with word <a class="reference external" href="http://text-processing.com/demo/tag/">tagging</a>:
 That is, resolving each word's grammatical sense - it's <em>part-of-speech</em> (<strong>PoS</strong>), the phrases they group into, and the semantic meaning the words carry.
