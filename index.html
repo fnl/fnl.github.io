@@ -221,20 +221,20 @@ While Wapiti does compacting and supports sparse matrices during training, as it
 By using the same feature templates as CRF Suite, I ended up with an initial matrix containing a few hundred million features.
 This simply was too much for my weak dual-core i5 processor to handle in realistic time.
 In the end, I decided to cut down on the number of PoS feature templates with respect to CRF Suite or Factorie.
-In particular, I removed the unique feature templates only the CRF Suite has, reducing the initial search space to 44 million indicator functions.
+In particular, I removed the feature templates only CRF Suite has otherwise, thereby reducing the initial setup to 44 million &quot;features&quot; (indicator functions).
 After compacting, Wapiti's final model contained 1.8 million indicator functions (&quot;features functions&quot;, or worse, sometimes just called &quot;features&quot;) for the PoS tagging trials (see below).</p>
-<p>In summary, with OpenNLP, Factorie, and CRF Suite you will need to work with their respective feature generation API (in Java, Scala, and Python, respectively) for anything but PoS tagging, phrase chunking, and very basic NER.
-CRF Suite, similar to Factorie, has rich, pre-defined feature templates and can handle them, because unused indicator functions are dropped before the actual training starts, thereby keeping the initial feature matrix manageable.
+<p>In summary, with OpenNLP, Factorie, and CRF Suite you will need to work with their respective feature generation API (in Java, Scala, and Python, respectively) to model features beyond anything but newswire PoS tagging, phrase chunking, and some basic NER.
+CRF Suite, similar to Factorie, has rich, pre-defined feature templates and can handle them, because unused indicator functions are dropped before the actual training starts, thereby keeping the initial feature weight matrix manageable.
 Pre-training feature (space) <em>reduction</em> is done by all tools except Wapiti.
 Feature <em>compaction</em> after training is done by all tools except OpenNLP, where I could not confirm if any compaction had occurred.
 Wapiti provides a very powerful pattern language to define feature templates, including mixed state and transition label templates, which are otherwise only possible to generate with Factorie.
-While Wapaiti's template (pattern) language lends to a great flexibility when modeling features, it has to be used with care unless training times are not an issue due to the maximal (non-reduced) feature matrix used for the first training cycles.
+While Wapaiti's template (pattern) language lends to a great flexibility when modeling features, it has to be used with care unless training times are not an issue due to the maximal (non-reduced) feature matrix used during the first training cycles.
 At the end of the day, in terms of feature generation, once you learn how to use Wapiti's pattern &quot;language&quot;, it will be very efficient and spares you from writing code.</p>
 </div>
 <div class="section" id="training-time">
 <h2>Training time</h2>
-<p>Next, I looked into the training run-times to see how long it takes each tool to create a PoS model.
-To make an equal, but simple comparison, I used the <a class="reference external" href="http://www.cnts.ua.ac.be/conll2000/chunking/">CoNLL 2000</a> PoS tags to train the models using the default feature templates of each tool as discussed above.
+<p>Next, I looked into the training run-times to see how long each tool takes to create a PoS model.
+To make an equal, but simple comparison, I used the <a class="reference external" href="http://www.cnts.ua.ac.be/conll2000/chunking/">CoNLL 2000</a> PoS tags to train the models using the default feature templates as discussed in the last section.
 Both Factorie and OpenNLP needed slight, but simple modifications to the downloaded CoNLL files.
 For Factorie, the reversed parenthesis tags in the CoNLL files had to be fixed.
 The main observation here is that Factorie is not very helpful in terms of error messages to understand the problem;
@@ -263,6 +263,8 @@ To measure the training times, I prefixed each command with <tt class="docutils 
 This means, the measurement includes all relevant CPU time (i.e., over all processor cores) that was consumed by the run.
 This might seem unfair to multi-threaded code, which might have an actual runtime lower than the result.
 However, this is entirely depended on your machine and its cores, so a direct &quot;total CPU time&quot; comparison seemed fair to me.
+In my case, it also is a rather minor issue, because I anyway only have two (hyper-threaded) cores on my laptop.
+To be fair, this most significantly only affects Wapiti runtime, so I report total time there, too.
 There are other opinions about performance measurements, e.g., that one should only measure post-warm-up training time (minus JVM, input data reading, etc.) or only a single training cycle/iteration should be measured.
 I think it is more practical to measure and compare whatever the &quot;out-of-the-box&quot; performance of each tool is.
 Each training process is run thrice and the shortest measured time is the one I report here.</p>
@@ -307,8 +309,17 @@ Each training process is run thrice and the shortest measured time is the one I 
 <td>&nbsp;</td>
 <td>19m 06s</td>
 </tr>
+<tr><td>Wapiti-4*</td>
+<td>&nbsp;</td>
+<td>1.56 M</td>
+<td>&nbsp;</td>
+<td>10m 09s*</td>
+</tr>
 </tbody>
 </table>
+<ul class="simple">
+<li>absolute runtime (&quot;real&quot;) in multi-threaded mode using the <tt class="docutils literal"><span class="pre">-t</span> 4</tt> switch to make full use of my hyper-threaded dual-core i5 processor</li>
+</ul>
 <p>As mentioned earlier, with respect to initial feature template richness, CRF Suite and Factorie are taking the lead, with Wapiti and OpenNLP using less templates.
 The models' feature sizes shown here are as reported by each tool <em>after</em> all feature pruning steps (compaction;
 For Wapiti that number is calculated from &quot;initial features&quot; minus &quot;removed features&quot;.)
@@ -318,16 +329,17 @@ So in terms of feature compaction, Factorie has a clear edge over the competitio
 OpenNLP uses a simpler model (MEMM), so it clearly must be faster.
 One noteworthy point is the training speed of Factorie - probably due to forward-only learning, it achieves similar training times for its CRF as OpenNLP on a MEMM.
 On the other end, as expected, Wapiti is by far the most resource-hungry tagger.
-While Wapiti's learning can be multi-threaded with a single switch, it was not clear to me how much actually gained in terms of absolute time from running Wapiti in that mode on my two (hyper-threaded) cores.
-To me, this means the &quot;winner&quot; in this section (model training) is clearly Factorie, and the slowest implementation is Wapiti.
-The remaining question in this respect will be if the Factorie model can keep up with the accuracy of the two CRFs and how fast it performs its tagging.</p>
+As Wapiti's <em>learning</em> procedure can easily make use of multiple CPU cores with a simple switch, it gained significantly in terms of absolute (&quot;real&quot;) training time from running in multi-threaded mode on my dual core machine, at least.
+This is important, because while tagging is what is called &quot;embarrassingly parallel&quot;, learning/optimization is not.
+Still, this means the top model training implementation is provided by Factorie, as OpenNLP has a much simpler model to train.
+The remaining question in this respect will be if OpenNLP and Factorie can keep up with the accuracy of the other two CRFs and how fast they all perform their tagging.</p>
 </div>
 <div class="section" id="tagging-quality">
 <h2>Tagging quality</h2>
-<p>Finally, we are looking into the second main question (apart from feature generation) of this exercise:
+<p>This section will resolve the final remaining question:
 Which implementation can provide you with the most efficient tagger?
-I have a fast, SATA3-attached SSD drive where the data is read from (but a slow i5 CPU...) and took the CoNLL 2000 test set sequences to measure accuracy on the 47,377 tokens using the models I had trained in the last step.
-So while my measurements do not include writing the tagged tokens back to the device, my CPU isn't exactly fast...
+I have a SATA-3-attached SSD drive where the data is read from (but a slow i5 CPU...) and took the CoNLL 2000 test set sequences to measure accuracy on the 47,377 tokens using the models I had trained in the last step.
+So while my measurements do not include writing the tagged tokens back to the device and reading data should not be an issue on this SSD, my CPU isn't exactly &quot;Speedy Gonzales&quot;...
 Then I timed each system while tagging 100 times those 47,377 tokens in a single row, read from one file (i.e., about 200,000 sentences or roughly 30,000 scientific abstracts) to make a fair comparison of each system's token throughput, marginalizing any warm-up &quot;penalties&quot;.</p>
 <p>To run the the taggers on the generated models, the commands I used were:</p>
 <pre class="literal-block">
