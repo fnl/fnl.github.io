@@ -56,7 +56,7 @@ alt="hit counter"></a></div></noscript>
                     <div class="section" id="introduction">
 <h2>Introduction</h2>
 <p><strong>tl;dr</strong>
-Use <a class="reference external" href="http://wapiti.limsi.fr/">Wapiti</a> unless you want to go beyond first-order and/or linear models, need to do research and feature experimentation (training times!), or are already a Scala crack, in which case you would clearly be better off with <a class="reference external" href="http://factorie.cs.umass.edu/">Factorie</a>.
+Right now, use <a class="reference external" href="http://wapiti.limsi.fr/">Wapiti</a> <em>unless</em> you want to go beyond first-order or linear models, need the best possible performance, or are a Scala programmer, in which case you would clearly be best advised to use <a class="reference external" href="http://factorie.cs.umass.edu/">Factorie</a>.
 OK, so that's that for a stressed out generation;
 Read on if you want to know why I recommend those two tools.</p>
 <p><strong>Overview:</strong>
@@ -408,14 +408,14 @@ You might want to know that a baseline tagger (using the majority PoS tag and ta
 The trade-offs are simply not big enough to make a huge (order-of-magnitude) difference.
 But then, if that were your case, you probably would not have read until here...
 Because there is no conceivable advantage in terms of training times, tagging throughput, or accuracy, no support for mixed transition/state features, and as the code seems unmaintained, I would not recommend the use of CRF Suite, however.</p>
-<p>At the end of the day, if you are interested in generating high-performance quality annotations with using mixture (state + transition) features, there really is only the choice between Wapiti and Factorie:
+<p>At the end of the day, if you are interested in generating high-performance quality annotations while using mixture (state + transition) features, there really is only the choice between Wapiti and Factorie:
 An error rate reduction of about 25% on the &quot;solved&quot; PoS tagging problem at no cost in throughput is not to be underestimated.
 Wapiti definitely is the most attractive tagger in terms of off-the-shelf usability: feature generation is simple and there is no need for doing any coding, and the overall implementation complexity vs. usability tradeoff is excellent.
-The only possible downside are significantly larger training times, so you will need to develop and combine your feature templates with care.
+The only possible downside are significantly longer training times, so you will need to develop and combine your feature templates with care.
 Finally, if you also are looking for true flexibility and the full power of graphical models, or want to risk using higher order Markov models, I see no way around Factorie.
 In this case, it might be worth living with the sparse documentation and having to study Scala source code (with a &quot;scientist's handwriting&quot; ;-)).
-However, the team around McCallum are very actively working on this library, so the code will hopefully become cleaner and more functional over time and the documentation is certainly getting better and more extensive each time I go back after a few months have passed.
-Nonetheless, if you'd ask me to declare a <em>global</em> &quot;winner&quot;, unless you are a probabilistic programming or at least Scala expert, I'd say that honor right now still goes to <a class="reference external" href="http://wapiti.limsi.fr/">Wapiti</a>.</p>
+However, the team around McCallum are very actively working on this library, so the code will hopefully become cleaner and more functional over time and the documentation is certainly getting better and more extensive every other time I come back and a few months have passed.
+Nonetheless, if you'd ask me to declare a <em>global</em> &quot;winner&quot;, unless you are a probabilistic programming or at least Scala expert, I'd say that honor right now still goes to <a class="reference external" href="http://wapiti.limsi.fr/">Wapiti</a>, but once Factorie fixes the UI and documentation deficits, it certainly already has the lead in terms of model flexibility and performance.</p>
 </div>
 
 
