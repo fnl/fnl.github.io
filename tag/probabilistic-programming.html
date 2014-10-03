@@ -264,12 +264,14 @@ However, this is entirely depended on your machine and its cores, so a direct &q
 There are other opinions about performance measurements, e.g., that one should only measure post-warm-up training time (minus JVM, input data reading, etc.) or only a single training cycle/iteration should be measured.
 I think it is more practical to measure and compare whatever the &quot;out-of-the-box&quot; performance of each tool is.
 Each training process is run thrice and the shortest measured time is the one I report here.</p>
-<p>Software   # Features (M)  Training Time
----------  --------------  -------------
-CRF Suite  3.63 M          10m 22s
-Factorie   0.34 M          02m 18s
-OpenNLP    ???? M          02m 03s
-Wapiti     1.56 M          19m 06s</p>
+<p>---------  --------  -------------
+Software   Features  Training Time
+---------  --------  -------------
+CRF Suite  3.63 M    10m 22s
+Factorie   0.34 M    02m 18s
+OpenNLP    ???? M    02m 03s
+Wapiti     1.56 M    19m 06s
+---------  --------  -------------</p>
 <p>As mentioned earlier, with respect to initial feature template richness, CRF Suite and Factorie are taking the lead, with Wapiti and OpenNLP using less templates.
 The models' feature sizes shown here are as reported by each tool <em>after</em> all feature pruning steps (compaction;
 For Wapiti that number is calculated from &quot;initial features&quot; minus &quot;removed features&quot;.)
@@ -308,12 +310,14 @@ opennlp POSTaggerEvaluator -model pos.model -data test.txt
 wapiti label -m pos.model -c test.txt &gt; /dev/null
 </pre>
 <p>And here are the results, in terms of error rate (<tt class="docutils literal">1 - accuracy</tt> over 47k tokens) and throughput (on 201k sentences with 4.7M tokens, as measured with <tt class="docutils literal">time</tt>, sys+user):</p>
-<p>Software   error rate  tokens/second
+<p>---------  ----------  -------------
+Software   error rate  tokens/second
 ---------  ----------  -------------
 CRF Suite  3.00 %      30,000
 Factorie   2.19 %      23,800
 OpenNLP    2.88 %      19,500
-Wapiti     2.20 %      21,200</p>
+Wapiti     2.20 %      21,200
+---------  ----------  -------------</p>
 <p>Note that for the CRF Suite, I pre-generated the features from the Python script.
 If I would not have separated out that step from its throughput, as the whole feature extraction process using the <tt class="docutils literal">pos.py</tt> script is several times slower than the actual tagger!
 This is another indicator that the underlying Python code could probably use some polish...
