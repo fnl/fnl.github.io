@@ -288,7 +288,7 @@ wapiti label -m pos.model -c test.txt &amp;gt; /dev/null
 &lt;/colgroup&gt;
 &lt;thead valign="bottom"&gt;
 &lt;tr&gt;&lt;th class="head"&gt;Software&lt;/th&gt;
-&lt;th class="head"&gt;&amp;amp;nbsp;&lt;/th&gt;
+&lt;th class="head"&gt;&amp;nbsp;&lt;/th&gt;
 &lt;th class="head"&gt;error rate&lt;/th&gt;
 &lt;th class="head"&gt;tokens/second&lt;/th&gt;
 &lt;/tr&gt;
