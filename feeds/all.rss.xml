@@ -350,7 +350,7 @@ You might want to know that a baseline tagger (using the majority PoS tag and ta
 &lt;div class="section" id="conclusions"&gt;
 &lt;h2&gt;Conclusions&lt;/h2&gt;
 &lt;p&gt;If you only need to do standard PoS tagging, chunking, and NER, and don't mind the tagging quality or performance too much, just go with the tool in your favorite language: OpenNLP for Java developers, Factorie for Scala hackers, and Wapiti for C/C++ or Python programmers
-(There is a &lt;a class="reference external" href="https://github.com/adsva/python-wapiti"&gt;Python wrapper&lt;/a&gt; for Wapiti available, if Python (both, 2.x or 3.x) is your deal.)
+(There is a &lt;a class="reference external" href="https://github.com/adsva/python-wapiti"&gt;Python wrapper&lt;/a&gt; for Wapiti available, if Python (for both 2 and 3) is your deal.)
 The trade-offs are simply not big enough to make a huge (order-of-magnitude) difference.
 But then, if that were your case, you probably would not have read until here...
 Because there is no conceivable advantage in terms of training times, tagging throughput, or accuracy, no support for mixed transition/state features, and as the code seems unmaintained, I would not recommend the use of CRF Suite, however.&lt;/p&gt;
