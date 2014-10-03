@@ -6,7 +6,7 @@ Right now, use &lt;a class="reference external" href="http://wapiti.limsi.fr/"&g
 OK, so that's that for a stressed out generation;
 Read on if you want to know why I recommend those two tools.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Overview:&lt;/strong&gt;
-The goal of this review is to identify the most elegant (first-order) CRF- or MEMM-based sequence tagger implementation with a free (MIT/BSD-like) license.
+The goal of this review is to identify the &amp;quot;best&amp;quot; generic CRF- or MEMM-based sequence tagger software with a free (MIT/BSD-like) license.
 I am only taking into account discriminative models here, so if your beef are generative models and/or non-sparse data (e.g., HMMs), you have come to the wrong place.
 This post will look into the ability to define and generate features, training times, tagging throughput, and tagging performance of various libraries by way of working through a common sequence labeling problem: tagging the parts-of-speech of natural language.
 While PoS tagging can be considered a &amp;quot;solved&amp;quot; problem, PoS tagging performance differences are still a source of &lt;a class="reference external" href="http://aclweb.org/aclwiki/index.php?title=POS_Tagging_%28State_of_the_art%29"&gt;academic&lt;/a&gt; controversy and therefore an ideal testing ground.&lt;/p&gt;
