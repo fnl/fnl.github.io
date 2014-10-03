@@ -334,30 +334,36 @@ wapiti label -m pos.model -c test.txt &gt; /dev/null
 <p>And here are the results, in terms of error rate (<tt class="docutils literal">1 - accuracy</tt> over 47k tokens) and throughput (on 201k sentences with 4.7M tokens, as measured with <tt class="docutils literal">time</tt>, sys+user):</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="28%" />
-<col width="31%" />
-<col width="41%" />
+<col width="24%" />
+<col width="16%" />
+<col width="26%" />
+<col width="34%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">Software</th>
+<th class="head">&amp;nbsp;</th>
 <th class="head">error rate</th>
 <th class="head">tokens/second</th>
 </tr>
 </thead>
 <tbody valign="top">
 <tr><td>CRF Suite</td>
+<td>&nbsp;</td>
 <td>3.00 %</td>
 <td>30,000</td>
 </tr>
 <tr><td>Factorie</td>
+<td>&nbsp;</td>
 <td>2.19 %</td>
 <td>23,800</td>
 </tr>
 <tr><td>OpenNLP</td>
+<td>&nbsp;</td>
 <td>2.88 %</td>
 <td>19,500</td>
 </tr>
 <tr><td>Wapiti</td>
+<td>&nbsp;</td>
 <td>2.20 %</td>
 <td>21,200</td>
 </tr>
