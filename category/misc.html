@@ -208,8 +208,8 @@ It is impossible to work with combined &quot;label bigrams&quot; (1st order Mark
 That is, CRF Suite only models either label transition probabilities or the features from the current state, but does not allow you to create &quot;mixed&quot; indicator functions as described in the beginning of this section (<tt class="docutils literal"><span class="pre">b:%s[-1,0]/%x[0,0]</span></tt>).
 This is an important conceptual shortcoming, because it is not possible to define features that condition on both the previous label (i.e., the transition) and the current token.
 However, as opposed to the other tools here (that only work with discrete features), CRF Suite provides support for continuos features.
-For example, when using <a class="reference external" href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/">word embedding</a> techniques, you might want to directly embed the numeric word vectors, which you can simply pass on to CRF Suite.
-While this issue commonly is circumvented by discretizing the real-valued features if continuos feature support is unavailable, it is a noteworthy difference.</p>
+For example, when using <a class="reference external" href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/">word embedding</a> techniques, you might want to directly include the numeric word vectors, which you can simply pass on to CRF Suite.
+While this shortcoming is commonly is circumvented by discretizing the real-valued features if continuos feature support is unavailable, it is a noteworthy difference.</p>
 <p>As for <strong>Wapiti</strong>, you have to figure out how to generate features for each task on your own;
 The authors do not provide any predefined templates for &quot;standard&quot; NLP tasks.
 But Wapiti provides you with a mechanism to define &quot;patterns&quot;, much like CRF++' feature templates.
