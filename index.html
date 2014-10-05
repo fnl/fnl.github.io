@@ -254,8 +254,8 @@ OpenNLP's problem was simpler to identify: as documented, it expects one sentenc
 crfsuite learn -m pos.model train.txt
 
 # Factorie
-java -Xmx2g -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
-     cc.factorie.app.nlp.pos.ForwardPosTrainer \
+java -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
+     cc.factorie.app.nlp.pos.ForwardPosTrainer -Xmx2g \
      --owpl --train-file=train.txt --test-file=empty.txt \
      --model=pos.model --save-model=true
 
@@ -353,8 +353,8 @@ cat test.txt | pos.py &gt; features.txt
 crfsuite tag -m pos.model -tq features.txt
 
 # Factorie
-java -Xmx2g -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
-     cc.factorie.app.nlp.pos.ForwardPosTester \
+java -cp factorie-1.1-SNAPSHOT-nlp-jar-with-dependencies.jar \
+     cc.factorie.app.nlp.pos.ForwardPosTester -Xmx2g \
      --owpl --model=pos.model --test-file=test.txt
 
 # OpenNLP
