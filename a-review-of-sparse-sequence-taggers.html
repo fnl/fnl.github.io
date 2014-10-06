@@ -145,13 +145,15 @@ While code is the typical, long spaghetti-code of C, it is clean and very well d
 The only main downside is that the documentation is a bit sparse; Everything is in there, but they could have done a bit better detailing some of the capabilities, and/or providing examples.
 I had to figure out myself that you always need to use both the <tt class="docutils literal"><span class="pre">-c</span> <span class="pre">-s</span></tt> switches when doing (feature-sparse) text labeling and it took me some time to understand how to do feature extraction (designing &quot;patterns&quot;).
 The Wapiti authors do not provide a default set of feature pattern templates, only a few pre-trained PoS models for English, German, and Arabic newswire text.</p>
-<p>Similarly, <strong>Factorie</strong> is able to run in multi-threaded mode, however, the code sometimes reads like it just as well could have been written in plain, old imperative Java.
-However, given that it is heavily used by McCallum's group and several other groups, too, being applied to large corpora, I think it still is safe to assume that despite any code quality issues, the libraries' functionality should be unaffected by this issue.
-One should also note that this opinion is purely subjective, so you might be better of judging for yourself.
+<p>Similarly, <strong>Factorie</strong> is able to run in multi-threaded mode and claims to be scalable across machines for hyper-parameter search (which I have not tried).
 To use Factorie, I often have to refer back to the code-base, because few of the specifics of Factorie are entirely documented for now.
 This means, to use Factorie, you should better know some Scala, as it might be tough having to go through the code otherwise.
+In my opinion, some parts of the codebase could have been coded just as well in Java, but that only affects few regions of the library.
+One should also note that this opinion is purely subjective and might be of little relevance, so you might be better of judging for yourself.
 Finally, the documentation certainly assumes you are an expert for graphical models with plenty of background knowledge in that domain.
-Given its state and direction, in comparison to the other tools here, it is probably safe to judge that this library is targeted at the probabilistic programming crack with a background on graphical models, not someone looking for a quick and dirty sequence tagging solution.</p>
+Given its state and direction, in comparison to the other tools here, it is probably safe to judge that this library is targeted at the probabilistic programming crack with a background on graphical models, not someone looking for a quick and dirty sequence tagging solution.
+The main up-side is that, together with OpenNLP, this is the only library offering a full NLP pipeline (segmentation, tokenization, tagging, and parsing).
+But again, except for PoS tagging, the other NLP functionality has to be deduced from the code, as there is not much more documentation on the NLP pipeline.</p>
 <p><strong>CRF Suite</strong> comes with a nice interface, and although it does not support multi-threading, the C code is well written and very clear.
 The functions are short and precise, so it is a nice example how C code can look if you put some effort into it.
 The only code-wise downside I detected was the accompanying Python code for preparing and pruning data and benchmarking.
@@ -162,10 +164,12 @@ The repository on GitHub has a handful of very good pull requests from serious d
 Neither have there been any updates to the library.
 To me this means that CRF Suite development seems dead and it would have to be significantly better than the other tools here to make it worth using it.</p>
 <p>Finally, <strong>OpenNLP</strong> has the expected high quality code found in Apache projects, and it is well documented, too.
-The only downsides worthwhile mentioning are that there is no built-in parallel processing support and that it only comes with a MaxEnt Markov model.</p>
+The only downsides worthwhile mentioning are that there is no built-in parallel processing support and that it only comes with a MaxEnt Markov model.
+As mentioned already, it is important to realize that OpenNLP offers a full NLP pipeline, unlike CRF Suite and Wapiti.</p>
 <p>To summarize, unique capabilities of Wapiti are its built-in template-based feature extraction mechanism and its ability to quickly choose either CRF or MEMM as the target model (more on this below).
 A unique capability of Factorie is that it provides you with the necessary base classes to quickly code your own graphical models of any Markov order, both linear and non-linear.
-However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP in terms of documentation and in my opinion, Factorie is not consistently using idiomatic Scala, probably due to its many different developers.</p>
+However, admittedly, both Wapiti and Factorie are behind CRF Suite and OpenNLP in terms of documentation and in my opinion, Factorie is not consistently using idiomatic Scala, probably due to its many different developers.
+Finally, both OpenNLP and Factorie include a full, documented and undocumented (respectively) NLP pipeline.</p>
 </div>
 <div class="section" id="feature-modeling">
 <h2>Feature modeling</h2>
@@ -435,8 +439,9 @@ An error rate reduction of about 25% on the &quot;solved&quot; PoS tagging probl
 Wapiti definitely is the most attractive tagger in terms of off-the-shelf usability: feature generation is simple with the patterns with no need for doing any coding, and the overall implementation complexity vs. usability balance is excellent.
 The only tradeoff are possibly longer training times (in single-core mode or vs. Factorie), so you will need to develop and combine your feature templates with care.
 Finally, if you also are looking for true flexibility and the full power of graphical models, or want to venture into higher order Markov space, I see no way around Factorie.
-In this case, it might be worth living with the sparse documentation and having to study Scala source code (with a &quot;scientist's handwriting&quot; ;-)).
-However, the team around McCallum are very actively working on this library, so the spaghetti-like code pieces will hopefully be refactored some day and the documentation is certainly getting better and more extensive every other time I come back and a few months have passed.</p>
+In this case, it might be worth living with the sparse documentation and having to study Scala source code.
+However, the team around McCallum are very actively working on this library, and the documentation is certainly getting better and more extensive every other time I come back and a few months have passed.
+Another advantage is the fact that Factorie offers a (largely undocumented) full NLP pipeline, starting from sentence segmentation all the way to dependency parsing.</p>
 <p>Nonetheless, if you'd ask me to declare a <em>global</em> &quot;winner&quot;, unless you are a probabilistic programming or at least Scala expert, I'd say that honor right now still goes to <a class="reference external" href="http://wapiti.limsi.fr/">Wapiti</a>.
 But once Factorie fixes the mentioned issues and makes the library more accessible to a &quot;general public&quot;, that might change, as it certainly already takes the lead in terms of model flexibility and implementation performance.</p>
 <p>If you feel like <strong>discussing</strong> what is written here, I've posted a link to this article on <a class="reference external" href="http://www.reddit.com/r/LanguageTechnology/comments/2i7fe1/a_review_of_free_sparse_sequence_taggers_for_nlp/">Reddit</a>.</p>
