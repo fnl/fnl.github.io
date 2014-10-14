@@ -62,7 +62,7 @@ body {
 	color: #444;
 	}
 #header, #wrapper, #controls ul {
-	/*width: 750px;*/
+	max-width: 1280px;
 	/*margin: 0 0 0 85px;*/
 	padding: 0 0.5em;
 	}
