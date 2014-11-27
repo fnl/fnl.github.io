@@ -30,7 +30,7 @@ alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
 <div id="header">
             <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/category/misc.html">Misc</a></li>
+                <li class="ephemeral selected"><a href="http://fnl.es/category/misc4.html">Misc</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
@@ -83,11 +83,11 @@ For this, I use a simple shell script (that I call <tt class="docutils literal">
 
 <span class="c"># setup a directory structure for programming in go</span>
 <span class="nv">VCS_HUB</span><span class="o">=</span>github.com/username
-<span class="nv">PROJECT</span><span class="o">=</span><span class="sb">`</span>basename <span class="s2">&quot;$1&quot;</span><span class="sb">`</span>
+<span class="nv">PROJECT</span><span class="o">=</span><span class="sb">`</span>basename <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="sb">`</span>
 
-mkdir -p <span class="s2">&quot;$1&quot;</span>
-<span class="nb">cd</span> <span class="s2">&quot;$1&quot;</span>
-mkdir -p <span class="s2">&quot;src/$VCS_HUB/$PROJECT&quot;</span>
+mkdir -p <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+mkdir -p <span class="s2">&quot;src/</span><span class="nv">$VCS_HUB</span><span class="s2">/</span><span class="nv">$PROJECT</span><span class="s2">&quot;</span>
 mkdir bin
 mkdir pkg
 <span class="nv">GOPATH</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
