@@ -114,8 +114,8 @@ The tool being presented here – <a class="reference external" href="https://py
 <li>It treats all <em>Unicode</em> dashes (there are quite a few!) “The Right Way” - a functionality surprisingly absent from most tools.</li>
 </ul>
 <p>Overall, the two scripts that come with segtok have a very simple text-line-based interface that works well with Unix pipes.
-One script, <cite>segmenter</cite>, segments sentences in (plain) text files into one sentence per line.
-The other, <cite>tokenizer</cite>, splits tokens on single lines (usually, the sentences from the <cite>segmenter</cite>) by adding whitespaces where necessary.
+One script, <tt class="docutils literal">segmenter</tt>, segments sentences in (plain) text files into one sentence per line.
+The other, <tt class="docutils literal">tokenizer</tt>, splits tokens on single lines (usually, the sentences from the <tt class="docutils literal">segmenter</tt>) by adding whitespaces where necessary.
 On the other hand, if you are a Python developer, you can use the API provided by this library to incorporate the functionality in your own programs.
 Segtok is designed to handle texts with characters from the entire Unicode space, not just ASCII or Latin-1 (ISO-8859-1).</p>
 </div>
@@ -131,7 +131,7 @@ For example:</p>
 <li>'How about handling single quotes?'</li>
 <li>[Square brackets are fine, too.]</li>
 </ul>
-<p>The segmenter is constrained to only segment on single lines ( <cite>split_single</cite> - sentences are not allowed to cross line boundaries) or to consecutive lines ( <cite>split_multi</cite> - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
+<p>The segmenter is constrained to only segment on single lines ( <tt class="docutils literal">split_single</tt> - sentences are not allowed to cross line boundaries) or to consecutive lines ( <tt class="docutils literal">split_multi</tt> - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:</p>
 <ul class="simple">
 <li><ol class="first upperalpha">
@@ -174,7 +174,7 @@ In other words, while coming at a computational cost, this second check allows s
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:</p>
 <p>a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...</p>
-<p>This functionality is provided by the <cite>symbol_tokenizer</cite> .
+<p>This functionality is provided by the <tt class="docutils literal">symbol_tokenizer</tt> .
 Next, the symbols are further analyzed to detect if they form part of the surrounding words.
 If so, they are again merged together with their alphanumeric parts.</p>
 <ul class="simple">
@@ -183,17 +183,17 @@ If so, they are again merged together with their alphanumeric parts.</p>
 <li>The spaces inside a word-hyphen-spaces-word sequences are dropped.</li>
 <li>Superscript digits are attached to a proceeding alphanumeric token if present.</li>
 </ul>
-<p>This set of functionality is provided by the <cite>word_tokenizer</cite>.
-Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens (<cite>web_tokenizer</cite>).
+<p>This set of functionality is provided by the <tt class="docutils literal">word_tokenizer</tt>.
+Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens (<tt class="docutils literal">web_tokenizer</tt>).
 This ensures that while a decent amount of splitting is made, over-splitting is avoided.
 Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.
-After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (<cite>split_possessive_markers</cite> and <cite>split_contractions</cite>).</p>
+After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (<tt class="docutils literal">split_possessive_markers</tt> and <tt class="docutils literal">split_contractions</tt>).</p>
 </div>
 <div class="section" id="feedback-and-conclusions">
 <h2>Feedback and Conclusions</h2>
 <p>All this functionality and the API itself are briefly documented on <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>'s &quot;homepage&quot;.
 As there is not very much functionality around, I hope that between this guide and the overview there the library should be fairly easy to use.
-Furthermore, in command-line mode, using the <cite>--help</cite> option will explain you all functionality provided by the two scripts this package installs.</p>
+Furthermore, in command-line mode, using the <tt class="docutils literal"><span class="pre">--help</span></tt> option will explain you all functionality provided by the two scripts this package installs.</p>
 <p>If you would be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub <a class="reference external" href="https://github.com/fnl/segtok/issues">Issues</a> page.
 In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.</p>
 <p>Overall, I have attempted to keep the strategy used by segtok as slim as possible.

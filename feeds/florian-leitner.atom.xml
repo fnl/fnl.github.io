@@ -60,8 +60,8 @@ The tool being presented here – &lt;a class="reference external" href="https:/
 &lt;li&gt;It treats all &lt;em&gt;Unicode&lt;/em&gt; dashes (there are quite a few!) “The Right Way” - a functionality surprisingly absent from most tools.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Overall, the two scripts that come with segtok have a very simple text-line-based interface that works well with Unix pipes.
-One script, &lt;cite&gt;segmenter&lt;/cite&gt;, segments sentences in (plain) text files into one sentence per line.
-The other, &lt;cite&gt;tokenizer&lt;/cite&gt;, splits tokens on single lines (usually, the sentences from the &lt;cite&gt;segmenter&lt;/cite&gt;) by adding whitespaces where necessary.
+One script, &lt;tt class="docutils literal"&gt;segmenter&lt;/tt&gt;, segments sentences in (plain) text files into one sentence per line.
+The other, &lt;tt class="docutils literal"&gt;tokenizer&lt;/tt&gt;, splits tokens on single lines (usually, the sentences from the &lt;tt class="docutils literal"&gt;segmenter&lt;/tt&gt;) by adding whitespaces where necessary.
 On the other hand, if you are a Python developer, you can use the API provided by this library to incorporate the functionality in your own programs.
 Segtok is designed to handle texts with characters from the entire Unicode space, not just ASCII or Latin-1 (ISO-8859-1).&lt;/p&gt;
 &lt;/div&gt;
@@ -77,7 +77,7 @@ For example:&lt;/p&gt;
 &lt;li&gt;'How about handling single quotes?'&lt;/li&gt;
 &lt;li&gt;[Square brackets are fine, too.]&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The segmenter is constrained to only segment on single lines ( &lt;cite&gt;split_single&lt;/cite&gt; - sentences are not allowed to cross line boundaries) or to consecutive lines ( &lt;cite&gt;split_multi&lt;/cite&gt; - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
+&lt;p&gt;The segmenter is constrained to only segment on single lines ( &lt;tt class="docutils literal"&gt;split_single&lt;/tt&gt; - sentences are not allowed to cross line boundaries) or to consecutive lines ( &lt;tt class="docutils literal"&gt;split_multi&lt;/tt&gt; - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;ol class="first upperalpha"&gt;
@@ -120,7 +120,7 @@ In other words, while coming at a computational cost, this second check allows s
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:&lt;/p&gt;
 &lt;p&gt;a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...&lt;/p&gt;
-&lt;p&gt;This functionality is provided by the &lt;cite&gt;symbol_tokenizer&lt;/cite&gt; .
+&lt;p&gt;This functionality is provided by the &lt;tt class="docutils literal"&gt;symbol_tokenizer&lt;/tt&gt; .
 Next, the symbols are further analyzed to detect if they form part of the surrounding words.
 If so, they are again merged together with their alphanumeric parts.&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -129,17 +129,17 @@ If so, they are again merged together with their alphanumeric parts.&lt;/p&gt;
 &lt;li&gt;The spaces inside a word-hyphen-spaces-word sequences are dropped.&lt;/li&gt;
 &lt;li&gt;Superscript digits are attached to a proceeding alphanumeric token if present.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This set of functionality is provided by the &lt;cite&gt;word_tokenizer&lt;/cite&gt;.
-Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens (&lt;cite&gt;web_tokenizer&lt;/cite&gt;).
+&lt;p&gt;This set of functionality is provided by the &lt;tt class="docutils literal"&gt;word_tokenizer&lt;/tt&gt;.
+Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens (&lt;tt class="docutils literal"&gt;web_tokenizer&lt;/tt&gt;).
 This ensures that while a decent amount of splitting is made, over-splitting is avoided.
 Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.
-After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (&lt;cite&gt;split_possessive_markers&lt;/cite&gt; and &lt;cite&gt;split_contractions&lt;/cite&gt;).&lt;/p&gt;
+After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
 &lt;h2&gt;Feedback and Conclusions&lt;/h2&gt;
 &lt;p&gt;All this functionality and the API itself are briefly documented on &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;'s &amp;quot;homepage&amp;quot;.
 As there is not very much functionality around, I hope that between this guide and the overview there the library should be fairly easy to use.
-Furthermore, in command-line mode, using the &lt;cite&gt;--help&lt;/cite&gt; option will explain you all functionality provided by the two scripts this package installs.&lt;/p&gt;
+Furthermore, in command-line mode, using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--help&lt;/span&gt;&lt;/tt&gt; option will explain you all functionality provided by the two scripts this package installs.&lt;/p&gt;
 &lt;p&gt;If you would be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub &lt;a class="reference external" href="https://github.com/fnl/segtok/issues"&gt;Issues&lt;/a&gt; page.
 In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.&lt;/p&gt;
 &lt;p&gt;Overall, I have attempted to keep the strategy used by segtok as slim as possible.
