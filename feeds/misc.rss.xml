@@ -1,5 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fnl.es</title><link>http://fnl.es/</link><description>&lt;a href = "mailto:flo@fnl.es" id="webmaster"&gt;fnl&lt;/a&gt; en España</description><atom:link href="http://fnl.es/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 02 Oct 2014 00:00:00 +0200</lastBuildDate><item><title>A review of sparse sequence taggers</title><link>http://fnl.es/a-review-of-sparse-sequence-taggers.html</link><description>&lt;div class="section" id="introduction"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fnl.es</title><link>http://fnl.es/</link><description>&lt;a href = "mailto:flo@fnl.es" id="webmaster"&gt;fnl&lt;/a&gt; en España</description><atom:link href="http://fnl.es/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 12 Jan 2015 00:00:00 +0100</lastBuildDate><item><title>segtok - a segmentation and tokenization library</title><link>http://fnl.es/segtok-a-segmentation-and-tokenization-library.html</link><description>&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; Surprisingly, it is hard to find a good, UNIX-y tool for sentence segmentation and linguistic word tokenization with all the bells and whistles needed to work with European languages. Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a Python package and command-line tool to remedy this shortcoming.&lt;/p&gt;
+&lt;div class="section" id="what-is-sentence-segmentation-and-tokenization"&gt;
+&lt;h2&gt;What is sentence segmentation and tokenization?&lt;/h2&gt;
+&lt;p&gt;Nearly any text mining and/or linguistic analysis starts with a sentence and word segmentation step. That is, determining all the individual spans in a piece of text that constitute its sentences or words.
+Identifying sentences is important because they form logical units of thought and represent the borders of many grammatical effects.
+All our communication - statements, questions, and commands - are expressed by sentences or at least a meaningful sentence-like fragment, i.e., a phrase.
+Words on the other hand are the atomic units that form the sentences, and ultimately, our language.
+While words are built up from a sequence of symbols in most languages, these symbols have no semantics of their own (except for any single-symbol words in that language, naturally).
+Therefore, nearly any meaningful text processing task will require the segmentation of the sequence of symbols (characters in computer lingo) into sentences and words.
+These words are, at least in the context of computational text processing, often called &lt;strong&gt;tokens&lt;/strong&gt;.
+Beyond the actual words consisting of letters, a token includes atomic units consisting of other symbols.
+For example, the sentence terminals (., !, and ? are three such tokens), a currency symbol, or even chains of symbols (for example, the ellipsis: …).
+By following through with this terminology, the process of segmenting text into these atomic units is commonly called &lt;em&gt;tokenization&lt;/em&gt; and a computer subroutine doing this segmentation is known as a &lt;em&gt;tokenizer&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="sentence-segmentation-and-tokenization-is-hard"&gt;
+&lt;h2&gt;Sentence segmentation and tokenization is hard&lt;/h2&gt;
+&lt;p&gt;While this segmentation step might initially sound like a rather trivial problem, it turns out the rabbit hole is deep and no perfect solution has been found to date.
+Furthermore, the problem is made harder by the different symbols and their usage in distinct languages.
+For example, just finding word boundaries in Chinese is non-trivial, because there is not boundary marker (unlike the whitespace used by Indo-European languages).
+And when looking into technical documents, the problem can easily grow even more out of hand.
+Names of chemical compounds, web addresses, mathematical expressions, etc. are all complicating the way one would normally define a set of word boundary detection rules.
+Another source of problems are texts from public internet fora, such as Twitter.
+Words are not spelled as expected, the spaces might be missing, and emoticons and other ASCII-art can make defining the correct tokenization strategy a rather difficult endeavor.
+Similarly, the sentence terminal marker in many Indo-European languages is the full-stop dot – which coincidentally is also used as the abbreviation marker in those languages.
+For example, detecting the two sentences in in the following text fragment is not that trivial, at least for a computer program.&lt;/p&gt;
+&lt;blockquote&gt;
+Hello, Mr. Man. He smiled!&lt;/blockquote&gt;
+&lt;p&gt;If the text fragments are large or the span contains many dots, even humans will start to make many errors when trying to identify all the sentence boundaries.
+Certain proper nouns (gene names, or “amnesty international”, for example) might demand that the sentence begins with a lower case letter instead of the expected upper-case.
+A simple typo might have been the cause for a sentence starting with a lower-case letter, too.
+Again in public internet fora, users sometimes resort to using only lower- or upper-case for their  messages or write in an orthographically invalid mix of letter casing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="introducing-segtok-a-python-library-for-these-two-issues"&gt;
+&lt;h2&gt;Introducing segtok – a Python library for these two issues&lt;/h2&gt;
+&lt;p&gt;Despite the ubiquitous need for this functionality in nearly any kind of text processing, there are not very many stand-alone modules around for sentence segmentation and tokenization.
+And there will be even fewer programs around if you require that they are able to handle the subtleties of orthographically valid symbol sequences.
+This means that you either have to utilize functionality provided within large frameworks (for example, &lt;a class="reference external" href="http://www.nltk.org"&gt;NLTK&lt;/a&gt; in Python or &lt;a class="reference external" href="http://alias-i.com/lingpipe/"&gt;LingPipe&lt;/a&gt; in Java), or you have to write your own code.
+Both approaches have their downsides, but in particular, using large frameworks violates a Unix philosophy I have come to love more than anything in my day-to-day IT life:&lt;/p&gt;
+&lt;blockquote&gt;
+“A  program should do one thing and it should do it well.
+Programs should handle &lt;em&gt;text streams&lt;/em&gt;, because that is a universal interface.”
+(Doug McIlroy)&lt;/blockquote&gt;
+&lt;p&gt;(Yes, I know, it seems I am violating the “one thing” rule because segtok does two things.
+But as you will see, the library comes with two independent scripts and APIs for each step.)
+This approach to software allows you to easily use other programs for each element of your text processing tool-chain and allows you to quickly swap those elements.
+If you use large frameworks, you are easily constrained to it or have to accept that the one thing you want it to do isn't done efficiently.
+And the more you use one large framework only, the less attractive it is to switch your tooling.
+This has a direct, detrimental effect on your ability to experiment and adapt to new tools.&lt;/p&gt;
+&lt;p&gt;Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, the solution presented here is confined to processing somewhat regular Germanic (e.g., English) and Romance (e.g., Spanish) languages with a strong focus on those two and German, which all use Latin letters and standard symbols (like .?!”'([{, etc.).
+The tool being presented here – &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt; - is made to cope with text with the following properties:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Indo-European languages (i.e., Unicode), preferentially Germanic and Romance ones.&lt;/li&gt;
+&lt;li&gt;Texts that follow a mostly regular writing style - in particular, segtok is not tuned for Twitter's highly particular orthography.&lt;/li&gt;
+&lt;li&gt;It can handle technical texts (e.g. chemicals) and internet URIs (IP addresses, URLs and e-mail addresses).&lt;/li&gt;
+&lt;li&gt;The tool is able to handle cases of sentences starting with a lower-case letter and sentences enclosed by parenthesis or quotation marks.&lt;/li&gt;
+&lt;li&gt;Is able to handle some cases with heavy abbreviation use (e.g., academic citations).&lt;/li&gt;
+&lt;li&gt;It treats all &lt;em&gt;Unicode&lt;/em&gt; dashes (there are quite a few!) “The Right Way” - a functionality surprisingly absent from most tools.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Overall, the two scripts that come with segtok have a very simple text-line-based interface that works well with Unix pipes.
+One script, &lt;cite&gt;segmenter&lt;/cite&gt;, segments sentences in (plain) text files into one sentence per line.
+The other, &lt;cite&gt;tokenizer&lt;/cite&gt;, splits tokens on single lines (usually, the sentences from the &lt;cite&gt;segmenter&lt;/cite&gt;) by adding whitespaces where necessary.
+On the other hand, if you are a Python developer, you can use the API provided by this library to incorporate the functionality in your own programs.
+Segtok is designed to handle texts with characters from the entire Unicode space, not just ASCII or Latin-1 (ISO-8859-1).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="sentence-segmentation-with-segtok"&gt;
+&lt;h2&gt;Sentence segmentation with segtok&lt;/h2&gt;
+&lt;p&gt;On the sentence level, segtok can detect sentences that are contained inside brackets or quotation marks and maintains those brackets as part of the sentence;
+For example:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;(A sentence in parenthesis!)&lt;/li&gt;
+&lt;li&gt;Or a sentence with &amp;quot;a quote!&amp;quot;&lt;/li&gt;
+&lt;li&gt;'How about handling single quotes?'&lt;/li&gt;
+&lt;li&gt;[Square brackets are fine, too.]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The segmenter can be constrained to only segment on single lines, only on consecutive lines (i.e., skipping “paragraphs” separated by two or more newlines), or to segment anywhere across the input text.
+It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;ol class="first upperalpha"&gt;
+&lt;li&gt;The first assumption.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;ol class="first arabic" start="2"&gt;
+&lt;li&gt;And that is two.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;ol class="first lowerroman" start="3"&gt;
+&lt;li&gt;Third things here.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;What the heck??!?!&lt;/li&gt;
+&lt;li&gt;A terminal ellipsis...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In essence, a valid sentence terminal must be represented by one of the allowed Unicode markers.
+That is, the many Unicode variants of ., ?, and !, and the ideographic full-stop: “。”.
+Therefore, &lt;em&gt;this library cannot guess a sentence boundary if the marker is absent&lt;/em&gt;!
+After the marker, up to one quotation mark and one bracket may be present.
+Finally, the marker must be separated from the following non-space symbol by at least one whitespace character or a newline.&lt;/p&gt;
+&lt;p&gt;This requires that the sentence boundaries do obey some limited amount of regularity.
+But at the same time, the pesky requirement that a marker is followed by upper-case letters is absent from this strategy.
+In addition, this immediately discards “inner” abbreviation markers from the list of candidates (such as in “U.S.A.”).
+On the other hand, any markers that do not follow this “minimal” pattern will always result in false negatives (i.e., not be split).
+While missing markers do occur, they are relatively infrequent in orthographically correct texts.&lt;/p&gt;
+&lt;p&gt;After these &lt;em&gt;potential&lt;/em&gt; markers have been established, the library goes back and looks at the surrounding text to determine if the symbol is not a boundary marker.
+This step recuperates initials (“A. Name”), species names (“S. pombe”) and abbreviations inside brackets, which are common with citations (“[A. Name, B. Other. Title of the work. Proc. Natl. Acad. Sci. 2010]”).
+Obvious and/or common abbreviations (in English, Spanish, and German, so far) are recovered, too.
+In other words, while coming at a computational cost, this second check allows segtok to keep the number of false positive splits to an acceptable low.&lt;/p&gt;
+&lt;p&gt;There are several other enhancements to the segmenter (e.g., checking for the presence of lower-case words that are unlikely start a sentence) that can be studied in the source code and unit tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="segtok-s-tokenization-strategy"&gt;
+&lt;h2&gt;Segtok's tokenization strategy&lt;/h2&gt;
+&lt;p&gt;The tokenization approach is built up similarly.
+First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
+The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:&lt;/p&gt;
+&lt;p&gt;A123, a alpha/beta stabilizer... → A123  ,  a  alpha  /  beta  stabilizer  ...&lt;/p&gt;
+&lt;p&gt;Next, the symbols are further analyzed to detect if they form part of the surrounding words.
+If so, they are again merged together with their alphanumeric parts.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The abbreviation marker is attached back on to the proceeding word (“Mr.”).&lt;/li&gt;
+&lt;li&gt;Words with internal dots, dashes, apostrophes, and commas are joined (“192.168.1.0”, “Abel-Ryan's”, “a,b-symmetry”).&lt;/li&gt;
+&lt;li&gt;The spaces inside a word-hyphen-spaces-word sequences are dropped.&lt;/li&gt;
+&lt;li&gt;Superscript digits are attached to a proceeding alphanumeric token if present.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens.
+After this tokenization step, the API provides functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for further linguistic processing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="feedback-and-conclusions"&gt;
+&lt;h2&gt;Feedback and Conclusions&lt;/h2&gt;
+&lt;p&gt;If you would be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub &lt;a class="reference external" href="https://github.com/fnl/segtok/issues"&gt;Issues&lt;/a&gt; page.
+In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.&lt;/p&gt;
+&lt;p&gt;Overall, I have attempted to keep the strategy used by segtok as slim as possible.
+So if you are using any heavy language processing or sequence analysis tools after segtok, it should have no impact on your throughput at all.&lt;/p&gt;
+&lt;p&gt;I have compared this library with several other approaches in the wild, and for regular texts, my experience is that it works substantially superior in both segmentation capabilities and runtime performance to all alternatives I have looked into, at least.
+As I do not wish to bash any existing tool, I will only name one sentence segmentation approach I like very much: Punkt Tokenizer by Kiss and Strunk, 2006.
+PT is a unsupervised, statistical approach to segmentation that “learns” whether to split sentences at sentence terminal markers.
+While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on modern Germanic and Romance texts that (mostly) follow a proper orthography.
+Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python &lt;a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html"&gt;implementation&lt;/a&gt; of the Punkt Tokenizer by &lt;a class="reference external" href="http://www.nltk.org"&gt;NLTK&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Mon, 12 Jan 2015 00:00:00 +0100</pubDate><guid>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</guid><category>text mining</category><category>nlp</category><category>Python</category></item><item><title>A review of sparse sequence taggers</title><link>http://fnl.es/a-review-of-sparse-sequence-taggers.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;
 Right now, use &lt;a class="reference external" href="http://wapiti.limsi.fr/"&gt;Wapiti&lt;/a&gt; &lt;em&gt;unless&lt;/em&gt; you want to go beyond first-order and/or linear models, need the fastest possible training cycles, or are a Scala programmer, in which case you would be best advised to choose &lt;a class="reference external" href="http://factorie.cs.umass.edu/"&gt;Factorie&lt;/a&gt;.
