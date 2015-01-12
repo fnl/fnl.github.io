@@ -77,7 +77,7 @@ For example:&lt;/p&gt;
 &lt;li&gt;'How about handling single quotes?'&lt;/li&gt;
 &lt;li&gt;[Square brackets are fine, too.]&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The segmenter is constrained to only segment on single lines (&lt;cite&gt;split_single&lt;/cite&gt;, i.e., sentences are not allowed to cross line boundaries) or to consecutive lines (&lt;cite&gt;split_multi&lt;/cite&gt;, i.e., splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
+&lt;p&gt;The segmenter is constrained to only segment on single lines ( &lt;cite&gt;split_single&lt;/cite&gt; - sentences are not allowed to cross line boundaries) or to consecutive lines ( &lt;cite&gt;split_multi&lt;/cite&gt; - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;ol class="first upperalpha"&gt;
@@ -119,8 +119,8 @@ In other words, while coming at a computational cost, this second check allows s
 &lt;p&gt;The tokenization approach is built up similarly.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:&lt;/p&gt;
-&lt;p&gt;A123, a alpha/beta stabilizer... → A123  ,  a  alpha  /  beta  stabilizer  ...&lt;/p&gt;
-&lt;p&gt;This functionality is provided by the &lt;cite&gt;symbol_tokenizer&lt;/cite&gt;.
+&lt;p&gt;a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...&lt;/p&gt;
+&lt;p&gt;This functionality is provided by the &lt;cite&gt;symbol_tokenizer&lt;/cite&gt; .
 Next, the symbols are further analyzed to detect if they form part of the surrounding words.
 If so, they are again merged together with their alphanumeric parts.&lt;/p&gt;
 &lt;ul class="simple"&gt;

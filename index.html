@@ -130,7 +130,7 @@ For example:</p>
 <li>'How about handling single quotes?'</li>
 <li>[Square brackets are fine, too.]</li>
 </ul>
-<p>The segmenter is constrained to only segment on single lines (<cite>split_single</cite>, i.e., sentences are not allowed to cross line boundaries) or to consecutive lines (<cite>split_multi</cite>, i.e., splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
+<p>The segmenter is constrained to only segment on single lines ( <cite>split_single</cite> - sentences are not allowed to cross line boundaries) or to consecutive lines ( <cite>split_multi</cite> - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:</p>
 <ul class="simple">
 <li><ol class="first upperalpha">
@@ -172,8 +172,8 @@ In other words, while coming at a computational cost, this second check allows s
 <p>The tokenization approach is built up similarly.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:</p>
-<p>A123, a alpha/beta stabilizer... → A123  ,  a  alpha  /  beta  stabilizer  ...</p>
-<p>This functionality is provided by the <cite>symbol_tokenizer</cite>.
+<p>a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...</p>
+<p>This functionality is provided by the <cite>symbol_tokenizer</cite> .
 Next, the symbols are further analyzed to detect if they form part of the surrounding words.
 If so, they are again merged together with their alphanumeric parts.</p>
 <ul class="simple">
