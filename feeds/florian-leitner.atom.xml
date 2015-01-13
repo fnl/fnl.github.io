@@ -83,24 +83,27 @@ Again in public internet fora, users sometimes resort to using only lower- or up
 &lt;h2&gt;Introducing segtok – a Python library for these two issues&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;pip3 install segtok
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The Unix approach to software (one thing only, with a text-based interface [that can be used with pipes]) allows you to easily use other programs for each link of your tool-chain, quickly exchanging any parts.
-If you use a large framework, you are easily constrained by it and might be tempted to accept that some of the things you will be doing with it aren't done efficiently.
+&lt;p&gt;The Unix approach to software (one thing only, with a text-based interface [that can be used with pipes]) allows you to easily integrate programs at each stage of your tool-chain and makes it simple to quickly exchange any parts.
+If you use a large framework, on the other hand, you are easily constrained by it and might feel tempted to accept that some of the things you will be doing with it aren't done quite as efficiently as possible.
 And the more you make use of that large framework, the less attractive it is to switch your tooling and move out of that &amp;quot;comfort zone&amp;quot;.
 I think this issue has a direct, detrimental effect on our ability to experiment and adapt to new tools, software, and methods.&lt;/p&gt;
-&lt;p&gt;Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, the solution presented here is confined to processing somewhat regular Germanic (e.g., English) and Romance (e.g., Spanish) languages with a strong focus on those two and German, which all use Latin letters and standard symbols (like .?!”'([{, etc.).
-The tool being presented here – &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt; - is made to cope with text with the following properties:&lt;/p&gt;
+&lt;p&gt;Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, the library presented here, is confined to processing somewhat regular Germanic (e.g., English) and Romance (e.g., Spanish) languages.
+It has a strong focus on those two and German, which all use Latin letters and standard symbols (like .?!”'([{, etc.).
+This is mostly the case because I am not an expert in any other language, but help/contributions would be very welcome!
+Furthermore, &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt; was made to cope with text having the following properties:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Indo-European languages (i.e., Unicode), preferentially Germanic and Romance ones.&lt;/li&gt;
+&lt;li&gt;A sentence termination marker must be present.&lt;/li&gt;
 &lt;li&gt;Texts that follow a mostly regular writing style - in particular, segtok is not tuned for Twitter's highly particular orthography.&lt;/li&gt;
-&lt;li&gt;It can handle technical texts (e.g. chemicals) and internet URIs (IP addresses, URLs and e-mail addresses).&lt;/li&gt;
-&lt;li&gt;The tool is able to handle cases of sentences starting with a lower-case letter and sentences enclosed by parenthesis or quotation marks.&lt;/li&gt;
-&lt;li&gt;Is able to handle some cases with heavy abbreviation use (e.g., academic citations).&lt;/li&gt;
-&lt;li&gt;It treats all &lt;em&gt;Unicode&lt;/em&gt; dashes (there are quite a few!) “The Right Way” - a functionality surprisingly absent from most tools.&lt;/li&gt;
+&lt;li&gt;It can handle technical texts (containing, e.g., chemicals) and internet URIs (IP addresses, URLs and e-mail addresses).&lt;/li&gt;
+&lt;li&gt;The tool is able to handle (valid) cases of sentences starting with a lower-case letter and correctly splits sentences enclosed by parenthesis or quotation marks.&lt;/li&gt;
+&lt;li&gt;It is able to handle some of the more common cases of heavy abbreviation use (e.g., academic citations).&lt;/li&gt;
+&lt;li&gt;It treats all &lt;em&gt;Unicode&lt;/em&gt; dashes (Did you know there are quite a few in Unicode?) “The Right Way” - a functionality surprisingly absent from most tools.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Overall, the two scripts that come with segtok have a very simple text-line-based interface that works well with Unix pipes.
-One script, &lt;tt class="docutils literal"&gt;segmenter&lt;/tt&gt;, segments sentences in (plain) text files into one sentence per line.
+The first script, &lt;tt class="docutils literal"&gt;segmenter&lt;/tt&gt;, segments sentences in (plain) text files into one sentence per line.
 The other, &lt;tt class="docutils literal"&gt;tokenizer&lt;/tt&gt;, splits tokens on single lines (usually, the sentences from the &lt;tt class="docutils literal"&gt;segmenter&lt;/tt&gt;) by adding whitespaces where necessary.
-On the other hand, if you are a Python developer, you can use the API provided by this library to incorporate the functionality in your own programs.
+On the other hand, if you are a Python developer, you can use the functions (&amp;quot;Look Ma, no nouns!&amp;quot;...) provided by this library to incorporate the approach in your own software (the tool is MIT licensed).
 Segtok is designed to handle texts with characters from the entire Unicode space, not just ASCII or Latin-1 (ISO-8859-1).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="sentence-segmentation-with-segtok"&gt;
@@ -116,6 +119,8 @@ For example:&lt;/p&gt;
 &lt;li&gt;[Square brackets are fine, too.]&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The segmenter is constrained to only segment on single lines ( &lt;tt class="docutils literal"&gt;split_single&lt;/tt&gt; - sentences are not allowed to cross line boundaries) or to consecutive lines ( &lt;tt class="docutils literal"&gt;split_multi&lt;/tt&gt; - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
+(If you really want to extract sentences that cross consecutive newline characters, please remove those line-breaks from your text first.
+Segtok assumes your content has semantical meaning, but those newlines effectively have become noise.)
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;ol class="first upperalpha"&gt;
@@ -142,8 +147,8 @@ Finally, the marker must be separated from the following non-space symbol by at 
 But at the same time, the pesky requirement that a marker is followed by upper-case letters is absent from this strategy.
 In addition, this immediately discards “inner” abbreviation markers from the list of candidates (such as in “U.S.A.”).
 On the other hand, any markers that do not follow this “minimal” pattern will always result in false negatives (i.e., not be split).
-While missing markers do occur, they are relatively infrequent in orthographically correct texts.&lt;/p&gt;
-&lt;p&gt;After these &lt;em&gt;potential&lt;/em&gt; markers have been established, the library goes back and looks at the surrounding text to determine if the symbol is not a boundary marker.
+While missing markers and markers not followed by a space character do occur, those cases are very infrequent in orthographically (mostly) correct texts.&lt;/p&gt;
+&lt;p&gt;After these &lt;em&gt;potential&lt;/em&gt; markers have been established, the method goes back and looks at the surrounding text to determine if the symbol is not a boundary marker.
 This step recuperates initials (“A. Name”), species names (“S. pombe”) and abbreviations inside brackets, which are common with citations (“[A. Name, B. Other. Title of the work. Proc. Natl. Acad. Sci. 2010]”).
 Obvious and/or common abbreviations (in English, Spanish, and German, so far) are recovered, too.
 In other words, while coming at a computational cost, this second check allows segtok to keep the number of false positive splits to an acceptable low.&lt;/p&gt;
@@ -170,8 +175,11 @@ If so, they are again merged together with their alphanumeric parts.&lt;/p&gt;
 &lt;p&gt;This set of functionality is provided by the &lt;tt class="docutils literal"&gt;word_tokenizer&lt;/tt&gt;.
 Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs are always maintained as single tokens (&lt;tt class="docutils literal"&gt;web_tokenizer&lt;/tt&gt;).
 This ensures that while a decent amount of splitting is made, over-splitting is avoided.
-Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.
-After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).&lt;/p&gt;
+Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.&lt;/p&gt;
+&lt;p&gt;After this tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't”, “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
+To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tokens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_text&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
 &lt;h2&gt;Feedback and Conclusions&lt;/h2&gt;
