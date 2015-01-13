@@ -168,10 +168,16 @@ If so, the symbols are merged back together with their alphanumeric spans.&lt;/p
 Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs (including fragments and parameters, but without actual space characters) are always maintained as single tokens (&lt;tt class="docutils literal"&gt;web_tokenizer&lt;/tt&gt;).
 All this ensures that while a decent amount of splitting is made, the common over-splitting of tokens is avoided.
 Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.
-As before for the segmenter, I believe this is the particular strength of this library.&lt;/p&gt;
-&lt;p&gt;After the tokenization step, the API provides two functions to optionally go an split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
+As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.&lt;/p&gt;
+&lt;p&gt;After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
 To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tokens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_text&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;SimpleTokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
+            &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;
+
+        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;  &lt;span class="c"&gt;# None to signal sentence terminals&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;

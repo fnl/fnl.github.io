@@ -222,10 +222,16 @@ If so, the symbols are merged back together with their alphanumeric spans.</p>
 Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs (including fragments and parameters, but without actual space characters) are always maintained as single tokens (<tt class="docutils literal">web_tokenizer</tt>).
 All this ensures that while a decent amount of splitting is made, the common over-splitting of tokens is avoided.
 Particularly, when processing biomedical documents, Web content, or patents, too much tokenization might have quite a significant negative impact on any subsequent, more advanced processing techniques.
-As before for the segmenter, I believe this is the particular strength of this library.</p>
-<p>After the tokenization step, the API provides two functions to optionally go an split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.), which can be useful for any downstream linguistic parsing (<tt class="docutils literal">split_possessive_markers</tt> and <tt class="docutils literal">split_contractions</tt>).
+As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.</p>
+<p>After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (<tt class="docutils literal">split_possessive_markers</tt> and <tt class="docutils literal">split_contractions</tt>).
 To use them, just wrap your tokenizer with the preferred method:</p>
-<div class="highlight"><pre><span class="n">tokens</span> <span class="o">=</span> <span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">split_multi</span><span class="p">(</span><span class="n">my_text</span><span class="p">)))</span>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">SimpleTokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="n">token</span>
+
+        <span class="k">yield</span> <span class="bp">None</span>  <span class="c"># None to signal sentence terminals</span>
 </pre></div>
 </div>
 <div class="section" id="feedback-and-conclusions">
