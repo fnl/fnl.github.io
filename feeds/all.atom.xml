@@ -93,7 +93,7 @@ It has a strong focus on those two and German, which all use Latin letters and s
 This is mostly based on the fact that I only know those three languages to some reasonable degree (my tourist-Italian does not count...) - while help/contributions to make segtok work in more languages would be very welcome!
 Furthermore, &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt; was made to cope with text having the following properties:&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;Fully capable of handling the full Unicode space.&lt;/li&gt;
+&lt;li&gt;Capable of (correctly!) handling the whole Unicode space.&lt;/li&gt;
 &lt;li&gt;A sentence termination marker must be present.&lt;/li&gt;
 &lt;li&gt;Texts that follow a mostly regular writing style - in particular, segtok is not tuned for Twitter's highly particular orthography.&lt;/li&gt;
 &lt;li&gt;It can handle technical texts (containing, e.g., chemical compounds) and internet URIs (IP addresses, URLs and e-mail addresses).&lt;/li&gt;
