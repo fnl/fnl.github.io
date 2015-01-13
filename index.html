@@ -78,9 +78,9 @@ If you don't believe me (never do!), just compare their performance/results agai
 Their strength compared to this library here, however, is language independence: the library discussed here (so far?) only works with Indo-European languages, while the mentioned segmenters from the above frameworks can be trained on nearly any language and domain.
 Particularly, the unsupervised PunktTokenizer only needs sufficient text and the presence of a terminal marker to learn the segmentation rules on its own.
 Similarly, if you want to parse noisy text with bad spelling (Twitter and other &quot;social&quot; media sources), you might be best advised to use those frameworks.
-So while I do think these libraries are all great as a whole - and I would recommend any one of them - it is mildly annoying if you have to learn a framework if all you want to do is common text pre-processing.
-Moreover, if you are analyzing corporate documents, patents, news articles, scientific texts, technical manuals, web pages, etc., that tend to have good orthography these statistical tools are not quite up to it and introduce far too many splits, at least for my taste.</p>
-<p>This then affects your downstream language processing, because the errors made by the pre-processing will be propagated and, in the worst case, even amplified.
+So while I do think these libraries are all great as a whole - and I would recommend any one of them - it is mildly annoying if you have to learn a framework if all you want to do is common text pre-processing.</p>
+<p>If you are analyzing corporate documents, patents, news articles, scientific texts, technical manuals, web pages, etc., that tend to have good orthography these statistical tools are not quite up to it and introduce far too many splits, at least for my taste.
+This then affects your downstream language processing, because the errors made by the pre-processing will be propagated and, in the worst case, even amplified.
 Therefore, text processing pipelines commonly end up doing both (2) and (3) using one such framework, but years of experience have shown me that you soon will be wanting to explore methods beyond whatever particular framework you chose offers.
 That then can mean that you have to re-conceptualize all of (2) to add a different tool or even need to move to a whole new framework, this can become burdensome.
 If the performance isn't that stellar either, it becomes disputable if switching is even worth the effort.
