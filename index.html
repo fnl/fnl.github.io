@@ -53,22 +53,28 @@ alt="hit counter"></a></div></noscript>
                     </h2>
 
                     <p><strong>tl;dr</strong> Surprisingly, it is hard to find a good, UNIX-y tool for sentence segmentation and linguistic word tokenization with all the bells and whistles needed to work with European languages. Here, I present <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, a Python package and command-line tool to remedy this shortcoming.</p>
-<p>Text processing pipelines roughly consist of the following three steps:
-(1) document extraction,
-(2) text pre-processing, and
-(3) language processing.
-There are many good tools around for document extraction, in particular Apache <a class="reference external" href="http://tika.apache.org/">Tika</a> being a great software library I highly recommend for this task.
+<p>Text processing pipelines roughly consist of the following three steps:</p>
+<ol class="arabic simple">
+<li>Document extraction</li>
+<li>Text pre-processing</li>
+<li>Language processing</li>
+</ol>
+<p>There are many good tools around for document extraction, in particular Apache <a class="reference external" href="http://tika.apache.org/">Tika</a> is a great software library I highly recommend for this task.
 (As a matter of fact, if you want to improve your programming skills and see some real-life, clean implementations of nearly all Java/GoF software patterns, have a look at the innards of Tika.)
+If you want to extract data from PDFs in particular, in addition you should be looking into the huge collection of excellent tools that have been spawned by the <a class="reference external" href="http://www.foolabs.com/xpdf/">xpdf</a> library.
 As for language processing, there are several tools for chunking and tagging with dynamic graphical models that you can choose from, as outlined in an <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">earlier post</a> of mine, and for more involved dependency parsing techniques, libraries like <a class="reference external" href="https://github.com/syllog1sm/redshift">RedShift</a> are available.
-However, for the intermediate pre-processing, the only decent way to bridge the gap is to use one of the large natural language processing (NLP) frameworks.
+However, for the intermediate pre-processing, the only way without designing your own solution is to use one of the large natural language processing (NLP) frameworks.
+There are a few sentence segmentation and tokenization libraries around, particularly in Perl, but they do not have the desired properties to handle more complex cases or are long <a class="reference external" href="http://mailman.uib.no/public/corpora/2007-October/005429.html">forgotten</a>.
 You can use <a class="reference external" href="http://www.nltk.org">NLTK</a>, <a class="reference external" href="http://alias-i.com/lingpipe/">LingPipe</a>, <a class="reference external" href="http://opennlp.apache.org/">OpenNLP</a>, or quite a few other frameworks to bridge that gap.
 However, such a heavy-handed approach is to break a butterfly with a wheel, and in my personal opinion, they are not doing a particularly good job at it, either.
+For example, the statistical sentence segmenters from NLTK and OpenNLP, while scientifically very interesting, don't do a particularly good job at the task (compared to rule-based implementations).
+If you don't believe me (never do!), just compare their performance against the library I will present here - you will see that these statistical segmenters produce a significant number of false positives.
 While I do think these libraries are all great as a whole - and I would recommend any one of them - it is mildly annoying if you have to learn a whole framework just for text pre-processing.
 Therefore, we commonly end up doing both (2) and (3) inside one such framework, but years of experience have shown me that you soon will be wanting to explore methods beyond whatever particular framework you chose offers.
 But if you have to then re-conceptualize all of (2) to add a different tool or even need to move to a whole new framework, this can become burdensome.
 Last but not least, as will be discussed below, this kind of approach violates one of the most fundamental Unix philosophies.</p>
 <p>This is the second in a series of posts that will present lean and elegant text processing tools to take you across the void from (1) to (3) (<em>and back</em>, but more on that in the future).
-In the <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">last post</a>, we discussed sequence taggers, which present the entry point to (3).
+In the <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">last post</a>, we discussed sequence taggers, as they form the entry point to (3).
 Here I am presenting my tools for pre-processing of Germanic and Romance languages (essentially, because I am not knowledgeable of any others...).</p>
 <div class="section" id="what-is-sentence-segmentation-and-tokenization">
 <h2>What is sentence segmentation and tokenization?</h2>
