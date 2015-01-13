@@ -215,8 +215,8 @@ If so, the symbols are merged back together with their alphanumeric spans.</p>
 <ul class="simple">
 <li>Abbreviation markers are attached back on to the proceeding word (“Mr.”).</li>
 <li>Words with internal dots, dashes, apostrophes, and commas are joined together again (“192.168.1.0”, “Abel-Ryan's”, “a,b-symmetry”).</li>
-<li>The spaces inside a word-hyphen-spaces-word sequences are dropped.</li>
-<li>Superscript digits are attached to the proceeding word if it is likely to be a Physical unit (“m³”)</li>
+<li>The spaces inside a word-hyphen-spaces-word sequence are dropped.</li>
+<li>Superscript digits one to three, optionally prefixed with a superscript minus, and any subscript digits if attached to a proceeding word that is likely to be a physical unit (“m³”) or chemical formula (“[Al₂(SO₄)₃]²⁻” → “[”, “Al₂”, “(”, “SO₄”, “)₃”, “]²⁻”).</li>
 </ul>
 <p>This set of functionality is provided by the <tt class="docutils literal">word_tokenizer</tt>.
 Finally, if desired, a Web-mode function will further ensure that valid e-mail addresses and URLs (including fragments and parameters, but without actual space characters) are always maintained as single tokens (<tt class="docutils literal">web_tokenizer</tt>).
