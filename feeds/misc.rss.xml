@@ -188,17 +188,17 @@ To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
 &lt;h2&gt;Feedback and Conclusions&lt;/h2&gt;
 &lt;p&gt;All this functionality and the API itself are briefly documented on &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;'s &amp;quot;homepage&amp;quot;.
-As there is not very much functionality around, I hope that between this guide and the overview there the library should be fairly easy to use.
-Furthermore, in command-line mode, using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--help&lt;/span&gt;&lt;/tt&gt; option will explain you all functionality provided by the two scripts this package installs.&lt;/p&gt;
-&lt;p&gt;If you would be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub &lt;a class="reference external" href="https://github.com/fnl/segtok/issues"&gt;Issues&lt;/a&gt; page.
-In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.&lt;/p&gt;
-&lt;p&gt;Overall, I have attempted to keep the strategy used by segtok as slim as possible.
+As there is not very much functionality around, I hope that between this guide here and the overview there, the library should be fairly easy to use.
+Furthermore, in command-line mode, using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--help&lt;/span&gt;&lt;/tt&gt; option will explain you all options provided by the two scripts the PyPI package installs.&lt;/p&gt;
+&lt;p&gt;If you are be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub &lt;a class="reference external" href="https://github.com/fnl/segtok/issues"&gt;Issues&lt;/a&gt; page (no guarantees, though... ;-)).
+In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.
+Overall, I have attempted to keep the strategy used by segtok as slim as possible.
 So if you are using any heavy language processing or sequence analysis tools after segtok, it should have no impact on your throughput at all.&lt;/p&gt;
-&lt;p&gt;I have compared this library with several other approaches in the wild, and for regular texts, my experience is that it works substantially superior in both segmentation capabilities and runtime performance to all alternatives I have looked into, at least.
+&lt;p&gt;I have created this library after being disappointed by the other approaches in the wild, and for regular texts, my experience is that it works substantially superior in at least one of segmentation capabilities and/or runtime performance.
 As I do not wish to bash any existing tool, I will only name one sentence segmentation approach I like very much: Punkt Tokenizer by Kiss and Strunk, 2006.
 PT is a unsupervised, statistical approach to segmentation that “learns” whether to split sentences at sentence terminal markers.
-While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on modern Germanic and Romance texts that (mostly) follow a proper orthography.
-Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python &lt;a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html"&gt;implementation&lt;/a&gt; of the Punkt Tokenizer by &lt;a class="reference external" href="http://www.nltk.org"&gt;NLTK&lt;/a&gt;.&lt;/p&gt;
+While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on Germanic and Romance texts that (mostly) have a proper orthography.
+Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python &lt;a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html"&gt;implementation&lt;/a&gt; of the Punkt Tokenizer by NLTK.&lt;/p&gt;
 &lt;/div&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Mon, 12 Jan 2015 00:00:00 +0100</pubDate><guid>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</guid><category>text mining</category><category>nlp</category><category>Python</category></item><item><title>A review of sparse sequence taggers</title><link>http://fnl.es/a-review-of-sparse-sequence-taggers.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;

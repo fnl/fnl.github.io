@@ -241,17 +241,17 @@ To use them, just wrap your tokenizer with the preferred method:</p>
 <div class="section" id="feedback-and-conclusions">
 <h2>Feedback and Conclusions</h2>
 <p>All this functionality and the API itself are briefly documented on <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>'s &quot;homepage&quot;.
-As there is not very much functionality around, I hope that between this guide and the overview there the library should be fairly easy to use.
-Furthermore, in command-line mode, using the <tt class="docutils literal"><span class="pre">--help</span></tt> option will explain you all functionality provided by the two scripts this package installs.</p>
-<p>If you would be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub <a class="reference external" href="https://github.com/fnl/segtok/issues">Issues</a> page.
-In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.</p>
-<p>Overall, I have attempted to keep the strategy used by segtok as slim as possible.
+As there is not very much functionality around, I hope that between this guide here and the overview there, the library should be fairly easy to use.
+Furthermore, in command-line mode, using the <tt class="docutils literal"><span class="pre">--help</span></tt> option will explain you all options provided by the two scripts the PyPI package installs.</p>
+<p>If you are be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub <a class="reference external" href="https://github.com/fnl/segtok/issues">Issues</a> page (no guarantees, though... ;-)).
+In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.
+Overall, I have attempted to keep the strategy used by segtok as slim as possible.
 So if you are using any heavy language processing or sequence analysis tools after segtok, it should have no impact on your throughput at all.</p>
-<p>I have compared this library with several other approaches in the wild, and for regular texts, my experience is that it works substantially superior in both segmentation capabilities and runtime performance to all alternatives I have looked into, at least.
+<p>I have created this library after being disappointed by the other approaches in the wild, and for regular texts, my experience is that it works substantially superior in at least one of segmentation capabilities and/or runtime performance.
 As I do not wish to bash any existing tool, I will only name one sentence segmentation approach I like very much: Punkt Tokenizer by Kiss and Strunk, 2006.
 PT is a unsupervised, statistical approach to segmentation that “learns” whether to split sentences at sentence terminal markers.
-While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on modern Germanic and Romance texts that (mostly) follow a proper orthography.
-Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python <a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html">implementation</a> of the Punkt Tokenizer by <a class="reference external" href="http://www.nltk.org">NLTK</a>.</p>
+While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on Germanic and Romance texts that (mostly) have a proper orthography.
+Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python <a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html">implementation</a> of the Punkt Tokenizer by NLTK.</p>
 </div>
 
 
