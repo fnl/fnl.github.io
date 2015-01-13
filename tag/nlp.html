@@ -85,8 +85,15 @@ This then affects your downstream language processing, because the errors made b
 Therefore, text processing pipelines commonly end up doing both (2) and (3) using one such framework, but years of experience have shown me that you soon will be wanting to explore methods beyond whatever particular framework you chose offers.
 That then can mean that you have to re-conceptualize all of (2) to add a different tool or even need to move to a whole new framework, this can become burdensome.
 If the performance isn't that stellar either, it becomes disputable if switching is even worth the effort.
-Last but not least, this framework-based software development approach violates one of the most fundamental Unix philosophies:
-Do one thing and do it well.</p>
+Last but not least, this framework-based software development approach violates one of the most fundamental Unix philosophies:</p>
+<blockquote>
+“A  program should do one thing and it should do it well.
+Programs should handle <em>text streams</em>, because that is a universal interface.”
+(Doug McIlroy)</blockquote>
+<p>(Yes, I know, it seems this library is violating the “one thing” rule because it does two things: segmenting and tokenization.
+But as you will see, the library comes with two independent scripts and APIs for each step.)</p>
+<p>The next two sections are for newcomers to this topic and explains why segmenting and tokenizing isn't that trivial as it might appear.
+If you are an expert, you can skip the next two sections and read on where <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a> is introduced.</p>
 <div class="section" id="what-is-sentence-segmentation-and-tokenization">
 <h2>What is sentence segmentation and tokenization?</h2>
 <p>Nearly any text mining and/or linguistic analysis starts with a sentence and word segmentation step. That is, determining all the individual spans in a piece of text that constitute its sentences or words.
@@ -110,9 +117,9 @@ Names of chemical compounds, web addresses, mathematical expressions, etc. are a
 Another source of problems are texts from public internet fora, such as Twitter.
 Words are not spelled as expected, the spaces might be missing, and emoticons and other ASCII-art can make defining the correct tokenization strategy a rather difficult endeavor.
 Similarly, the sentence terminal marker in many Indo-European languages is the full-stop dot – which coincidentally is also used as the abbreviation marker in those languages.
-For example, detecting the two sentences in in the following text fragment is not that trivial, at least for a computer program.</p>
+For example, detecting the (right!) three sentences in in the following text fragment is not that trivial, at least for a computer program.</p>
 <blockquote>
-Hello, Mr. Man. He smiled!</blockquote>
+Hello, Mr. Man. He smiled!! This, i.e. that, is it.</blockquote>
 <p>If the text fragments are large or the span contains many dots, even humans will start to make many errors when trying to identify all the sentence boundaries.
 Certain proper nouns (gene names, or “amnesty international”, for example) might demand that the sentence begins with a lower case letter instead of the expected upper-case.
 A simple typo might have been the cause for a sentence starting with a lower-case letter, too.
@@ -122,20 +129,10 @@ Again in public internet fora, users sometimes resort to using only lower- or up
 <h2>Introducing segtok – a Python library for these two issues</h2>
 <div class="highlight"><pre>pip3 install segtok
 </pre></div>
-<p>Despite the ubiquitous need for this functionality in nearly any kind of text processing, there are not very many stand-alone modules around for sentence segmentation and tokenization.
-And there will be even fewer programs around if you require that they are able to handle the subtleties of orthographically valid symbol sequences.
-This means that you either have to utilize functionality provided within large frameworks (for example, <a class="reference external" href="http://www.nltk.org">NLTK</a> in Python or <a class="reference external" href="http://alias-i.com/lingpipe/">LingPipe</a> in Java), or you have to write your own code.
-Both approaches have their downsides, but in particular, using large frameworks violates a Unix philosophy I have come to love more than anything in my day-to-day IT life:</p>
-<blockquote>
-“A  program should do one thing and it should do it well.
-Programs should handle <em>text streams</em>, because that is a universal interface.”
-(Doug McIlroy)</blockquote>
-<p>(Yes, I know, it seems I am violating the “one thing” rule because segtok does two things.
-But as you will see, the library comes with two independent scripts and APIs for each step.)
-This approach to software allows you to easily use other programs for each element of your text processing tool-chain and allows you to quickly swap those elements.
-If you use large frameworks, you are easily constrained to it or have to accept that the one thing you want it to do isn't done efficiently.
-And the more you use one large framework only, the less attractive it is to switch your tooling.
-This has a direct, detrimental effect on your ability to experiment and adapt to new tools.</p>
+<p>The Unix approach to software (one thing only, with a text-based interface [that can be used with pipes]) allows you to easily use other programs for each link of your tool-chain, quickly exchanging any parts.
+If you use a large framework, you are easily constrained by it and might be tempted to accept that some of the things you will be doing with it aren't done efficiently.
+And the more you make use of that large framework, the less attractive it is to switch your tooling and move out of that &quot;comfort zone&quot;.
+I think this issue has a direct, detrimental effect on our ability to experiment and adapt to new tools, software, and methods.</p>
 <p>Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, the solution presented here is confined to processing somewhat regular Germanic (e.g., English) and Romance (e.g., Spanish) languages with a strong focus on those two and German, which all use Latin letters and standard symbols (like .?!”'([{, etc.).
 The tool being presented here – <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a> - is made to cope with text with the following properties:</p>
 <ul class="simple">
