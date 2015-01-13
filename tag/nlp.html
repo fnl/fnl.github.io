@@ -227,15 +227,13 @@ As before with the segmenter, I believe this recovery of false positives is the 
 To use them, just wrap your tokenizer with the preferred method:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">SimpleTokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">)):</span>
             <span class="k">yield</span> <span class="n">token</span>
-
         <span class="k">yield</span> <span class="bp">None</span>  <span class="c"># None to signal sentence terminals</span>
 
 
 <span class="c"># An even shorter usage example:</span>
-<span class="n">one_liner</span> <span class="o">=</span> <span class="p">[</span><span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span> <span class="k">for</span>
+<span class="n">my_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span> <span class="k">for</span>
              <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">my_text</span><span class="p">)]</span>
 </pre></div>
 </div>
