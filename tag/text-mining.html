@@ -87,12 +87,12 @@ If you don't believe me (never do!), just compare their performance/results agai
 Their strength compared to this library here, however, is language independence: the library discussed here (so far?) only works with Indo-European languages, while the mentioned segmenters from the above frameworks can be trained on nearly any language and domain.
 Particularly, the unsupervised PunktTokenizer only needs sufficient text and the presence of a terminal marker to learn the segmentation rules on its own.
 Similarly, if you want to parse noisy text with bad spelling (Twitter and other &quot;social&quot; media sources), you might be best advised to use those frameworks.
-So while I do think these libraries are all great as a whole - and I would recommend any one of them - it is mildly annoying if you have to learn a framework if all you want to do is common text pre-processing.</p>
+So while I do think these libraries are all great as a whole - and I would recommend any one of them - it is mildly annoying that you have to learn a framework if all you want to do is common text pre-processing.</p>
 <p>If you are analyzing corporate documents, patents, news articles, scientific texts, technical manuals, web pages, etc., that tend to have good orthography these statistical tools are not quite up to it and introduce far too many splits, at least for my taste.
 This then affects your downstream language processing, because the errors made by the pre-processing will be propagated and, in the worst case, even amplified.
 Therefore, text processing pipelines commonly end up doing both (2) and (3) using one such framework, but years of experience have shown me that you soon will be wanting to explore methods beyond whatever particular framework you chose offers.
-That then can mean that you have to re-conceptualize all of (2) to add a different tool or even need to move to a whole new framework, this can become burdensome.
-If the performance isn't that stellar either, it becomes disputable if switching is even worth the effort.
+That then can mean that you have to re-conceptualize all of (2) to add a different tool or even need to move to a whole new framework.
+If the performance of the newly integrated framework then isn't that stellar either, it becomes disputable if it even was worth the effort.
 Last but not least, this framework-based software development approach violates one of the most fundamental Unix philosophies:</p>
 <blockquote>
 “A  program should do one thing and it should do it well.
@@ -121,7 +121,7 @@ By following through with this terminology, the process of segmenting text into 
 <p>While this segmentation step might initially sound like a rather trivial problem, it turns out the rabbit hole is deep and no perfect solution has been found to date.
 Furthermore, the problem is made harder by the different symbols and their usage in distinct languages.
 For example, just finding word boundaries in Chinese is non-trivial, because there is not boundary marker (unlike the whitespace used by Indo-European languages).
-And when looking into technical documents, the problem can easily grow even more out of hand.
+And when looking into technical documents, the problem can grow even more out of hand.
 Names of chemical compounds, web addresses, mathematical expressions, etc. are all complicating the way one would normally define a set of word boundary detection rules.
 Another source of problems are texts from public internet fora, such as Twitter.
 Words are not spelled as expected, the spaces might be missing, and emoticons and other ASCII-art can make defining the correct tokenization strategy a rather difficult endeavor.
@@ -138,27 +138,27 @@ Again in public internet fora, users sometimes resort to using only lower- or up
 <h2>Introducing segtok – a Python library for these two issues</h2>
 <div class="highlight"><pre>pip3 install segtok
 </pre></div>
-<p>The Unix approach to software (one thing only, with a text-based interface [that can be used with pipes]) allows you to easily integrate programs at each stage of your tool-chain and makes it simple to quickly exchange any parts.
-If you use a large framework, on the other hand, you are easily constrained by it and might feel tempted to accept that some of the things you will be doing with it aren't done quite as efficiently as possible.
+<p>The Unix approach to software (one thing only, with a text-based interface [that can be used with pipes]) allows you to integrate programs at each stage of your tool-chain and makes it simple to quickly exchange any parts.
+If you use a large framework, on the other hand, you are constrained by it and might feel tempted to accept that some of the things you will be doing with it aren't done quite as efficiently as possible.
 And the more you make use of that large framework, the less attractive it is to switch your tooling and move out of that &quot;comfort zone&quot;.
 I think this issue has a direct, detrimental effect on our ability to experiment and adapt to new tools, software, and methods.</p>
-<p>Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, the library presented here, is confined to processing somewhat regular Germanic (e.g., English) and Romance (e.g., Spanish) languages.
+<p>Due to the many different ways this problem can be solved and the inherent complexity if considering all languages, <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, the library presented here, is confined to processing orthographically regular Germanic (e.g., English) and Romance (e.g., Spanish) texts.
 It has a strong focus on those two and German, which all use Latin letters and standard symbols (like .?!”'([{, etc.).
-This is mostly the case because I am not an expert in any other language, but help/contributions would be very welcome!
+This is mostly based on the fact that I only know those three languages to some reasonable degree (my tourist-Italian does not count...) - while help/contributions to make segtok work in more languages would be very welcome!
 Furthermore, <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a> was made to cope with text having the following properties:</p>
 <ul class="simple">
-<li>Indo-European languages (i.e., Unicode), preferentially Germanic and Romance ones.</li>
+<li>Fully capable of handling the full Unicode space.</li>
 <li>A sentence termination marker must be present.</li>
 <li>Texts that follow a mostly regular writing style - in particular, segtok is not tuned for Twitter's highly particular orthography.</li>
-<li>It can handle technical texts (containing, e.g., chemicals) and internet URIs (IP addresses, URLs and e-mail addresses).</li>
-<li>The tool is able to handle (valid) cases of sentences starting with a lower-case letter and correctly splits sentences enclosed by parenthesis or quotation marks.</li>
+<li>It can handle technical texts (containing, e.g., chemical compounds) and internet URIs (IP addresses, URLs and e-mail addresses).</li>
+<li>The tool is able to handle (valid) cases of sentences starting with a lower-case letter and correctly splits sentences enclosed by parenthesis and/or quotation marks.</li>
 <li>It is able to handle some of the more common cases of heavy abbreviation use (e.g., academic citations).</li>
-<li>It treats all <em>Unicode</em> dashes (Did you know there are quite a few in Unicode?) “The Right Way” - a functionality surprisingly absent from most tools.</li>
+<li>It treats all <em>Unicode</em> dashes (there are quite a few of them in Unicode land) “The Right Way” - a functionality surprisingly absent from most tools.</li>
 </ul>
-<p>Overall, the two scripts that come with segtok have a very simple text-line-based interface that works well with Unix pipes.
+<p>Overall, the two scripts that come with segtok have a very simple plain-text, line-based interfaces that work well when joined with Unix pipe streams.
 The first script, <tt class="docutils literal">segmenter</tt>, segments sentences in (plain) text files into one sentence per line.
 The other, <tt class="docutils literal">tokenizer</tt>, splits tokens on single lines (usually, the sentences from the <tt class="docutils literal">segmenter</tt>) by adding whitespaces where necessary.
-On the other hand, if you are a Python developer, you can use the functions (&quot;Look Ma, no nouns!&quot;...) provided by this library to incorporate the approach in your own software (the tool is MIT licensed).
+On the other hand, if you are a Python developer, you can use the functions (&quot;Look Ma, no nouns!&quot;...) provided by this library to incorporate this approach in your own software (the tool is MIT licensed, btw.).
 Segtok is designed to handle texts with characters from the entire Unicode space, not just ASCII or Latin-1 (ISO-8859-1).</p>
 </div>
 <div class="section" id="sentence-segmentation-with-segtok">
@@ -175,7 +175,7 @@ For example:</p>
 </ul>
 <p>The segmenter is constrained to only segment on single lines ( <tt class="docutils literal">split_single</tt> - sentences are not allowed to cross line boundaries) or to consecutive lines ( <tt class="docutils literal">split_multi</tt> - splitting is allowed across newlines inside “paragraphs” separated by two or more newlines).
 (If you really want to extract sentences that cross consecutive newline characters, please remove those line-breaks from your text first.
-Segtok assumes your content has semantical meaning, but those newlines effectively have become noise.)
+Segtok assumes your content has some minimal semantical meaning, while superfluous newlines are nothing more than noise.)
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:</p>
 <ul class="simple">
 <li>A. The first assumption.</li>
@@ -208,7 +208,7 @@ In summary, while coming at a computational cost, this second check is what allo
 <p>The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:</p>
-<p>a123, an alpha-/-beta stabilizer... → a123  ,  an  alpha  -/-  beta  stabilizer  ...</p>
+<p>a123, an alpha-/-beta stabilizer... → _a123_  _,_  _an_  _alpha_  _-/-_  _beta_  _stabilizer_  _..._</p>
 <p>This functionality is provided by the <tt class="docutils literal">symbol_tokenizer</tt> .
 Next, the non-alphanumeric <em>symbols</em> are further analyzed to determine if they should form part of a neighboring alphanumeric <em>word</em>.
 If so, the symbols are merged back together with their alphanumeric spans.</p>
