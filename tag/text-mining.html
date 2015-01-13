@@ -208,7 +208,7 @@ In summary, while coming at a computational cost, this second check is what allo
 <p>The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:</p>
-<p><tt class="docutils literal">a123, an <span class="pre">alpha-/-beta</span> <span class="pre">stabilizer...</span></tt> → <tt class="docutils literal">a123&nbsp; ,&nbsp; an&nbsp; alpha&nbsp; <span class="pre">-/-</span>&nbsp; beta&nbsp; stabilizer&nbsp; ...</tt></p>
+<p><tt class="docutils literal">a123, an <span class="pre">alpha-/-beta...</span></tt> → <tt class="docutils literal">a123&nbsp; ,&nbsp; an&nbsp; alpha&nbsp; <span class="pre">-/-</span>&nbsp; beta&nbsp; ...</tt></p>
 <p>This functionality is provided by the <tt class="docutils literal">symbol_tokenizer</tt> .
 Next, the non-alphanumeric <em>symbols</em> are further analyzed to determine if they should form part of a neighboring alphanumeric <em>word</em>.
 If so, the symbols are merged back together with their alphanumeric spans.</p>

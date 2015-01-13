@@ -154,7 +154,7 @@ In summary, while coming at a computational cost, this second check is what allo
 &lt;p&gt;The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:&lt;/p&gt;
-&lt;p&gt;&lt;tt class="docutils literal"&gt;a123, an &lt;span class="pre"&gt;alpha-/-beta&lt;/span&gt; &lt;span class="pre"&gt;stabilizer...&lt;/span&gt;&lt;/tt&gt; → &lt;tt class="docutils literal"&gt;a123&amp;nbsp; ,&amp;nbsp; an&amp;nbsp; alpha&amp;nbsp; &lt;span class="pre"&gt;-/-&lt;/span&gt;&amp;nbsp; beta&amp;nbsp; stabilizer&amp;nbsp; ...&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;a123, an &lt;span class="pre"&gt;alpha-/-beta...&lt;/span&gt;&lt;/tt&gt; → &lt;tt class="docutils literal"&gt;a123&amp;nbsp; ,&amp;nbsp; an&amp;nbsp; alpha&amp;nbsp; &lt;span class="pre"&gt;-/-&lt;/span&gt;&amp;nbsp; beta&amp;nbsp; ...&lt;/tt&gt;&lt;/p&gt;
 &lt;p&gt;This functionality is provided by the &lt;tt class="docutils literal"&gt;symbol_tokenizer&lt;/tt&gt; .
 Next, the non-alphanumeric &lt;em&gt;symbols&lt;/em&gt; are further analyzed to determine if they should form part of a neighboring alphanumeric &lt;em&gt;word&lt;/em&gt;.
 If so, the symbols are merged back together with their alphanumeric spans.&lt;/p&gt;
