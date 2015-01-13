@@ -4,9 +4,10 @@ Surprisingly, it is hard to find a good command-line tool for sentence segmentat
 Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a &lt;strong&gt;Python3&lt;/strong&gt; package, API, and Unix command-line tool to remedy this shortcoming.&lt;/p&gt;
 &lt;div class="section" id="text-processing-pipelines"&gt;
 &lt;h2&gt;Text processing pipelines&lt;/h2&gt;
-&lt;p&gt;This is the second in a series of posts that will present lean and elegant text processing tools to take you across the void from (1) to (3) (&lt;em&gt;and back&lt;/em&gt;, but more on that in the future).
-In the &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;last post&lt;/a&gt;, we discussed sequence taggers, as they form the entry point to (3).
-Here I am presenting my tools for pre-processing of Germanic and Romance languages (essentially, because I am not knowledgeable of any others...). Text processing pipelines roughly consist of the following three steps:&lt;/p&gt;
+&lt;p&gt;This is the second in a series of posts that will present lean and elegant text processing tools to take you across the void from your document collection to the linguistic processing tools (&lt;em&gt;and back&lt;/em&gt;, but more on that in the future).
+In the &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;last post&lt;/a&gt;, I discussed sequence taggers, as they form the entry point to natural language processing (NLP).
+Today I am presenting existing tools and a little library of mine for pre-processing of Germanic and Romance language text (essentially, because I am not knowledgeable of any others...).
+Text processing pipelines roughly consist of the following three steps:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Document extraction&lt;/li&gt;
 &lt;li&gt;Text pre-processing&lt;/li&gt;
@@ -15,7 +16,7 @@ Here I am presenting my tools for pre-processing of Germanic and Romance languag
 &lt;p&gt;There are many good tools around for document extraction, in particular Apache &lt;a class="reference external" href="http://tika.apache.org/"&gt;Tika&lt;/a&gt; is a great software library I highly recommend for this task.
 (As a matter of fact, if you want to improve your programming skills and see some real-life, clean implementations of nearly all Java/GoF software patterns, have a look at the innards of Tika.)
 If you want to extract data from PDFs in particular, you should be looking for your preferred tool in the huge collection of software that is based on the excellent &lt;a class="reference external" href="http://www.foolabs.com/xpdf/"&gt;xpdf&lt;/a&gt; library or even OCR libraries like &lt;a class="reference external" href="https://code.google.com/p/tesseract-ocr/"&gt;Tesseract&lt;/a&gt;.
-As for language processing, there are several tools for chunking and tagging with dynamic graphical models that you can choose from, as outlined in an &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;earlier post&lt;/a&gt; of mine, and for more involved dependency parsing techniques, libraries like &lt;a class="reference external" href="https://github.com/syllog1sm/redshift"&gt;RedShift&lt;/a&gt; are available.&lt;/p&gt;
+As for language processing, there are several tools for chunking and tagging with dynamic graphical models that you can choose from, as outlined in an &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;earlier post&lt;/a&gt; of mine, and for uncovering more involved semantic relationships, dependency parsers like &lt;a class="reference external" href="https://github.com/syllog1sm/redshift"&gt;RedShift&lt;/a&gt; are available.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="overview-and-motivation"&gt;
 &lt;h2&gt;Overview and motivation&lt;/h2&gt;
