@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/florian-leitner.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2015-01-12T00:00:00+01:00</updated><entry><title>segtok - a segmentation and tokenization library</title><link href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="alternate"></link><updated>2015-01-12T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; Surprisingly, it is hard to find a good, UNIX-y tool for sentence segmentation and linguistic word tokenization with all the bells and whistles needed to work with European languages. Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a Python package and command-line tool to remedy this shortcoming.&lt;/p&gt;
+&lt;p&gt;Text processing pipelines roughly consist of the following three steps:
+(1) document extraction,
+(2) text pre-processing, and
+(3) language processing.
+There are many good tools around for document extraction, in particular Apache &lt;a class="reference external" href="http://tika.apache.org/"&gt;Tika&lt;/a&gt; being a great software library I highly recommend for this task.
+(As a matter of fact, if you want to improve your programming skills and see some real-life, clean implementations of nearly all Java/GoF software patterns, have a look at the innards of Tika.)
+As for language processing, there are several tools for doing shallow parsing with sequence taggers that you can choose from, as outlined in an &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;earlier post&lt;/a&gt; of mine, and for more advanced dependency parsing techniques, libraries like &lt;a class="reference external" href="https://github.com/syllog1sm/redshift"&gt;RedShift&lt;/a&gt; are available.
+However, as for the intermediate step, the only decent way to bridge the gap is to use one of the large natural language processing (NLP) frameworks.
+You can use &lt;a class="reference external" href="http://www.nltk.org"&gt;NLTK&lt;/a&gt;, &lt;a class="reference external" href="http://alias-i.com/lingpipe/"&gt;LingPipe&lt;/a&gt;, &lt;a class="reference external" href="http://opennlp.apache.org/"&gt;OpenNLP&lt;/a&gt;, or quite a few other frameworks to bridge that gap.
+However, such a heavy-handed approach is to break a butterfly with a wheel.
+While I think these libraries are all great, and I would recommend any one of them, it is unwieldy that you need to study a whole framework just for text pre-processing.
+Therefore, we commonly end up just doing both (2) and (3) inside one such framework, but years of experience have shown me that you soon will be wanting additional tools beyond whatever particular framework you choose.
+But if you have to then re-conceptualize all of (2) to add a different tool or framework, this can become burdensome.
+Last but not least, as will be discussed below, that approach inherently violates the most fundamental Unix philosophy.&lt;/p&gt;
+&lt;p&gt;This is the first in a series of posts that will present lean and elegant Python tools to take you across the void from (1) to (3) (&lt;em&gt;and back&lt;/em&gt;, but more on that in the future).&lt;/p&gt;
 &lt;div class="section" id="what-is-sentence-segmentation-and-tokenization"&gt;
 &lt;h2&gt;What is sentence segmentation and tokenization?&lt;/h2&gt;
 &lt;p&gt;Nearly any text mining and/or linguistic analysis starts with a sentence and word segmentation step. That is, determining all the individual spans in a piece of text that constitute its sentences or words.
