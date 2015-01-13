@@ -52,7 +52,11 @@ alt="hit counter"></a></div></noscript>
                         <a href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="bookmark" title="Permanent Link to &quot;segtok - a segmentation and tokenization library&quot;">segtok - a segmentation and tokenization library</a>
                     </h2>
 
-                    <p><strong>tl;dr</strong> Surprisingly, it is hard to find a good, UNIX-y tool for sentence segmentation and word tokenization that works well with European languages. Here, I present <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, a <strong>Python3</strong> PyPI package and command-line tool to remedy this shortcoming.</p>
+                    <p><strong>tl;dr</strong>
+Surprisingly, it is hard to find a good command-line tool for sentence segmentation and word tokenization that works well with European languages.
+Here, I present <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, a <strong>Python3</strong> package, API, and Unix command-line tool to remedy this shortcoming.</p>
+<div class="section" id="text-processing-pipelines">
+<h2>Text processing pipelines</h2>
 <p>This is the second in a series of posts that will present lean and elegant text processing tools to take you across the void from (1) to (3) (<em>and back</em>, but more on that in the future).
 In the <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">last post</a>, we discussed sequence taggers, as they form the entry point to (3).
 Here I am presenting my tools for pre-processing of Germanic and Romance languages (essentially, because I am not knowledgeable of any others...). Text processing pipelines roughly consist of the following three steps:</p>
@@ -65,6 +69,9 @@ Here I am presenting my tools for pre-processing of Germanic and Romance languag
 (As a matter of fact, if you want to improve your programming skills and see some real-life, clean implementations of nearly all Java/GoF software patterns, have a look at the innards of Tika.)
 If you want to extract data from PDFs in particular, you should be looking for your preferred tool in the huge collection of software that is based on the excellent <a class="reference external" href="http://www.foolabs.com/xpdf/">xpdf</a> library or even OCR libraries like <a class="reference external" href="https://code.google.com/p/tesseract-ocr/">Tesseract</a>.
 As for language processing, there are several tools for chunking and tagging with dynamic graphical models that you can choose from, as outlined in an <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">earlier post</a> of mine, and for more involved dependency parsing techniques, libraries like <a class="reference external" href="https://github.com/syllog1sm/redshift">RedShift</a> are available.</p>
+</div>
+<div class="section" id="overview-and-motivation">
+<h2>Overview and motivation</h2>
 <p>However, for the intermediate pre-processing, except for cooking up your own solution, the currently best solution is to use one of the large natural language processing (NLP) frameworks.
 There are a few sentence segmentation and tokenization libraries around, particularly in Perl, but they do not have the desired properties to handle more complex cases or are long <a class="reference external" href="http://mailman.uib.no/public/corpora/2007-October/005429.html">forgotten</a>.
 The only more recent, statistics-based tool I could find is <a class="reference external" href="https://code.google.com/p/splitta/">splitta</a>, but development seems to have died off.
@@ -93,6 +100,7 @@ Programs should handle <em>text streams</em>, because that is a universal interf
 But as you will see, the library comes with two independent scripts and APIs for each step.)</p>
 <p>The next two sections are for newcomers to this topic and explains why segmenting and tokenizing isn't that trivial as it might appear.
 If you are an expert, you can skip the next two sections and read on where <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a> is introduced.</p>
+</div>
 <div class="section" id="what-is-sentence-segmentation-and-tokenization">
 <h2>What is sentence segmentation and tokenization?</h2>
 <p>Nearly any text mining and/or linguistic analysis starts with a sentence and word segmentation step. That is, determining all the individual spans in a piece of text that constitute its sentences or words.
