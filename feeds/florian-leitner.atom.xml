@@ -123,18 +123,9 @@ For example:&lt;/p&gt;
 Segtok assumes your content has semantical meaning, but those newlines effectively have become noise.)
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;&lt;ol class="first upperalpha"&gt;
-&lt;li&gt;The first assumption.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;ol class="first arabic" start="2"&gt;
-&lt;li&gt;And that is two.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;ol class="first lowerroman" start="3"&gt;
-&lt;li&gt;Third things here.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
+&lt;li&gt;A. The first assumption.&lt;/li&gt;
+&lt;li&gt;2. And that is two.&lt;/li&gt;
+&lt;li&gt;(iii) Third things here.&lt;/li&gt;
 &lt;li&gt;What the heck??!?!&lt;/li&gt;
 &lt;li&gt;A terminal ellipsis...&lt;/li&gt;
 &lt;/ul&gt;
@@ -160,7 +151,7 @@ In other words, while coming at a computational cost, this second check allows s
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_possessive_markers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The tokenization approach is built up similarly.
-First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
+First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together based on orthographic properties.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:&lt;/p&gt;
 &lt;p&gt;a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...&lt;/p&gt;
 &lt;p&gt;This functionality is provided by the &lt;tt class="docutils literal"&gt;symbol_tokenizer&lt;/tt&gt; .

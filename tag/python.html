@@ -177,18 +177,9 @@ For example:</p>
 Segtok assumes your content has semantical meaning, but those newlines effectively have become noise.)
 It gracefully handles enumerations, dots, multiple terminals, ellipsis, and similar issues:</p>
 <ul class="simple">
-<li><ol class="first upperalpha">
-<li>The first assumption.</li>
-</ol>
-</li>
-<li><ol class="first arabic" start="2">
-<li>And that is two.</li>
-</ol>
-</li>
-<li><ol class="first lowerroman" start="3">
-<li>Third things here.</li>
-</ol>
-</li>
+<li>A. The first assumption.</li>
+<li>2. And that is two.</li>
+<li>(iii) Third things here.</li>
 <li>What the heck??!?!</li>
 <li>A terminal ellipsis...</li>
 </ul>
@@ -214,7 +205,7 @@ In other words, while coming at a computational cost, this second check allows s
 <span class="kn">from</span> <span class="nn">segtok.tokenizer</span> <span class="kn">import</span> <span class="n">split_possessive_markers</span><span class="p">,</span> <span class="n">split_contractions</span>
 </pre></div>
 <p>The tokenization approach is built up similarly.
-First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together.
+First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join tokens back together based on orthographic properties.
 The basic, maximum split rule is to segment everything that is separated by spaces and then within the remaining non-space spans, split anything that is alphanumeric from any other symbols:</p>
 <p>a123, an alpha/beta stabilizer... → a123  ,  an  alpha  /  beta  stabilizer  ...</p>
 <p>This functionality is provided by the <tt class="docutils literal">symbol_tokenizer</tt> .
