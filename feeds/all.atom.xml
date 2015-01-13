@@ -189,6 +189,7 @@ To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
 As there is not very much functionality around, I hope that between this guide here and the overview there, the library should be fairly easy to use.
 Furthermore, in command-line mode, using the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--help&lt;/span&gt;&lt;/tt&gt; option will explain you all options provided by the two scripts the PyPI package installs.&lt;/p&gt;
 &lt;p&gt;If you are be looking for new features, you are welcome to extend the library or request a new feature on the tool's GitHub &lt;a class="reference external" href="https://github.com/fnl/segtok/issues"&gt;Issues&lt;/a&gt; page (no guarantees, though... ;-)).
+As a forum for discussing this tool, please use this &lt;a class="reference external" href="http://www.reddit.com/r/Python/comments/2sala9/segtok_a_rulebased_sentence_segmenter_and_word/"&gt;Reddit&lt;/a&gt; thread.
 In addition, if you use this library and run into any problems, I would be glad to receive bug reports there, too.
 Overall, I have attempted to keep the strategy used by segtok as slim as possible.
 So if you are using any heavy language processing or sequence analysis tools after segtok, it should have no impact on your throughput at all.&lt;/p&gt;
