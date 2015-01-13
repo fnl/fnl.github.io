@@ -75,7 +75,7 @@ As for language processing, there are several tools for chunking and tagging wit
 <h2>Overview and motivation</h2>
 <p>However, for the intermediate pre-processing, short from cooking up your own solution, the currently best solution is to use one of the large natural language processing (NLP) frameworks.
 There are a few sentence segmentation and tokenization libraries around, particularly in Perl, but they do not have the desired properties to handle more complex cases or are long <a class="reference external" href="http://mailman.uib.no/public/corpora/2007-October/005429.html">forgotten</a>.
-The only more recent, statistics-based tool I could find is <a class="reference external" href="https://code.google.com/p/splitta/">splitta</a>, but development seems to have died off.
+The only more recent, statistics-based tool I could find is <a class="reference external" href="https://code.google.com/p/splitta/">splitta</a>, but development seems to have died off yet again.
 If you check out its Issues page, nobody seems to be fixing the problems, it does not work with Python 3, and does not have a clean command-line implementation ready for text processing with Unix.
 Another example is <a class="reference external" href="https://www.tm-town.com/natural-language-processing">Pragmatic Segmenter</a>, a rule-based segmenter written in Ruby.
 But if you feed it examples with abbreviations or other occurrences of problematic issues I will discuss in this post, you will see that it performs worse than even the statistical approaches provided by the frameworks discussed next.</p>
