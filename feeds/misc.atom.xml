@@ -5,24 +5,24 @@ Therefore, I have created the &lt;a class="reference external" href="https://git
 &lt;p&gt;&lt;a class="reference external" href="https://gate.ac.uk"&gt;GATE&lt;/a&gt; (General Architecture for Text Engineering) has crystallized itself as my preferred tool for teaching text mining and information extraction.
 While anybody might argue that there are leaner and faster frameworks around, it has one pretty outstanding, unique quality: it is (mostly) GUI-based.&lt;/p&gt;
 &lt;p&gt;During any course I teach, the most frequent question I get is what text mining software is around that can be used &lt;em&gt;without any a priori programming skills&lt;/em&gt;.
-In other words, most of my students hope that some graphical tool would be available that can be used without having to study a programming language first.
+In other words, most of my students are looking for a &amp;quot;graphical&amp;quot; text mining environment that can be used without first having to learn how to program.
 For example, to use NLTK, LingPipe, OpenNLP, StandfordNLP, UIMA, etc., you will first have to learn how to program in the chosen framework's API language.
 Therefore, the only entirely true answer is that only commercial tools can offer a &lt;strong&gt;pure&lt;/strong&gt; &amp;quot;graphical user interface&amp;quot; and require no programming experience.
 However, GATE can be used &lt;em&gt;mostly&lt;/em&gt; without having to write code - with the exception of its &amp;quot;JAPE-glue&amp;quot;.
-&lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch8.html#chap:jape"&gt;JAPE&lt;/a&gt; stands for &amp;quot;Java Annotation Patterns Engine&amp;quot; and is GATE's solution to make data inter-operable between different processing resources that often have different I/O requirements.
+&lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch8.html#chap:jape"&gt;JAPE&lt;/a&gt; stands for &amp;quot;Java Annotation Patterns Engine&amp;quot; and is GATE's solution to make data inter-operable between different text mining resources that commonly have different I/O requirements.
 Furthermore, JAPE can be used to design entire rule-based annotation resources of their own right.
 However, JAPE &amp;quot;grammars&amp;quot; consist of rules where the left-hand side of the grammatical rule matches (existing) GATE annotations using a (clear and simple) syntax, while the right-hand side of those rules can contain Java code that will somehow modify those annotations.
 Therefore, GATE rids you from nearly all need of writing code of your own, but there is still the need to write (small) blocks of (simple) code for the right-hand sides of JAPE's rules.
 Luckily, GATE's extensive documentation provides lots of &lt;a class="reference external" href="https://gate.ac.uk/wiki/jape-repository/"&gt;examples&lt;/a&gt; to start with for the novice.&lt;/p&gt;
 &lt;p&gt;Overall, this makes GATE the only free open source text mining software that provides a graphical interface &lt;em&gt;and&lt;/em&gt; requires (nearly) no programming skills to use it.
-As I stated initially, this fact alone makes it the best tool around for my classes, because most of my students are neither computer scientists nor do they know how to code.&lt;/p&gt;
+As I stated initially, this fact alone makes it the best fit for main need of my typical tutorial attendees, because most of them are neither computer scientists nor do they (want to) know how to code.&lt;/p&gt;
 &lt;p&gt;As mentioned in the introduction, &amp;quot;out-of-the-box&amp;quot; GATE isn't always the fastest solution.
-However, due to its open source nature that only means that if you need to go faster, you always can replace any slow &amp;quot;pieces&amp;quot; with whatever you consider a better fit.&lt;/p&gt;
+However, due to its open source nature that only means that if you need to go faster, you always can replace any slow pieces with whatever you consider a better fit (if you know how to program, that is...)&lt;/p&gt;
 &lt;p&gt;For example, the &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework"&gt;Generic Tagger&lt;/a&gt; framework is a &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch4.html#x7-690004"&gt;CREOLE&lt;/a&gt; &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-540003.7"&gt;Processing Resource&lt;/a&gt; that allows you to take any existing &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;sequence tagger&lt;/a&gt; and use it to create annotations for a GATE pipeline.
 This is pretty nifty, because you can use whatever Part-of-Speech tagger or Named Entity Recognition system you like.
-You can even just use a generic tagger, train it on your own, and integrate it in your pipelines.&lt;/p&gt;
-&lt;p&gt;However, due to the generic nature of this resource, it is not very efficient.
-More precisely, to do annotations with it, this tagger &amp;quot;wrapper&amp;quot; operates as follows &lt;strong&gt;on each input&lt;/strong&gt;:&lt;/p&gt;
+You can even use a generic sequence tagger, train your own model, and integrate it in your text mining and information extraction pipelines, all without having to learn how to program first.&lt;/p&gt;
+&lt;p&gt;However, precisely due to the highly generic nature of the Generic Tagger framework, it is not very efficient.
+To create GATE annotations with it, this tagger &amp;quot;wrapper&amp;quot; operates as follows &lt;strong&gt;on each input&lt;/strong&gt;:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;A file with the input text for the tagger is written to disk.&lt;/li&gt;
 &lt;li&gt;A new tagger sub-process is launched by the wrapper, reading the input from the file.&lt;/li&gt;
@@ -33,15 +33,17 @@ More precisely, to do annotations with it, this tagger &amp;quot;wrapper&amp;quo
 If you have already thought that doing this for each document is pretty bad, doing that loop for each token grinds your pipeline to a standstill.
 Second, if you are a programmer, the expression &amp;quot;a new sub-process is launched&amp;quot; in the second point should be alarming to you.
 If the tagger uses some large resources, like a dictionary (which they quite frequently do), starting up a new tagger process can be extremely expensive.
-In general, of all concurrent programming concepts, launching a new &lt;em&gt;process&lt;/em&gt; is the probably most expensive resource you can create &amp;quot;within&amp;quot; a program.
-Therefore, while the Generic Tagger is cool to have so you can to try out &amp;quot;foreign&amp;quot; sequence taggers, the way it is implemented makes it nearly useless for any real-world tasks.
+In general, of all concurrent programming concepts, launching a new &lt;em&gt;process&lt;/em&gt; is the probably most expensive resource you can create &amp;quot;within&amp;quot; a program and should be done as sparingly as possible.
+The reason the plug-in is designed in this peculiar way isn't because the framework was written by inexperienced programmers, however.
+It is that way because due to this design, it truly generic: Nearly any I/O format and tagger can be handled with this wrapper.&lt;/p&gt;
+&lt;p&gt;However, while the Generic Tagger is pretty cool to have on board so you can to try out &amp;quot;foreign&amp;quot; sequence taggers, the way it is implemented makes it nearly useless for a &amp;quot;real&amp;quot; pipeline, i.e., beyond experimentation.
 For example, just tagging all gene mentions in a few thousand &lt;a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed"&gt;PubMed&lt;/a&gt; sentences with this wrapper takes &lt;em&gt;days&lt;/em&gt;.
-But PubMed has over 24 million abstracts and (I think to recall) roughly about 100 million sentences, so go figure...&lt;/p&gt;
+But PubMed has over 24 million abstracts and (I think to recall) roughly around 100 million sentences, so go figure...&lt;/p&gt;
 &lt;p&gt;Therefore, I am releasing my own CREOLE processing resource that works similarly to the Generic Tagger, but does not do any disk I/O for inter-process communication or launch more than one &amp;quot;singleton&amp;quot; process for the entire pipeline you are designing.
 However, this puts some restrictions on the kinds of taggers you can use:&lt;/p&gt;
 &lt;p&gt;1. The tagger must support a &lt;strong&gt;streaming I/O&lt;/strong&gt; model.
 That is, the tagger must be able to read from some &amp;quot;input stream&amp;quot;, such as UNIX' &lt;cite&gt;STDIN&lt;/cite&gt;, and write to some &amp;quot;output stream&amp;quot;, commonly UNIX' &lt;cite&gt;STDOUT&lt;/cite&gt;.
-Another way of putting this is that your tagger should be able to handle UNIX' piped command syntax, something like this: &lt;cite&gt;cat plain_text.txt | some_tagger &amp;gt; tagged_text.txt&lt;/cite&gt;.&lt;/p&gt;
+Another way of putting this is that your tagger should be able to handle UNIX' piped command syntax, something like this: &lt;tt class="docutils literal"&gt;cat plain_text.txt | some_tagger &amp;gt; tagged_text.txt&lt;/tt&gt;.&lt;/p&gt;
 &lt;p&gt;2. The tagger must work with POSIX' classical line-based interface.
 That is, the tagger must take one continuous block of text as &lt;em&gt;input&lt;/em&gt;, &lt;strong&gt;terminated with a newline&lt;/strong&gt; character.
 For example, it should take one token, sentences or block of text as input (not containing any newlines), and, once it receives a newline character, start tagging that input.&lt;/p&gt;
@@ -55,10 +57,10 @@ What it does differently to the Generic Tagger is the following:&lt;/p&gt;
 &lt;li&gt;The Processing Resource &lt;strong&gt;configuration&lt;/strong&gt; is nearly the same, but some of the defaults have been adapted to better reflect the nature of the on-line processing model.&lt;/li&gt;
 &lt;li&gt;Once your pipeline is &lt;strong&gt;running&lt;/strong&gt;, the text is piped into the tagger sub-process and results are read from the output stream, while intermediary files are no longer created.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Please clone the tagger from GitHub (&lt;cite&gt;git clone https://github.com/fnl/OnlineTaggerFramework&lt;/cite&gt;) into your local CREOLE &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-530003.6"&gt;user plugin directory&lt;/a&gt;.
-Then you can load my plug-in from the CREOLE Plugin Manager and once you create a new &lt;cite&gt;GenericOnlineTagger&lt;/cite&gt; processing resource, you will be asked to supply the initial configuration data to start the tagger sub-process (tagger binary path, directory to run in [if any], runtime flags and arguments [if any]).&lt;/p&gt;
-&lt;p&gt;If you run into any issue using this plug-in, please consider filing a &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework/issues"&gt;bug report&lt;/a&gt; on GitHub so I can fix the problem for anybody using it.
-I hope with this plug-in you will enjoy using external taggers with GATE as much as I do!&lt;/p&gt;
+&lt;p&gt;Please clone the tagger from GitHub (&lt;tt class="docutils literal"&gt;git clone &lt;span class="pre"&gt;https://github.com/fnl/OnlineTaggerFramework&lt;/span&gt;&lt;/tt&gt;) into your local CREOLE &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-530003.6"&gt;user plugin directory&lt;/a&gt;.
+Then you can load my plug-in from the CREOLE Plugin Manager and once you instantiate a new &lt;tt class="docutils literal"&gt;GenericOnlineTagger&lt;/tt&gt; Processing Resource, you will be asked to supply the initial configuration data to launch the tagger in its own sub-process (tagger binary path, directory to run in [if any], runtime flags and arguments [if any]).&lt;/p&gt;
+&lt;p&gt;If you run into any issue using this plug-in, please consider filing a &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework/issues"&gt;bug report&lt;/a&gt; on GitHub so I can fix the problem for everybody using it.
+I hope with the release of this plug-in you finally will enjoy integrating external taggers into your GATE pipelines!&lt;/p&gt;
 </summary><category term="text mining"></category><category term="nlp"></category><category term="Java"></category></entry><entry><title>segtok - a segmentation and tokenization library</title><link href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="alternate"></link><updated>2015-01-12T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;
 Surprisingly, it is hard to find a good command-line tool for sentence segmentation and word tokenization that works well with European languages.
 Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a &lt;strong&gt;Python 2.7 and 3&lt;/strong&gt; package, API, and Unix command-line tool to remedy this shortcoming.&lt;/p&gt;
