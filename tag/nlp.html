@@ -55,7 +55,8 @@ alt="hit counter"></a></div></noscript>
 
                     <p><strong>tl;dr</strong> for a stressed out generation:
 <a class="reference external" href="https://gate.ac.uk">GATE</a>'s <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework">Generic Tagger</a> framework is a CREOLE plug-in that allows you to wrap any existing <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">sequence tagger</a> and use it to create annotations in your pipeline, but it is very slow.
-Therefore, I have created the <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> GATE plug-in that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &quot;singleton&quot; sub-process per Processing Resource instance.</p>
+Therefore, I have created the <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> GATE plug-in that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &quot;singleton&quot; sub-process per Processing Resource instance.
+This version can in some cases be several <em>orders</em> of magnitude faster than the built-in framework.</p>
 <p><a class="reference external" href="https://gate.ac.uk">GATE</a> (General Architecture for Text Engineering) has crystallized itself as my preferred tool for teaching text mining and information extraction.
 While anybody might argue that there are leaner and faster frameworks around, it has one pretty outstanding, unique quality: it is (mostly) GUI-based.</p>
 <p>During any text mining course I teach, the most frequent question I get is what text mining software is around that can be used <em>without any a priori programming skills</em>.
