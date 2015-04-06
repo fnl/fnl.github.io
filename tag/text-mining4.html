@@ -30,7 +30,7 @@ alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
 <div id="header">
             <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/tag/text-mining4.html">text mining</a></li>
+                <li class="ephemeral selected"><a href="http://fnl.es/tag/text-mining.html">text mining</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
@@ -42,51 +42,198 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">Jul 2014</h4>
+                <h4 class="date">Sep 2014</h4>
 
 								<div class="mobile-hide">
-									<!--a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
-									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script-->
+									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
+									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/an-introduction-to-statistical-text-mining.html" rel="bookmark" title="Permanent Link to &quot;An Introduction to Statistical Text Mining&quot;">An Introduction to Statistical Text Mining</a>
+                        <a href="http://fnl.es/medline-kung-fu.html" rel="bookmark" title="Permanent Link to &quot;MEDLINE Kung-Fu&quot;">MEDLINE Kung-Fu</a>
                     </h2>
 
-                    <p>Last week we had a really great time at the first hands-on text mining workshop in the context of the <a class="reference external" href="http://www.dia.fi.upm.es/ASDM">Advanced Statistics and Data Mining</a> Summer School. This one-week course is an introduction to text mining from the &quot;bottom up&quot; to a bunch of motivated summer students, with the practical parts based on Python and the <a class="reference external" href="http://www.nltk.org/">NLTK</a>. The presentation was part of the 9th iteration of the Summer School that is located in the sunniest capital of Europe: Madrid (well, <em>ex aequo</em> with Athens, at least). In its context, I presented 15 hours worth of practical and theoretical background on machine learning for text mining to fourteen participants from all over the world. With this post I am sharing the slides and tutorial files (<a class="reference external" href="http://ipython.org/">IPython</a> Notebooks) with the world for free (see the Creative Commons <a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/">BY-SA</a> licensing details). While much of the material should speak for itself, it might not &quot;save&quot; you from visiting a text mining class (maybe mine, next summer?).</p>
-<div class="section" id="overview">
-<h2>Overview</h2>
-<p>The theory mostly focuses on explaining the methods and statistics behind machine learning <em>for text mining</em> - without requiring a particular background other than sharp high-school maths. The practicals on the other hand make use of Python, particularly online <a class="reference external" href="http://ipython.org/">IPython</a> Notebooks. Therefore, prior contact with Python would be useful to profit the most from the practicals, but it is not required to follow the course. IPython's Notebooks act very much like MATLAB Notebooks, but run online in any modern browser, are based on open source software that requires no license fee, and provide facilities to place documentation and mathematical formulas between the code snippets, evaluation results, and graphical plots. Therefore, these notebooks serve as take home material for the students to study and play around with, even well after the course. To illustrate the power of IPython, learning how to work in this environment immediately enables you to run distributed, high-performance computations &quot;off the shelf&quot; (e.g., via <a class="reference external" href="http://star.mit.edu/cluster/">StarCluster</a> on Amazon EC2 Clusters).</p>
+                    <p>If you are a computational linguist, data analyst, or bioinformatician working with biological text corpora (on medicine, neuroscience, molecular biology, etc.), you will rather sooner than later need access to <a class="reference external" href="http://www.nlm.nih.gov/bsd/pmresources.html">MEDLINE</a>.
+Right now, the MEDLINE <a class="reference external" href="http://www.nlm.nih.gov/pubs/factsheets/dif_med_pub.html">subset</a> (&quot;baseline&quot;) of PubMed contains nearly <a class="reference external" href="http://www.nlm.nih.gov/bsd/licensee/baselinestats.html">23 million records</a>, all with titles, author names, etc..
+The majority of those records (officially called <strong>citations</strong>) also have an abstract (on average about 5-8 sentences long).
+This means you are looking at a significantly sized text collection with plenty of metadata (links, author names, MeSH terms, chemicals, etc.) you will need to handle if you want to make use of all this information your own data mining application.</p>
+<p>In my now about eight years of BioNLP (natural language processing for biology) work, I have not been able to locate a simple, up-to-date set of command-line tools to manage a MEDLINE DB mirror with all its metadata.
+As I am an innately lazy guy, I have worked out a number of useful shell scripts I regularly use to work with MEDLINE data that I am documenting here.
+To make this all work locally, and during a less lazy week, I wrote a tool called <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> to create and manage an up-to-date (i.e., running daily, automatic updates) mirror of MEDLINE with the option of storing the citations either in a <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> database.</p>
+<div class="section" id="synchronizing-the-medline-archives">
+<h2>Synchronizing the MEDLINE archives</h2>
+<p>First you will most likely need to actually download the MEDLINE archives, given that your institute has a (<a class="reference external" href="http://www.nlm.nih.gov/databases/journal.html">free</a>) subscription to the archives.
+If you are on a Mac, you are already provided with the necessary tools:
+<tt class="docutils literal">mount_ftp</tt> and <tt class="docutils literal">rsync</tt> should be installed on every Mac.
+If you are on Linux, the <tt class="docutils literal">curlftpfs</tt> package simulates a file system for a FTP site accessed with with the cURL library, doing the same thing as <tt class="docutils literal">mount_ftp</tt> on a Mac.
+In other words, we will mount the MEDLINE baseline and updates directories from the FTP site as a file system and then synchronize them with our local copy of each directory.
+To do the synchronization step, we will be using <tt class="docutils literal">rsync</tt>.
+On a GNU/Linux machine, you can use your package manager to install <tt class="docutils literal">curlftpfs</tt> and <tt class="docutils literal">rsync</tt>, if they are not already present.
+Once you have the packages installed, create a directory that acts as mount point, e.g., <tt class="docutils literal">ftpfs</tt>, as well as the <tt class="docutils literal">baseline</tt> directory, and the <tt class="docutils literal">updates</tt> directory.
+Then, the relevant commands are:</p>
+<ol class="arabic">
+<li><p class="first">To synchronize the baseline directory (replace <tt class="docutils literal">curlftpfs</tt> with <tt class="docutils literal">mount_ftp</tt> on a Mac):</p>
+<pre class="literal-block">
+curlftpfs ftp://ftp.nlm.nih.gov/nlmdata/.medleasebaseline/gz/ ftp_mount/
+rsync -r -t -v --progress ftp_mount/* baseline/
+</pre>
+</li>
+<li><p class="first">To synchronize the updates directory (replace <tt class="docutils literal">curlftpfs</tt> with <tt class="docutils literal">mount_ftp</tt> on a Mac):</p>
+<pre class="literal-block">
+curlftpfs ftp://ftp.nlm.nih.gov/nlmdata/.medlease/gz/ ftp_mount/
+rsync -r -t -v --progress ftp_mount/* updates/
+</pre>
+</li>
+</ol>
+<p>To unmount the FTP directories once rsync is done, you can use <tt class="docutils literal">fusermount <span class="pre">-u</span> ftp_mount</tt> on Linux and <tt class="docutils literal">umount ftp_mount</tt> on a Mac.
+If you want to do the latter process regularly (MEDLINE sports daily updates), you might consider placing the update command series into a script and add it to your daily cron jobs.</p>
+<p>With this, you now have created the foundations to easily maintain a 24-hourly updated copy of all of MEDLINE on your site.
+And because of using rsync, you do not have to worry about broken connections or communication errors - if the process breaks halfway, rsync will restart exactly where it left off.</p>
 </div>
-<div class="section" id="day-1-introduction">
-<h2>Day 1 - Introduction</h2>
-<p><a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/statistical-text-mining-introduction-florian-leitner">Lecture 1</a> starts with a light-weight introduction to text mining, natural language understanding and generation, and a statistics approach to artificial intelligence in general. It provides a taste of both what is to come in the course and what might be of interest to look into afterwards. It closes with a brief reprise of elementary Bayesian statistics and conditional probability, using the Monty Hall problem as a practical example of <em>Bayes' Rule</em>. The <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/IPython%20Notebook%20Introduction.ipynb">practical #1</a> introduces the use of <a class="reference external" href="http://ipython.org/">IPython</a> and its online Notebook, as well as some aspects of <a class="reference external" href="http://www.numpy.org/">NumPy</a> (particularly, contrasting NumPy/SciPy to <a class="reference external" href="http://www.r-project.org/">R</a>). The most important aspects of the <strong>Natural Language ToolKit</strong> (<a class="reference external" href="http://www.nltk.org/">NLTK</a>) Python library are presented during the <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Introduction%20to%20NumPy%20and%20NLTK.ipynb">second part</a> of the practical; The NTLK is frequently used during the course. As an exercise to become familiar with Python and the NLTK, participants are encouraged to implement a function to let two NLTK chat-bots converse between each other.</p>
+<div class="section" id="creating-a-local-medline-database-from-the-archives">
+<h2>Creating a local MEDLINE database from the archives</h2>
+<p>Once the MEDLINE files are installed, it would be possible to parse (or grep...) the XML and manually extract whatever you need from them.
+However, working this way will become cumbersome very fast, while placing the data into a well-structured database schema would help immensely.
+To do this on the fly, I have created <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a>, a Python command-line tool to bootstrap and manage a local MEDLINE repository.
+All you need to have installed to get this tool to work is <a class="reference external" href="https://www.python.org/downloads/">Python</a> (3.x); You can install <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> with Python's own package manager: <tt class="docutils literal">pip install medic</tt> (possibly with the option <tt class="docutils literal"><span class="pre">--user</span></tt> if you are not allowed to administer the machine you are working on).
+Second, you need to decide which database you want to use for MEDLINE.
+You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)</p>
+<p>As soon as you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
+As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:</p>
+<div class="highlight"><pre>medic parse baseline/medline1?n*.xml.gz
+
+<span class="k">for </span>table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
+             identifiers keywords publication_types qualifiers sections;
+  <span class="k">do </span>psql medline -c <span class="s2">&quot;COPY $table FROM &#39;`pwd`/${table}.tab&#39;;&quot;</span>;
+<span class="k">done</span>
+</pre></div>
+<p>If you are loading the files into SQLite, you can load the data directly with <tt class="docutils literal">medic insert</tt>, although it will be considerably slower than the Postgres parse-and-dump method:</p>
+<pre class="literal-block">
+medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
+</pre>
+<p>Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the <tt class="docutils literal">updates</tt> directory:</p>
+<div class="highlight"><pre><span class="k">for </span>file in updates/medline1?n*.xml.gz;
+  <span class="k">do </span>medic --update parse <span class="nv">$file</span>;
+  <span class="c"># NB: the above command created the file &quot;delete.txt&quot; (a list of PMIDs to delete)</span>
+  medic delete delete.txt
+
+  <span class="k">for </span>table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
+               identifiers keywords publication_types qualifiers sections;
+    <span class="k">do </span>psql medline -c <span class="s2">&quot;COPY $table FROM &#39;`pwd`/${table}.tab&#39;;&quot;</span>;
+  <span class="k">done</span>;
+<span class="k">done</span>;
+</pre></div>
+<p>With SQLite you can again take the direct, but slower <tt class="docutils literal">medic update</tt> route:</p>
+<pre class="literal-block">
+medic --url sqlite:///MEDLINE.db update updates/medline1?n*.xml.gz
+</pre>
+<p>In theory, the simpler insert/update commands can be used for Postgres, too, but that is only recommended if you are loading citations in the thousands, not millions.
+If you whish to cron-job this, you should only <tt class="docutils literal">medic update</tt> the latest file(s) - no need to parse-and-dump for a single file, not even for Postgres. In other words, make sure you are not working through all the files in the <tt class="docutils literal">updates</tt> directory every day...</p>
 </div>
-<div class="section" id="day-2-language-modeling">
-<h2>Day 2 - Language Modeling</h2>
-<p>On the second day, <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-25-language-modeling-florian-leitner">lecture 2</a> introduces the chain rule of conditional probability and builds on that to take you from the <em>Markov property</em> over <em>language modeling</em> to <em>smoothing techniques</em>. In class, you learn how to operate on n-gram frequency tables and we work out the conditional probability distributions of bi- and trigram models. This should ensure  students obtain well-grounded foundations of statistical language processing. After a <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Building%20a%20Language%20Model%20in%207%20Steps.ipynb">quick overview</a>, the accompanying <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Language%20Modelling%20with%20NLTK.ipynb">exercises #2</a> demonstrate how to build language models with the NLTK and participants are tasked with generating their own models using advanced smoothing techniques.</p>
+<div class="section" id="quickly-bootstrapping-a-subset-of-medline">
+<h2>Quickly bootstrapping a subset of MEDLINE</h2>
+<p>Often I find myself only needing a tiny subset of MEDLINE that I am interested in analyzing.
+In this case, you do not want to actually download, parse, and/or load all of PubMed into a heavy-weight Postgres DB, but rather have a small, single-file SQLite DB with the relevant citations.
+To do this, medic provides an interface to effortlessly download and bootstrap a database right into the current directory.
+Assuming you have the list of PubMed IDs (PMIDs) in a file called <tt class="docutils literal">pmid_list.txt</tt> (one ID per line),
+and you want to bootstrap a SQLite DB file in the current directory called <tt class="docutils literal">MEDLINE.db</tt>,
+you call medic like this:</p>
+<pre class="literal-block">
+medic --url sqlite:///MEDLINE.db --pmid-lists insert pmid_list.txt
+</pre>
+<p>With this, you have now quickly sampled that subset of MEDLINE citaitons relevant to your work, but still have them properly structured, stored in a single file, and easy to access as we will see next.</p>
 </div>
-<div class="section" id="day-3-string-processing">
-<h2>Day 3 - String Processing</h2>
-<p>The <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-35-string-processing">third day lecture</a> focuses on <em>string processing</em> and the algorithmic aspects of text mining. The slides contain an overview of state machines, like regular expressions, PATRICIA tries, and <em>Minimal Acyclic Deterministic Finite [State] Automata</em> (MADFA). Particular attention is payed to string metrics and similarity measures. The last theoretical part is a thorough introduction to <em>Locality Sensitive Hashing</em> (LSH), and its use as a tool to efficiently cluster millions of documents or implement approximate string matching over very large-scale term dictionaries is discussed. During the <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Locality%20Sensitive%20Hashing.ipynb">3rd exercises</a> students apply LSH to a toy problem: improving the speed of <a class="reference external" href="http://norvig.com/spell-correct.html">Peter Norvig</a>-style <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Spelling%20Correction%20using%20LSH.ipynb">spelling correction</a>.</p>
+<div class="section" id="extracting-medline-citations-with-medic">
+<h2>Extracting MEDLINE citations with medic</h2>
+<p>Right now, medic has no interface to query the abstracts.
+You can add a Postgres full-text index, but according to my own experience that is not particularly efficient if you have millions of records to index, as in the case of MEDLINE.
+The right way would be to index the abstracts with a &quot;real&quot; search engine, for example, Lucene, but so far I have not gotten around to write an indexer for medic.
+The best way right now is to query eUtils directly, using the standard PubMed query syntax, which is pretty powerful, anyways;
+Note that eSearch queries to the eUtils API are capped, at most 100,000 IDs can be returned at once.
+To fetch more, you need to page results with <tt class="docutils literal">retmax</tt> and <tt class="docutils literal">retmin</tt>; Also by default (without setting <tt class="docutils literal">retmax</tt>) only the first 20 results are returned by eUtils:</p>
+<pre class="literal-block">
+QUERY=&quot;p53+AND+cancer&quot;
+URL=&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;
+
+wget &quot;$URL?db=PubMed&amp;retmax=99&amp;term=$QUERY&quot; -O - 2&gt; /dev/null \
+| grep &quot;^&lt;Id&gt;&quot; \
+| sed -E 's|&lt;/?Id&gt;||g' \
+| cut -f3 \
+&gt; pmids.txt
+</pre>
+<p>Again, if you do this often, you might want to stick this into a little script, for example:</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+<span class="c"># for a given query (one term per argument), retrieve (up to retmax) matching PMIDs</span>
+
+<span class="nv">QUERY</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">&quot;$@&quot;</span> | tr <span class="s2">&quot; &quot;</span> +<span class="sb">`</span>
+<span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;$QUERY&quot;</span> 1&gt;&amp;2
+
+wget <span class="s2">&quot;$URL?db=PubMed&amp;retmax=99999&amp;term=$QUERY&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+| grep <span class="s2">&quot;^&lt;Id&gt;&quot;</span> <span class="se">\</span>
+| sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
+| cut -f3
+</pre></div>
+<p>The query argument to this script now can contain space characters which are replaced with &quot;+&quot; characters, e.g., &quot;<tt class="docutils literal">search_pubmed.sh p53 AND cancer</tt>&quot; produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often; and using <tt class="docutils literal">search_pubmed.sh</tt> as the name of the above script).</p>
+<p>Given one or a list of PMIDs, however, medic allows you to quickly pull the citations in a number of formats:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal">medline</tt>: write the citations, one per file, in the official MEDLINE format.</li>
+<li><tt class="docutils literal">tiab</tt>: only put the title and abstract, one pair per citations, into the files.</li>
+<li><tt class="docutils literal">html</tt>: write all citations into one large HTML file (&quot;corpus&quot;).</li>
+<li><tt class="docutils literal">tsv</tt>: write the PMID, title, and abstract into one large TSV file, one citation per line.</li>
+</ol>
+<p>For example: <tt class="docutils literal">medic <span class="pre">--format</span> tiab <span class="pre">--pmid-lists</span> selected_pmids.txt</tt>, where <tt class="docutils literal">selected_pmids.txt</tt> is a file with one PMID per line, will create one file per citation, named <tt class="docutils literal"><span class="pre">&lt;PMID&gt;.txt</span></tt>.</p>
+<p>If you do not care too much about the actual IDs and just need a few random citations to work with, here is an easy way to select 999 random PMIDs from MEDLINE; on a Mac or FreeBSD machine:</p>
+<pre class="literal-block">
+jot 999 100000 25000000 &gt; pmids.rnd_test.txt
+</pre>
+<p>And when running a Linux or Cygwin OS:</p>
+<pre class="literal-block">
+shuf -i 100000-25000000 | head -999 &gt; pmids.rnd_test.txt
+</pre>
+<p>However, this approach is a bit like cheating: if the PMID does not exist, you have a non-existing ID in your list.
+From a mathematical perspective, if the PMIDs are not evenly distributed over the range you are drawing integers from, you will not have the <em>perfect</em> random sample.
+Ideally, you should select random IDs from your collection, not the whole numeric range.</p>
+<p>Note that I chose 999 PMIDs not just by chance - SQLite has 999 set as a hard limit for the number of arguments for a &quot;prepared statement&quot;.
+This means that if you want to fetch more than 999 PMIDs from a SQLite database, you will have to do that in several rounds.</p>
 </div>
-<div class="section" id="day-4-text-classification">
-<h2>Day 4 - Text Classification</h2>
-<p>After the more algorithmic topics, the <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-45-text-classification">lecture of day four</a> takes the participants into the realm of &quot;real&quot; machine learning. For starters, ways to calculate syntactic and semantic document similarity are presented, culminating in <em>Latent Semantic Analysis</em>. The slides introduce the Naive Bayes classifier as an example to prepare the audience for the <em>Maximum Entropy classifier</em> (Multinomial Logistic Regression), which forms the central topic of this session. To &quot;cool down&quot; a bit after a math-heavy section, <em>sentiment analysis</em> is discussed as a popular domain for text classification. Finally, the important topic of evaluating set-based classifier performance via Accuracy, F-measure, and MCC Score are discussed. The <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Twitter%20Sentiment%20Analysis.ipynb">fourth practical</a> then walks the participants through a Maximum Entropy sentiment classifier and encourages the audience to improve its performance by designing better features and making clever use of all the gained knowledge in the course so far.</p>
-</div>
-<div class="section" id="day-5-graphical-models">
-<h2>Day 5 - Graphical Models</h2>
-<p>On the final day, <em>probabilistic graphical models</em> dominate the lecture. With the <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-55-information-extraction">slides for day #5</a>, first the main differences between Bayesian Networks and Markov Random Fields are introduced. Connected to yesterday's text classification topics, <em>Latent Dirichlet Allocation</em> is presented as the first graphical model. Then, for the remainder of the talk, we move into <em>dynamic</em> (temporal) models and their applications. We revisit the Markov chain and go from <em>Hidden Markov Models</em> all the way to <em>Conditional Random Fields</em>. To gear participants up for practical text mining, we look into actual applications of the presented models, for example, (semantic) <em>Word Representations</em> or <em>Named Entity Recognition</em>. The participants are introduced to the prospect of using the assigned labels for more advanced tasks. For example, <em>Relationship Extraction</em> now becomes feasible by combining the shallow parse output as features for classifiers presented in other sessions of the Advanced Statistics and Data Mining Summer School. The rank-based performance measures of ROC and PR curves are discussed as way to evaluate the labeled results. During the <a class="reference external" href="http://nbviewer.ipython.org/github/fnl/asdm-tm-class/blob/master/Shallow%20Parsing%20with%20NLTK.ipynb">last practical</a>, implementing a <strong>shallow parser</strong> using NLTK and the <a class="reference external" href="http://nlp.stanford.edu/software/tagger.shtml">Stanford Taggers</a> is demonstrated in class. Overall, the practicals should provide the students with the basic software tools to embark on their own text mining adventures right after the course.</p>
-</div>
-<div class="section" id="remarks">
-<h2>Remarks</h2>
-<p>You can <a class="reference external" href="mailto:florian.leitner&#64;gmail.com">contact me</a> if you would like to discuss having this tutorial in the context of your own venue or have questions and comments about the slides' content. Other than that, I hope to have awakened your interest in statistical text mining and/or to have provided you with useful material, both as a student or teacher.</p>
+<div class="section" id="converting-dois-to-pmids">
+<h2>Converting DOIs to PMIDs</h2>
+<p>To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:</p>
+<div class="highlight"><pre><span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+
+<span class="k">for </span>doi in <span class="sb">`</span>cat dois.txt<span class="sb">`</span>;
+  <span class="k">do </span><span class="nv">pmid</span><span class="o">=</span><span class="sb">`</span>wget <span class="s2">&quot;$URL?db=PubMed&amp;retmode=xml&amp;term=$doi&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+  | grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> <span class="se">\</span>
+  | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
+  | cut -f3<span class="sb">`</span>;
+  <span class="nb">echo</span> <span class="nv">$doi</span> <span class="nv">$pmid</span> &gt;&gt; doi2pmid.txt;
+<span class="k">done</span>
+</pre></div>
+<p>If you use this much, you might even want to put that into a little script:</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env sh</span>
+<span class="c"># for a argument list of DOIs, print each DOI and matching PubMed ID</span>
+
+<span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+
+<span class="k">for </span>doi in <span class="nv">$@</span>; <span class="k">do</span>
+<span class="k">  </span><span class="nb">echo</span> <span class="nv">$doi</span> <span class="sb">`</span>wget <span class="s2">&quot;$URL?db=PubMed&amp;retmode=xml&amp;term=$doi&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+  | grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> <span class="se">\</span>
+  | sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
+  | cut -f3<span class="sb">`</span>
+<span class="k">done</span>
+</pre></div>
+<p>Alternatively, you might want the script to take a file with DOIs as input.
+But that is a trivial case to handle with this script: just use the file as an argument of <tt class="docutils literal">xargs</tt> and pipe the result into this script.</p>
+<p>Unluckily enough, converting PMIDs to DOIs is a lot more trickier: First, the download of MEDLINE from the FTP site does not contain all PubMed mappings of PMIDs to DOIs that the NLM has access to (why not is a mystery to me...). Second, there are still scores of PMIDs that even the NLM did not receive the correct DOI mapping from the publisher. So overall, no matter what you do, there will be holes if trying to go the direct PMID-to-DOI way. The best method right now is probably to query with the title and authors and see if you find an exact, unique match to a DOI on <a class="reference external" href="http://www.crossref.org/">CrossRef</a>, but that API is commercial and you need to pay for any serious query volumes.</p>
+<p>Overall, this collection of tools should give you everything you need to quickly and efficiently work with MEDLINE's PubMed citations. If you have not done so already, you can check out the &quot;full capabilities&quot; of <a class="reference external" href="https://pypi.python.org/pypi/medic">medic</a> and decide for yourself if my approach is suitable for you, too.</p>
 </div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/text-mining.html" class="selected">text mining</a>                            <a href="http://fnl.es/tag/python.html">python</a>                            <a href="http://fnl.es/tag/nltk.html">nltk</a>                        </div>
+                        <div class="tags">                            <a href="http://fnl.es/tag/text-mining.html" class="selected">text mining</a>                            <a href="http://fnl.es/tag/bionlp.html">bionlp</a>                            <a href="http://fnl.es/tag/pubmed.html">pubmed</a>                        </div>
 
                     </div>
                     <div class="clear"></div>
@@ -95,7 +242,8 @@ alt="hit counter"></a></div></noscript>
                 <div class="clear"></div>
                 <div class="pages">
                     <a href="http://fnl.es/tag/text-mining3.html" class="prev_page">&larr;&nbsp;Previous</a>
-                    <span>Page 4 of 4</span>
+                    <a href="http://fnl.es/tag/text-mining5.html" class="next_page">Next&nbsp;&rarr;</a>
+                    <span>Page 4 of 5</span>
                 </div>
 
                 <div class="clear"></div>

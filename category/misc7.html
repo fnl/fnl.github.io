@@ -30,7 +30,7 @@ alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
 <div id="header">
             <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/category/misc7.html">Misc</a></li>
+                <li class="ephemeral selected"><a href="http://fnl.es/category/misc.html">Misc</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
@@ -42,29 +42,445 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">Jul 2013</h4>
+                <h4 class="date">Oct 2013</h4>
 
 								<div class="mobile-hide">
-									<!--a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
-									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script-->
+									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
+									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/a-new-home-for-fnles.html" rel="bookmark" title="Permanent Link to &quot;A new &quot;home&quot; for fnl.es&quot;">A new &quot;home&quot; for fnl.es</a>
+                        <a href="http://fnl.es/concurrent-nodejs.html" rel="bookmark" title="Permanent Link to &quot;Concurrent Node.js&quot;">Concurrent Node.js</a>
                     </h2>
 
-                    <p>After months of looking for a loophole in my calendar to migrate my rather outdated and mostly untended Blogger site to something more modern, I have found the ideal timing: The birth and arrival of my son, Alexander LV (<a class="reference external" href="https://twitter.com/AlexThe55th">&#64;AlexThe55th</a>)!
-(Because here in Spain even daddies get two to three weeks off.)</p>
-<img alt="Alexander taking a sun bath." src="http://fnl.es/images/13-07-01_initial-alexander.jpg" style="width: 75%;" />
-<p>I will reduce the amount of personal entries and augment the articles about (mostly biological) data mininig issues, in particular related to text mining and software engineering.
-Now and then I intend to throw in some issues about privacy, human rights, travelling and all those other things that interest me and make life worth living.</p>
-<p>As blogging framework I have decided to move on to <a class="reference external" href="http://blog.getpelican.com/">Pelican</a>, because it is <a class="reference external" href="http://www.python.org/">Python</a>-based, generating extremely light-weight static pages from <a class="reference external" href="http://sphinx-doc.org/rest.html">ReST</a> files.
-This allows me to easily maintain the blog from any terminal and its pythonic origins allow me to hack the framework if need be.</p>
+                    <div class="section" id="introduction">
+<h2>Introduction</h2>
+<p>Recently, a <a class="reference external" href="https://twitter.com/SoftActiva">colleague</a> of mine asked me to introduce the most important concepts of <a class="reference external" href="http://nodejs.org/">Node</a> programming to a flock of interested people in our <a class="reference external" href="http://www.cnio.es/es/grupos/plantillas/presentacion.asp?grupo=50004294">research group</a>.
+Initially, I declined, considering the <a class="reference external" href="http://howtonode.org/">vast</a> <a class="reference external" href="http://docs.nodejitsu.com/">number</a> of <a class="reference external" href="http://www.nodebeginner.org/">tutorials</a> and <a class="reference external" href="https://duckduckgo.com/?q=node.js+book">books</a>, but then thought it might be quite an interesting challenge:
+Is there any aspect of Node development that is not easily understood by Node beginners and that is poorly covered by the existing posts?
+Taking this into account, my main goals for this tutorial are:
+Which part of developing Node programs is the hardest to grasp for programmers proficient in imperative languages (Java, JavaScript, Objective-C, PHP, Python, Ruby, etc.)?
+In my opinion, the biggest issue is writing asynchronous, concurrent Node applications.
+At the same time, this seems to be the least covered aspect of all existing introductory tutorials.
+Last, I wanted to present relevant issues <em>without</em> getting too far ahead of the status quo (e.g., <a class="reference external" href="http://wiki.ecmascript.org/doku.php?id=harmony:generators">generators</a>, which are still considerd experimental right now) or anything else that you would not want to use in production.</p>
+<p>Overall, this tutorial should teach you to <em>code</em> <a class="reference external" href="http://www.reactivemanifesto.org/">reactive</a> programs that are both maintainable and concise.
+Nonetheless, I will assume you have a basic idea about Node and JavaScript, so I do expect you have read at least one of those excellent <a class="reference external" href="https://github.com/maxogden/art-of-node#the-art-of-node">introductions</a>.
+In particular, you should have a basic idea of how Node uses <a class="reference external" href="http://docs.nodejitsu.com/articles/getting-started/control-flow/what-are-callbacks">callbacks</a> to handle <a class="reference external" href="http://docs.nodejitsu.com/articles/getting-started/control-flow/what-are-event-emitters">events</a>, given that they are the core concept of Node apps.
+And although I will cover this aspect in more detail, Nodejitsu also has a short section on writing <a class="reference external" href="http://docs.nodejitsu.com/articles/getting-started/control-flow/how-to-write-asynchronous-code">asynchronous</a> JavaScript and spawning <a class="reference external" href="http://docs.nodejitsu.com/articles/child-processes/how-to-spawn-a-child-process">child processes</a> in Node.</p>
+<p>To make this discussion more valuable for real-world projects, I restrict myself to use “battle-tested” packages;
+After checking with <a class="reference external" href="https://npmjs.org/">npm</a> and GitHub, I decided to only use <strong>async</strong> and <strong>Q</strong>, plus some <strong>underscore</strong> magic (only <a class="reference external" href="http://underscorejs.org/#partial">partial</a> function application).
+The tutorial should explain to the reader how, using a limited set of tools, a Node developer can write highly asynchronous Node apps without ending up in &quot;concurrency hell&quot;.
+This introduction will take the reader familiar with Node's basic callback mechanism (<a class="reference external" href="http://www.webdesignerdepot.com/2012/09/jquery-the-good-the-bad-and-the-ugly/">evil tongues</a> would say &quot;callback spaghetti&quot;) via asynchronous control structures to a concurrent, functional programming style that uses <a class="reference external" href="http://en.wikipedia.org/wiki/Futures_and_promises">promises</a> - also know as <strong>futures</strong> - to delegate the logical flow from the JavaScript code to the V8 engine.</p>
+</div>
+<div class="section" id="a-quick-refresher">
+<h2>A Quick Refresher</h2>
+<p>Lets look at a static HTTP file server, using the basic Node modules only.</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">||</span> <span class="mi">80</span>
+
+<span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span>
+  <span class="kd">var</span> <span class="nx">filename</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="nx">uri</span><span class="p">)</span>
+
+  <span class="nx">path</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">})</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;404 Not Found\n&quot;</span><span class="p">)</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">).</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="nx">filename</span> <span class="o">+=</span> <span class="s1">&#39;/index.html&#39;</span>
+
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">})</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">err</span> <span class="o">+</span> <span class="s2">&quot;\n&quot;</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="s2">&quot;binary&quot;</span><span class="p">)</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;file server running at http://localhost:&quot;</span> <span class="o">+</span> <span class="nx">port</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+<p>This highlights basic Node concepts; Upon receiving a request, the server makes an asynchronous check via the OS to ensure the file exists.
+The asynchronicity is indicated by the callback that gets sent to <tt class="docutils literal">path.exists()</tt>.
+Then, again asynchronously (note the callback sent into <tt class="docutils literal">fs.readFile()</tt>), Node reads the file, and if this job completes successfully, sends the file (data) to the response handler.
+Because both checks are done asynchronously, this leaves the server process free to handle other requests while the OS is doing the file lookups (i.e., &quot;non-blocking&quot;).
+However, this demonstrates a problem with this callback coding style: the functions are stacked one on top of another, making this code quite uncomfortable to read and maintain.</p>
+<p>Before we begin, it is also worth to refresh the <strong>six commandments</strong> (taken from Caolan McMahon's excellent post on Node <a class="reference external" href="http://caolanmcmahon.com/posts/nodejs_style_and_structure/">style and structure</a>) you should follow when coding any concurrent program:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Never mix sync and async style: return a value <em>or</em> a callback, but not either.</li>
+<li><em>Return</em> on a callback: write <tt class="docutils literal">return callback(null, result)</tt> to prevent execution continuing beyond the CB.</li>
+<li>Always check errors in callbacks: make sure the CB has a way to deal with error states, as in <tt class="docutils literal">if (err) { ... }</tt>.</li>
+<li>Avoid mutable state - it leads to &quot;debugging hell&quot; in concurrent programs (e.g., <a class="reference external" href="http://en.wikipedia.org/wiki/Heisenbug">Heisenbugs</a>).</li>
+<li>Only use try, throw &amp; catch within imperative code sections (you cannot throw &quot;across&quot; a CB).</li>
+<li>Write tiny functions: maybe 3 statements, and no more than 5.</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="multiprocessing-in-node-js">
+<h2>Multiprocessing in Node.js</h2>
+<p>Node is process-oriented, i.e., unlike some languages where you create multiple threads in your process, in node you need to &quot;open&quot; multiple OS processes (using <tt class="docutils literal">popen(3)</tt>).
+The default tool to run multiple processes in Node is the <a class="reference external" href="http://nodejs.org/api/child_process.html">child_process</a> module, and, as an experimental add-on since Node v9, <a class="reference external" href="http://nodejs.org/api/cluster.html">cluster</a> can run multiple Node processes in parallel that share the same port or socket.
+When forking/spawning/executing child process, be aware that segmentation faults and other nasty errors in a child process have the potential to bring down your whole stack.
+In general, there are three calls that are relevant for running parallel processes:</p>
+<blockquote>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options">spawn</a> provides a <strong>streaming</strong> process that you communicate with through Unix pipes. Think of it as in shell syntax &quot;<tt class="docutils literal">process &lt; instream &gt; outstream &amp;</tt>&quot;.</li>
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">exec</a> runs a single shell <strong>command</strong> and returns the exit status of the computation. Think of it as in shell syntax &quot;<tt class="docutils literal">exec input; echo $?</tt>&quot;. Note that while exec does have an output buffer, it is tiny and you should use the streaming interface of spawn if you expect to receive output from the process you are running.</li>
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options">fork</a> runs a <strong>worker</strong> script you can communicate with via a <em>channel</em>. Think of it as a bidirectional version of the shell pipe &quot;<tt class="docutils literal">server | worker &amp;</tt>&quot;. Fork is also useful to isolate blocking calls from your otherwise non-blocking Node program.</li>
+</ol>
+</blockquote>
+<p>Note that <tt class="docutils literal">spawn</tt> and <tt class="docutils literal">fork</tt> are much like background daemons, while <tt class="docutils literal">exec</tt> runs some binary to completion.</p>
+</div>
+<div class="section" id="example-case-a-service-broker">
+<h2>Example Case: A Service Broker</h2>
+<p>Throughout this tutorial, we will use a theoretical service broker that might query a DB or use XHR to communicate with another server.
+It also could be some worker writing or reading data, or anything else that is somehow &quot;IO-bound&quot;.
+Whatever you prefer, the point is that this is a blocking (&quot;side-effecting&quot;) IO call in your program that you want to handle asynchronously.
+In other words, this means you will need to use <strong>callbacks</strong> (CB) to be notified when the IO event finished and with which result and error state.</p>
+<p>First, we create a directory where we can put our tutorial code, and for the sake of popularity, use the <a class="reference external" href="http://expressjs.com/">Express</a> web app framework:</p>
+<pre class="literal-block">
+$ mkdir reactive-node-tutorial
+$ cd reactive-node-tutorial
+$ npm install express
+$ node_modules/express/bin/express
+yes
+$ npm install
+</pre>
+<p>We will use the following <tt class="docutils literal">broker.js</tt> script, placed in this same directory:</p>
+<div class="highlight"><pre><span class="cm">/* a &quot;blocking&quot; query */</span>
+<span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">start</span> <span class="o">+</span> <span class="s2">&quot;: query started&quot;</span><span class="p">)</span>
+  <span class="k">while</span> <span class="p">((</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">ms</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; query finished&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// normally, here would probably be:</span>
+  <span class="c1">// process.send(query(m))</span>
+
+  <span class="nx">query</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">200</span><span class="o">+</span><span class="mi">900</span><span class="p">))</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+<span class="p">})</span>
+</pre></div>
+<p>Obviously, this is quite a a toy example, because our worker receives and returns only one single message before shutting down.
+Similarly, our server API for this broker in <tt class="docutils literal">app.js</tt> will be just as simple:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">broker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">)</span>
+
+<span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">bucket</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">channel</span> <span class="o">=</span> <span class="nx">broker</span><span class="p">.</span><span class="nx">fork</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/db.js&#39;</span><span class="p">)</span>
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span>
+
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+  <span class="p">})</span>
+
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
+<p>Go ahead and replace everything in <tt class="docutils literal">app.js</tt> with this code.
+In a real-world program, you would use a pool of workers and, each time you start a <tt class="docutils literal">query</tt>, use another channel from your pool.
+As a matter of fact, most Node libraries will provide you with non-blocking versions of the API they wrap, so you might need no workers at all.
+Rather, you are more likely to start scaling Node across multiple cores and even machines using workers and IPC events.
+However, this will be enough to run our queries in parallel and demonstrate idioms that can help you write your code to be highly concurrent and easy to scale.
+For demonstration purposes this setting will do, so let's start coding our &quot;reactive&quot; app!</p>
+</div>
+<div class="section" id="a-simple-json-rest-service">
+<h2>A Simple JSON-REST Service</h2>
+<p>Let's assume we want to provide a JSON-REST web service connecting a query for a blogger ID against the broker that in turn interfaces to some form of external API or DB.
+Upon receiving the user's ID, the server should query the broker for the user's data, and then, in a second step can use that data to fetch any posts the user wrote and any comments she made.
+In other words, we have a serial flow of fetching user and the an parallel step of fetching post and comment data.
+Once all this data is collected, the server should respond with a JSON object containing this data.</p>
+<p>In the simplest case, you would string a few calls to your query API together and return the results, maybe like this (<em>anti-pattern</em>):</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)()</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/sync/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+
+  <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+
+    <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">posts</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="o">:</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="o">:</span> <span class="nx">comments</span><span class="p">})</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+</pre></div>
+<p>(Again, you can append this to the app.js you created earlier, just as all following code snippets.)
+The above example gives rise to the (wrong) argument why callbacks are a Bad Idea (you will learn the true reason why callbacks are evil later):
+By placing one CB inside the former, or returning (think &quot;break&quot;) early if an error occurred, we end up in <a class="reference external" href="http://callbackhell.com/">callback hell</a>.
+In other words, code that is no longer maintainable and hard to unit test, as we will see.
+Worse, we just lost the advantage of using Node... this code is actually being run synchronously, one broker query after the next!
+If you run this app in the shell and query the URL (e.g., <tt class="docutils literal">curl <span class="pre">http://localhost:8000/sync/example</span></tt>), you will get something like this output:</p>
+<pre class="literal-block">
+$ node app.js
+1381334176812: query started
+1381334177793 query finished
+1381334177858: query started
+1381334178830 query finished
+1381334178897: query started
+1381334179868 query finished
+</pre>
+<p>As can be seen, despite our best intentions, all queries are run one after the next instead of running the last two in parallel.
+So we need to dispatch our last two <tt class="docutils literal">query</tt> calls simultaneously once we have the <tt class="docutils literal">user</tt> data and use the callbacks to collect the results.
+In addition, this will allow us to &quot;unstring&quot; this callback chain a bit.
+This takes us straight into the realm of asynchronous programming.</p>
+</div>
+<div class="section" id="home-brew-asynchronicity">
+<h2>Home-brew Asynchronicity</h2>
+<p>While this certainly is not the cleanest code, here is a quick shot at solving the problem of concurrently running these three queries:</p>
+<div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/brew/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="kd">var</span> <span class="nx">cbCounter</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="kd">var</span> <span class="nx">gotError</span> <span class="o">=</span> <span class="kc">false</span>
+
+  <span class="kd">function</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">gotError</span><span class="p">)</span> <span class="k">return</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">gotError</span> <span class="o">=</span> <span class="kc">true</span>
+      <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">cbCounte</span><span class="p">))</span><span class="nx">r</span><span class="o">++</span>
+    <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span>  <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">result</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span>
+
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">posts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">result</span><span class="p">.</span><span class="nx">posts</span> <span class="o">=</span> <span class="nx">posts</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">cbCounter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
+
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">checkError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">result</span><span class="p">.</span><span class="nx">comments</span> <span class="o">=</span> <span class="nx">comments</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">cbCounter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+<p>While this version now runs the last two queries concurrently, and, if you have more than one CPU core at least, in parallel, the code has become quite bloated.
+You need to ensure that all three calls have completed before returning a valid result.
+You need to ensure to only return the error once.
+And you need to make sure you have collected the intermediate results.
+Last, if you add another query, you might forget to update the counter checks, use a wrong counter value, or forget to store the intermediate result.
+Luckily, these issues have been solved with the second most popular node module used by fellow Node coders, <a class="reference external" href="https://github.com/caolan/async">async</a> (the most popular dependency being ... you guessed it, <a class="reference external" href="http://underscorejs.org/">underscore</a>, which we will use in a bit, too).</p>
+</div>
+<div class="section" id="controlling-data-flow">
+<h2>Controlling Data Flow</h2>
+<p><tt class="docutils literal">$ npm install async</tt></p>
+<p>We wil use the <a class="reference external" href="https://github.com/caolan/async#auto">auto</a> method of <a class="reference external" href="https://github.com/caolan/async">async</a> to make the code more readable, leaving all the mentioned issues up to the library to take care of.
+<tt class="docutils literal">auto</tt> takes a &quot;tasks object&quot; (an object where each property is a function considered a task) and returns an equally shaped object with the results if all tasks were run without errors.
+In addition to the tasks, you can list any other tasks you handed to auto that have to be completed before that specific task is run:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/async/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+
+  <span class="nx">async</span><span class="p">.</span><span class="nx">auto</span><span class="p">({</span>
+    <span class="nx">user</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="nx">posts</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">user</span><span class="p">},</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">}],</span>
+    <span class="nx">comments</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">db_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">user</span><span class="p">},</span> <span class="nx">cb</span><span class="p">)</span>
+    <span class="p">}]</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="k">else</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+<p>As shown, we send the auto function an object with three tasks, <tt class="docutils literal">user</tt>, <tt class="docutils literal">posts</tt>, and <tt class="docutils literal">comments</tt>.
+Both the <tt class="docutils literal">posts</tt> and <tt class="docutils literal">comments</tt> tasks require that the <tt class="docutils literal">user</tt> task has been run successfully before them, as indicated by the array value they map to.
+The tasks (functions) have to accept a standard Node callback (<tt class="docutils literal">function(err, result)</tt>) and should delegate that to some asynchronous task.
+In the case of dependent functions, they can also accept the result of the prior task(s).
+The overall outcome then is pushed into another callback that is the last argument of <tt class="docutils literal">auto</tt>;
+This CB will receive the error status or, if no error occurred, the result of each individual tasks, in the same &quot;shape&quot; as the object sent to auto.</p>
+<p>We have now solved our issues and have achieved our goal of a clean coding of our asynchronous tasks.
+However, if you later need to write more complex code, the control to structure defined by your callbacks still gets back to you.
+Because you are sending the data as well as the callbacks along your function chain, you are mixing two things you should keep separate:
+In a nutshell, you are coding the <strong>control flow</strong> of your program, while instead you should be describing what is known as <strong>data dependencies</strong> and let the Node engine figure out when to run which task (callback).</p>
+</div>
+<div class="section" id="the-promised-land">
+<h2>The Promised Land</h2>
+<p>As a matter of fact, with <a class="reference external" href="https://github.com/caolan/async">async</a> you will be able to write concurrent Node.js apps perfectly fine.
+This last section will introduce you to concepts that will help you get rid of the problems described at the end of the former section.</p>
+<p>To avoid the use of control flow statements, declarative languages instead have developed the concept of the <strong>future</strong>, also known as a <a class="reference external" href="http://promises-aplus.github.io/promises-spec/">promise</a>.
+So far, we were using callbacks, that is, functions that do not return a value. This means they are hard to use when <em>composing</em> new functions from them and, as they do not return a value, are exclusively executed for their <em>side-effects</em>.
+This means that both <em>function composition</em> and <em>unit testing</em> of these callbacks is rather a pain.
+And it means that you have to manually control the &quot;flow&quot; of your data through these callbacks.
+For example, to read a file in Node, the idiomatic structure is:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sendData</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+  <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">reportError</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">onResult</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reportError</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+  <span class="k">else</span> <span class="nx">sendData</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">callback</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">onResult</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
+
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+<p>Instead, if the <tt class="docutils literal">readFile</tt> function were to return a value, this could be expressed in a much cleaner way, without having to nest (structure) the tasks into callback chains.
+However, as we know, at the time of calling <tt class="docutils literal">readFile</tt>, no such value exists - as a matter of fact, we do not even know if we will be able to read the file at all.
+So the only thing we can return is a &quot;future&quot; value, or a &quot;promise&quot; to return such a value (hence the name of these data structures).
+For this reason, such a data type would have to provide three methods:</p>
+<div class="highlight"><pre><span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+<span class="nx">promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">onFulfilled</span><span class="p">(</span><span class="nx">result</span><span class="p">),</span> <span class="nx">onRejected</span><span class="p">(</span><span class="nx">error</span><span class="p">))</span>
+</pre></div>
+<p>The called function that returned the promise will, in the future, decide to resolve or reject the promise.
+And that new promise will <tt class="docutils literal">then</tt> have to describe what the program should do if the promise has been <em>fulfilled</em> or <em>rejected</em>.
+The most important concept is that promises are <strong>propagating</strong>:
+The return value of <tt class="docutils literal">then</tt> (<tt class="docutils literal">result</tt> in the above API description) is yet another promise (the &quot;output promise&quot;):</p>
+<blockquote>
+<ul class="simple">
+<li>If you return a value from any of the two handlers (fulfilled, rejected), the output promise will get fulfilled, too.</li>
+<li>If you throw an exception in any of the two handlers, the output promise will get rejected.</li>
+<li>If you return yet another promise from any of the two handlers, the <tt class="docutils literal">result</tt> will <em>become</em> that promise.</li>
+</ul>
+</blockquote>
+<p>This means you can comfortably chain promises, while you can rely on <em>return values</em> (instead of side effects).
+With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">Promise</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="c1">// wrap fs.readFile as a &quot;promise-returning function&quot;:</span>
+<span class="kd">var</span> <span class="nx">readFile</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">)</span>
+
+<span class="kd">function</span> <span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span>
+  <span class="k">return</span> <span class="nx">data</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">set200</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">setHeader</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">set500</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">setHeader</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">readFile</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">filename</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">set500</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">send</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">set200</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
+
+  <span class="nx">data</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">send</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">fin</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span> <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
+<p>Promises therefore make it possible to resolve function values in a <em>time-independent</em> manner:
+We can call the <tt class="docutils literal">then</tt> method after or <em>before</em> either <tt class="docutils literal">resolve</tt> or <tt class="docutils literal">reject</tt> have been executed.
+Furthermore, libraries that implement promises must guarantee that no matter how often we check the promise' state (call <tt class="docutils literal">then</tt>), that promise always will be resolved or rejected the same way.
+We have also eliminated the linear dependencies of each function on the next, thus our functions become much more convenient to reuse.
+Last, this version is actually safer than the callback implementation:
+If setting the header fails for any reason, this gets logged, and the parameter-less <tt class="docutils literal">fin</tt> method is <strong>always</strong> executed with <tt class="docutils literal">res.end()</tt>, ensuring all responses will be closed.</p>
+<p>This makes promises ideal to resolve I/O bound (blocking) tasks.
+(Do not use promises for CPU intensive tasks!
+Protip: If reading blogs about comparing promise libraries, make sure the tests are using the right kind of task.)</p>
+</div>
+<div class="section" id="from-control-flow-to-data-dependencies">
+<h2>From Control Flow to Data Dependencies</h2>
+<p>As we have seen so far, the elegance of using promises instead of callbacks is that blocking functions now can <em>return values</em> (promises) instead of requiring you to <em>send functions</em> (callbacks) to them.
+In other words, promise-returning functions behave like any other function.
+Furthermore, the return value of <tt class="docutils literal">then</tt> will always be another (&quot;output&quot;) promise, possibly even the return value from or exception thrown in either handler sent to it.
+Because of this behavior, you can keep chaining promises over your success (<tt class="docutils literal">onFulfilled(result)</tt>) and error functions (<tt class="docutils literal">onRejected(error)</tt>), and the final outcome will always be <em>the same</em> result value or error.
+As you return promises from your functions instead of having to send them continuation functions, you have separated the control flow from your code.</p>
+<p>If you want to learn the nitty-gritty theory behind the benefits of moving from callback-based control flow to data dependencies encoded as promises, James Coglan has an <a class="reference external" href="http://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/">excellent blog post</a> on that matter.
+And if you need more hands-on experience than what we have discussed so far, <a class="reference external" href="http://strongloop.com/strongblog/promises-in-node-js-with-q-an-alternative-to-callbacks/">StrongLoop</a> provides a very comprehensive tutorial of using promises.
+We instead will directly get our hands dirty and use this knowledge to describe our three queries problem in terms of promises.
+To do so, we will require the popular <a class="reference external" href="http://documentup.com/kriskowal/q/">Q</a> and <a class="reference external" href="http://underscorejs.org/">underscore</a> libraries:</p>
+<pre class="literal-block">
+$ npm install q
+$ npm install underscore
+</pre>
+<p>Without much fanfare, this is how our JSON-REST service looks like using promises and some functional trickery:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Q</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">q_query</span> <span class="o">=</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">db_query</span><span class="p">)</span>
+
+<span class="kd">function</span> <span class="nx">fetchPostsAndComments</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+    <span class="nx">user</span><span class="p">,</span>
+    <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">poster</span><span class="o">:</span> <span class="nx">user</span><span class="p">}),</span>
+    <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">commenter</span><span class="o">:</span> <span class="nx">user</span><span class="p">})</span>
+  <span class="p">])</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">respond</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">posts</span><span class="o">:</span> <span class="nx">posts</span><span class="p">,</span> <span class="nx">comments</span><span class="o">:</span> <span class="nx">comments</span><span class="p">})</span>
+<span class="p">}</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/promise/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
+  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">partial</span><span class="p">(</span><span class="nx">respond</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
+
+  <span class="nx">q_query</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">userId</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">fetchPostsAndComments</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">spread</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+<p>So what has changed?
+Admittedly, except for the main function itself being a bit shorter, this code is longer than the asynchronous version.
+Nonetheless, after introducing you to the benefits of promises, you should be able to see the elegance of this final solution.
+In particular, because of the separation of concerns, your code has become much easier to unit test.
+And because each function is clear and expressive, the code is easy to understand.
+Last, we have reached our goal of three statements per function, too.</p>
+<p>Well, I hope to have enlightened you in a way or another and maybe made you a better Node developer!</p>
+</div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/blog.html">blog</a>                            <a href="http://fnl.es/tag/alex.html">alex</a>                        </div>
+                        <div class="tags">                            <a href="http://fnl.es/tag/javascript.html">javascript</a>                            <a href="http://fnl.es/tag/nodejs.html">node.js</a>                        </div>
 
                     </div>
                     <div class="clear"></div>
@@ -74,7 +490,7 @@ This allows me to easily maintain the blog from any terminal and its pythonic or
                 <div class="pages">
                     <a href="http://fnl.es/category/misc6.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/category/misc8.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 7 of 25</span>
+                    <span>Page 7 of 26</span>
                 </div>
 
                 <div class="clear"></div>

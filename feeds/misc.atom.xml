@@ -1,7 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2015-01-12T00:00:00+01:00</updated><entry><title>segtok - a segmentation and tokenization library</title><link href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="alternate"></link><updated>2015-01-12T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/misc.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2015-04-06T00:00:00+02:00</updated><entry><title>An efficient online sequence tagger resource for GATE</title><link href="http://fnl.es/an-efficient-online-sequence-tagger-resource-for-gate.html" rel="alternate"></link><updated>2015-04-06T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-04-06:an-efficient-online-sequence-tagger-resource-for-gate.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; for a stressed out generation:
+&lt;a class="reference external" href="https://gate.ac.uk"&gt;GATE&lt;/a&gt;'s &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework"&gt;Generic Tagger&lt;/a&gt; framework is a CREOLE plug-in that allows you to wrap any existing &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;sequence tagger&lt;/a&gt; and use it to create annotations in your pipeline, but it is very poorly implemented.
+Therefore, I have created the &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework"&gt;Online Tagger&lt;/a&gt; GATE plug-in, that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &amp;quot;singleton&amp;quot; sub-process per Processing Resource instance.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://gate.ac.uk"&gt;GATE&lt;/a&gt; (General Architecture for Text Engineering) has crystallized itself as my preferred tool for teaching text mining and information extraction.
+While anybody might argue that there are leaner and faster frameworks around, it has one pretty outstanding, unique quality: it is (mostly) GUI-based.&lt;/p&gt;
+&lt;p&gt;During any course I teach, the most frequent question I get is what text mining software is around that can be used &lt;em&gt;without any a priori programming skills&lt;/em&gt;.
+In other words, most of my students hope that some graphical tool would be available that can be used without having to study a programming language first.
+For example, to use NLTK, LingPipe, OpenNLP, StandfordNLP, UIMA, etc., you will first have to learn how to program in the chosen framework's API language.
+Therefore, the only entirely true answer is that only commercial tools can offer a &lt;strong&gt;pure&lt;/strong&gt; &amp;quot;graphical user interface&amp;quot; and require no programming experience.
+However, GATE can be used &lt;em&gt;mostly&lt;/em&gt; without having to write code - with the exception of its &amp;quot;JAPE-glue&amp;quot;.
+&lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch8.html#chap:jape"&gt;JAPE&lt;/a&gt; stands for &amp;quot;Java Annotation Patterns Engine&amp;quot; and is GATE's solution to make data inter-operable between different processing resources that often have different I/O requirements.
+Furthermore, JAPE can be used to design entire rule-based annotation resources of their own right.
+However, JAPE &amp;quot;grammars&amp;quot; consist of rules where the left-hand side of the grammatical rule matches (existing) GATE annotations using a (clear and simple) syntax, while the right-hand side of those rules can contain Java code that will somehow modify those annotations.
+Therefore, GATE rids you from nearly all need of writing code of your own, but there is still the need to write (small) blocks of (simple) code for the right-hand sides of JAPE's rules.
+Luckily, GATE's extensive documentation provides lots of &lt;a class="reference external" href="https://gate.ac.uk/wiki/jape-repository/"&gt;examples&lt;/a&gt; to start with for the novice.&lt;/p&gt;
+&lt;p&gt;Overall, this makes GATE the only free open source text mining software that provides a graphical interface &lt;em&gt;and&lt;/em&gt; requires (nearly) no programming skills to use it.
+As I stated initially, this fact alone makes it the best tool around for my classes, because most of my students are neither computer scientists nor do they know how to code.&lt;/p&gt;
+&lt;p&gt;As mentioned in the introduction, &amp;quot;out-of-the-box&amp;quot; GATE isn't always the fastest solution.
+However, due to its open source nature that only means that if you need to go faster, you always can replace any slow &amp;quot;pieces&amp;quot; with whatever you consider a better fit.&lt;/p&gt;
+&lt;p&gt;For example, the &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework"&gt;Generic Tagger&lt;/a&gt; framework is a &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch4.html#x7-690004"&gt;CREOLE&lt;/a&gt; &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-540003.7"&gt;Processing Resource&lt;/a&gt; that allows you to take any existing &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;sequence tagger&lt;/a&gt; and use it to create annotations for a GATE pipeline.
+This is pretty nifty, because you can use whatever Part-of-Speech tagger or Named Entity Recognition system you like.
+You can even just use a generic tagger, train it on your own, and integrate it in your pipelines.&lt;/p&gt;
+&lt;p&gt;However, due to the generic nature of this resource, it is not very efficient.
+More precisely, to do annotations with it, this tagger &amp;quot;wrapper&amp;quot; operates as follows &lt;strong&gt;on each input&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;A file with the input text for the tagger is written to disk.&lt;/li&gt;
+&lt;li&gt;A new tagger sub-process is launched by the wrapper, reading the input from the file.&lt;/li&gt;
+&lt;li&gt;The tagger's results are written back to disk.&lt;/li&gt;
+&lt;li&gt;The wrapper resource reads the result file, generates the annotations, and deletes the two temporary files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I have highlighted &amp;quot;on each input&amp;quot;, because this loop might be run for each processed document, for each sentence in each document, or, even worse, for each and every token in your documents.
+If you have already thought that doing this for each document is pretty bad, doing that loop for each token grinds your pipeline to a standstill.
+Second, if you are a programmer, the expression &amp;quot;a new sub-process is launched&amp;quot; in the second point should be alarming to you.
+If the tagger uses some large resources, like a dictionary (which they quite frequently do), starting up a new tagger process can be extremely expensive.
+In general, of all concurrent programming concepts, launching a new &lt;em&gt;process&lt;/em&gt; is the probably most expensive resource you can create &amp;quot;within&amp;quot; a program.
+Therefore, while the Generic Tagger is cool to have so you can to try out &amp;quot;foreign&amp;quot; sequence taggers, the way it is implemented makes it nearly useless for any real-world tasks.
+For example, just tagging all gene mentions in a few thousand &lt;a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed"&gt;PubMed&lt;/a&gt; sentences with this wrapper takes &lt;em&gt;days&lt;/em&gt;.
+But PubMed has over 24 million abstracts and (I think to recall) roughly about 100 million sentences, so go figure...&lt;/p&gt;
+&lt;p&gt;Therefore, I am releasing my own CREOLE processing resource that works similarly to the Generic Tagger, but does not do any disk I/O for inter-process communication or launch more than one &amp;quot;singleton&amp;quot; process for the entire pipeline you are designing.
+However, this puts some restrictions on the kinds of taggers you can use:&lt;/p&gt;
+&lt;p&gt;1. The tagger must support a &lt;strong&gt;streaming I/O&lt;/strong&gt; model.
+That is, the tagger must be able to read from some &amp;quot;input stream&amp;quot;, such as UNIX' &lt;cite&gt;STDIN&lt;/cite&gt;, and write to some &amp;quot;output stream&amp;quot;, commonly UNIX' &lt;cite&gt;STDOUT&lt;/cite&gt;.
+Another way of putting this is that your tagger should be able to handle UNIX' piped command syntax, something like this: &lt;cite&gt;cat plain_text.txt | some_tagger &amp;gt; tagged_text.txt&lt;/cite&gt;.&lt;/p&gt;
+&lt;p&gt;2. The tagger must work with POSIX' classical line-based interface.
+That is, the tagger must take one continuous block of text as &lt;em&gt;input&lt;/em&gt;, &lt;strong&gt;terminated with a newline&lt;/strong&gt; character.
+For example, it should take one token, sentences or block of text as input (not containing any newlines), and, once it receives a newline character, start tagging that input.&lt;/p&gt;
+&lt;p&gt;3. The tagger must produce &lt;strong&gt;one annotation per line&lt;/strong&gt; as &lt;em&gt;output&lt;/em&gt;, and those annotations must be &lt;strong&gt;in the same order&lt;/strong&gt; as the (input) text spans which they annotate.
+Those annotations commonly are expected to be in the OTPL (one token per line) format.
+For example, the output line &lt;cite&gt;Nouns noun NN B-NP O&lt;/cite&gt; might annotate the token &amp;quot;Noun&amp;quot; (verbatim, as found in the input text) with the lemma &amp;quot;noun&amp;quot;, the PoS-tag &amp;quot;NN&amp;quot;, the BIO-chunk &amp;quot;B-NP&amp;quot; and the BIO-NER-tag &amp;quot;O&amp;quot; (&amp;quot;outside&amp;quot; any entity mention).&lt;/p&gt;
+&lt;p&gt;If you have a tagger that follows those requirements (it turns out, most sequence taggers I know of work precisely like this), you can instead use my &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework"&gt;Online Tagger&lt;/a&gt; framework.
+What it does differently to the Generic Tagger is the following:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;On Processing Resource &lt;strong&gt;initialization&lt;/strong&gt;, you have to specify the location of the tagger and GATE launches the tagger with the supplies parameters (directory where to run the tagger and any arguments, such as dictionaries to load or command-line flags to set).&lt;/li&gt;
+&lt;li&gt;The Processing Resource &lt;strong&gt;configuration&lt;/strong&gt; is nearly the same, but some of the defaults have been adapted to better reflect the nature of the on-line processing model.&lt;/li&gt;
+&lt;li&gt;Once your pipeline is &lt;strong&gt;running&lt;/strong&gt;, the text is piped into the tagger sub-process and results are read from the output stream, while intermediary files are no longer created.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Please clone the tagger from GitHub (&lt;cite&gt;git clone https://github.com/fnl/OnlineTaggerFramework&lt;/cite&gt;) into your local CREOLE &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-530003.6"&gt;user plugin directory&lt;/a&gt;.
+Then you can load my plug-in from the CREOLE Plugin Manager and once you create a new &lt;cite&gt;GenericOnlineTagger&lt;/cite&gt; processing resource, you will be asked to supply the initial configuration data to start the tagger sub-process (tagger binary path, directory to run in [if any], runtime flags and arguments [if any]).&lt;/p&gt;
+&lt;p&gt;If you run into any issue using this plug-in, please consider filing a &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework/issues"&gt;bug report&lt;/a&gt; on GitHub so I can fix the problem for anybody using it.
+I hope with this plug-in you will enjoy using external taggers with GATE as much as I do!&lt;/p&gt;
+</summary><category term="text mining"></category><category term="nlp"></category><category term="Java"></category></entry><entry><title>segtok - a segmentation and tokenization library</title><link href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="alternate"></link><updated>2015-01-12T00:00:00+01:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-01-12:segtok-a-segmentation-and-tokenization-library.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;
 Surprisingly, it is hard to find a good command-line tool for sentence segmentation and word tokenization that works well with European languages.
-Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a &lt;strong&gt;Python3&lt;/strong&gt; package, API, and Unix command-line tool to remedy this shortcoming.&lt;/p&gt;
+Here, I present &lt;a class="reference external" href="https://pypi.python.org/pypi/segtok"&gt;segtok&lt;/a&gt;, a &lt;strong&gt;Python 2.7 and 3&lt;/strong&gt; package, API, and Unix command-line tool to remedy this shortcoming.&lt;/p&gt;
 &lt;div class="section" id="text-processing-pipelines"&gt;
 &lt;h2&gt;Text processing pipelines&lt;/h2&gt;
 &lt;p&gt;This is the second in a series of posts that will present lean and elegant text processing tools to take you across the void from your document collection to the linguistic processing tools (&lt;em&gt;and back&lt;/em&gt;, but more on that in the future).
@@ -109,7 +169,7 @@ Segtok is designed to handle texts with characters from the entire Unicode space
 &lt;/div&gt;
 &lt;div class="section" id="sentence-segmentation-with-segtok"&gt;
 &lt;h2&gt;Sentence segmentation with segtok&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.segmenter&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_single&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.segmenter import split_single, split_multi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;On the sentence level, segtok can detect sentences that are contained inside brackets or quotation marks and maintains those brackets as part of the sentence;
 For example:&lt;/p&gt;
@@ -148,8 +208,8 @@ In summary, while coming at a computational cost, this second check is what allo
 &lt;/div&gt;
 &lt;div class="section" id="segtok-s-tokenization-strategy"&gt;
 &lt;h2&gt;Segtok's tokenization strategy&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;symbol_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;web_tokenizer&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_possessive_markers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.tokenizer import symbol_tokenizer, word_tokenizer, web_tokenizer
+from segtok.tokenizer import split_possessive_markers, split_contractions
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
@@ -171,16 +231,16 @@ Particularly, when processing biomedical documents, Web content, or patents, too
 As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.&lt;/p&gt;
 &lt;p&gt;After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
 To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;SimpleTokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
-            &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;
-        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;  &lt;span class="c"&gt;# None to signal sentence terminals&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;def SimpleTokenizer(text):
+    for sentence in split_multi(text):
+        for token in split_contractions(word_tokenizer(sentence)):
+            yield token
+        yield None  # None to signal sentence terminals
 
 
-&lt;span class="c"&gt;# An even shorter usage example:&lt;/span&gt;
-&lt;span class="n"&gt;my_tokens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt;
-             &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_text&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+# An even shorter usage example:
+my_tokens = [split_contractions(word_tokenizer(sentence)) for
+             sentence in split_multi(my_text)]
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
@@ -642,9 +702,9 @@ You can use either &lt;a class="reference external" href="http://www.postgresql.
 As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;medic parse baseline/medline1?n*.xml.gz
 
-&lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-             identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+             identifiers keywords publication_types qualifiers sections;
+  &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you are loading the files into SQLite, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
@@ -652,16 +712,16 @@ As loading all of MEDLINE through the ORM can be very slow for Postgres, it is b
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 &lt;/pre&gt;
 &lt;p&gt;Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the &lt;tt class="docutils literal"&gt;updates&lt;/tt&gt; directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; file in updates/medline1?n*.xml.gz&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;file in updates/medline1?n*.xml.gz;
+  &lt;span class="k"&gt;do &lt;/span&gt;medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;;
   &lt;span class="c"&gt;# NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)&lt;/span&gt;
   medic delete delete.txt
 
-  &lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-               identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+               identifiers keywords publication_types qualifiers sections;
+    &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
+  &lt;span class="k"&gt;done&lt;/span&gt;;
+&lt;span class="k"&gt;done&lt;/span&gt;;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;With SQLite you can again take the direct, but slower &lt;tt class="docutils literal"&gt;medic update&lt;/tt&gt; route:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -705,15 +765,15 @@ wget &amp;quot;$URL?db=PubMed&amp;amp;retmax=99&amp;amp;term=$QUERY&amp;quot; -O
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env bash&lt;/span&gt;
 &lt;span class="c"&gt;# for a given query (one term per argument), retrieve (up to retmax) matching PMIDs&lt;/span&gt;
 
-&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$@&amp;quot;&lt;/span&gt; | tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;2
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$QUERY&amp;quot;&lt;/span&gt; 1&amp;gt;&amp;amp;2
 
-wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmax=99999&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; cut -f3
+wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmax=99999&amp;amp;term=$QUERY&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+| grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+| sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+| cut -f3
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The query argument to this script now can contain space characters which are replaced with &amp;quot;+&amp;quot; characters, e.g., &amp;quot;&lt;tt class="docutils literal"&gt;search_pubmed.sh p53 AND cancer&lt;/tt&gt;&amp;quot; produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often; and using &lt;tt class="docutils literal"&gt;search_pubmed.sh&lt;/tt&gt; as the name of the above script).&lt;/p&gt;
 &lt;p&gt;Given one or a list of PMIDs, however, medic allows you to quickly pull the citations in a number of formats:&lt;/p&gt;
@@ -743,12 +803,12 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 &lt;p&gt;To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you use this much, you might even want to put that into a little script:&lt;/p&gt;
@@ -757,11 +817,11 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="nv"&gt;$@&lt;/span&gt;; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="k"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Alternatively, you might want the script to take a file with DOIs as input.
@@ -828,11 +888,11 @@ For this, I use a simple shell script (that I call &lt;tt class="docutils litera
 
 &lt;span class="c"&gt;# setup a directory structure for programming in go&lt;/span&gt;
 &lt;span class="nv"&gt;VCS_HUB&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;github.com/username
-&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 
-mkdir -p &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-mkdir -p &lt;span class="s2"&gt;&amp;quot;src/&lt;/span&gt;&lt;span class="nv"&gt;$VCS_HUB&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$PROJECT&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;&lt;/span&gt;
 mkdir bin
 mkdir pkg
 &lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
