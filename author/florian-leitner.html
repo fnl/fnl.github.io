@@ -104,7 +104,7 @@ That is, the tagger must take one continuous block of text as <em>input</em>, <s
 For example, it should take one token, sentences or block of text as input (not containing any newlines), and, once it receives a newline character, start tagging that input.</p>
 <p>3. The tagger must produce <strong>one annotation per line</strong> as <em>output</em>, and those annotations must be <strong>in the same order</strong> as the (input) text spans which they annotate.
 Those annotations commonly are expected to be in the OTPL (one token per line) format.
-For example, the output line <cite>Nouns noun NN B-NP O</cite> might annotate the token &quot;Noun&quot; (verbatim, as found in the input text) with the lemma &quot;noun&quot;, the PoS-tag &quot;NN&quot;, the BIO-chunk &quot;B-NP&quot; and the BIO-NER-tag &quot;O&quot; (&quot;outside&quot; any entity mention).</p>
+For example, the output line <tt class="docutils literal">Nouns noun NN <span class="pre">B-NP</span> O</tt> might annotate the token &quot;Noun&quot; (verbatim, as found in the input text) with the lemma &quot;noun&quot;, the PoS-tag &quot;NN&quot;, the BIO-chunk &quot;B-NP&quot; and the BIO-NER-tag &quot;O&quot; (&quot;outside&quot; any entity mention).</p>
 <p>If you have a tagger that follows those requirements (it turns out, most sequence taggers I know of work precisely like this), you can instead use my <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> framework.
 What it does differently to the Generic Tagger is the following:</p>
 <ul class="simple">
