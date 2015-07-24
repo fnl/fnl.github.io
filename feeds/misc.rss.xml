@@ -172,7 +172,7 @@ Segtok is designed to handle texts with characters from the entire Unicode space
 &lt;/div&gt;
 &lt;div class="section" id="sentence-segmentation-with-segtok"&gt;
 &lt;h2&gt;Sentence segmentation with segtok&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.segmenter&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_single&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.segmenter import split_single, split_multi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;On the sentence level, segtok can detect sentences that are contained inside brackets or quotation marks and maintains those brackets as part of the sentence;
 For example:&lt;/p&gt;
@@ -211,8 +211,8 @@ In summary, while coming at a computational cost, this second check is what allo
 &lt;/div&gt;
 &lt;div class="section" id="segtok-s-tokenization-strategy"&gt;
 &lt;h2&gt;Segtok's tokenization strategy&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;symbol_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;web_tokenizer&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_possessive_markers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.tokenizer import symbol_tokenizer, word_tokenizer, web_tokenizer
+from segtok.tokenizer import split_possessive_markers, split_contractions
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
@@ -234,16 +234,16 @@ Particularly, when processing biomedical documents, Web content, or patents, too
 As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.&lt;/p&gt;
 &lt;p&gt;After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
 To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;SimpleTokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
-            &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;
-        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;  &lt;span class="c"&gt;# None to signal sentence terminals&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;def SimpleTokenizer(text):
+    for sentence in split_multi(text):
+        for token in split_contractions(word_tokenizer(sentence)):
+            yield token
+        yield None  # None to signal sentence terminals
 
 
-&lt;span class="c"&gt;# An even shorter usage example:&lt;/span&gt;
-&lt;span class="n"&gt;my_tokens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt;
-             &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_text&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+# An even shorter usage example:
+my_tokens = [split_contractions(word_tokenizer(sentence)) for
+             sentence in split_multi(my_text)]
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
@@ -705,9 +705,9 @@ You can use either &lt;a class="reference external" href="http://www.postgresql.
 As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;medic parse baseline/medline1?n*.xml.gz
 
-&lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-             identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+             identifiers keywords publication_types qualifiers sections;
+  &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you are loading the files into SQLite, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
@@ -715,16 +715,16 @@ As loading all of MEDLINE through the ORM can be very slow for Postgres, it is b
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 &lt;/pre&gt;
 &lt;p&gt;Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the &lt;tt class="docutils literal"&gt;updates&lt;/tt&gt; directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; file in updates/medline1?n*.xml.gz&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;file in updates/medline1?n*.xml.gz;
+  &lt;span class="k"&gt;do &lt;/span&gt;medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;;
   &lt;span class="c"&gt;# NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)&lt;/span&gt;
   medic delete delete.txt
 
-  &lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-               identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+               identifiers keywords publication_types qualifiers sections;
+    &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
+  &lt;span class="k"&gt;done&lt;/span&gt;;
+&lt;span class="k"&gt;done&lt;/span&gt;;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;With SQLite you can again take the direct, but slower &lt;tt class="docutils literal"&gt;medic update&lt;/tt&gt; route:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -768,15 +768,15 @@ wget &amp;quot;$URL?db=PubMed&amp;amp;retmax=99&amp;amp;term=$QUERY&amp;quot; -O
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env bash&lt;/span&gt;
 &lt;span class="c"&gt;# for a given query (one term per argument), retrieve (up to retmax) matching PMIDs&lt;/span&gt;
 
-&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$@&amp;quot;&lt;/span&gt; | tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;2
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$QUERY&amp;quot;&lt;/span&gt; 1&amp;gt;&amp;amp;2
 
-wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmax=99999&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="p"&gt;|&lt;/span&gt; cut -f3
+wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmax=99999&amp;amp;term=$QUERY&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+| grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+| sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+| cut -f3
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The query argument to this script now can contain space characters which are replaced with &amp;quot;+&amp;quot; characters, e.g., &amp;quot;&lt;tt class="docutils literal"&gt;search_pubmed.sh p53 AND cancer&lt;/tt&gt;&amp;quot; produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often; and using &lt;tt class="docutils literal"&gt;search_pubmed.sh&lt;/tt&gt; as the name of the above script).&lt;/p&gt;
 &lt;p&gt;Given one or a list of PMIDs, however, medic allows you to quickly pull the citations in a number of formats:&lt;/p&gt;
@@ -806,12 +806,12 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 &lt;p&gt;To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you use this much, you might even want to put that into a little script:&lt;/p&gt;
@@ -820,11 +820,11 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="nv"&gt;$@&lt;/span&gt;; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="k"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Alternatively, you might want the script to take a file with DOIs as input.
@@ -832,7 +832,8 @@ But that is a trivial case to handle with this script: just use the file as an a
 &lt;p&gt;Unluckily enough, converting PMIDs to DOIs is a lot more trickier: First, the download of MEDLINE from the FTP site does not contain all PubMed mappings of PMIDs to DOIs that the NLM has access to (why not is a mystery to me...). Second, there are still scores of PMIDs that even the NLM did not receive the correct DOI mapping from the publisher. So overall, no matter what you do, there will be holes if trying to go the direct PMID-to-DOI way. The best method right now is probably to query with the title and authors and see if you find an exact, unique match to a DOI on &lt;a class="reference external" href="http://www.crossref.org/"&gt;CrossRef&lt;/a&gt;, but that API is commercial and you need to pay for any serious query volumes.&lt;/p&gt;
 &lt;p&gt;Overall, this collection of tools should give you everything you need to quickly and efficiently work with MEDLINE's PubMed citations. If you have not done so already, you can check out the &amp;quot;full capabilities&amp;quot; of &lt;a class="reference external" href="https://pypi.python.org/pypi/medic"&gt;medic&lt;/a&gt; and decide for yourself if my approach is suitable for you, too.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Thu, 11 Sep 2014 00:00:00 +0200</pubDate><guid>tag:fnl.es,2014-09-11:medline-kung-fu.html</guid><category>text mining</category><category>bionlp</category><category>pubmed</category></item><item><title>An Introduction to Statistical Text Mining</title><link>http://fnl.es/an-introduction-to-statistical-text-mining.html</link><description>&lt;p&gt;Last week we had a really great time at the first hands-on text mining workshop in the context of the &lt;a class="reference external" href="http://www.dia.fi.upm.es/ASDM"&gt;Advanced Statistics and Data Mining&lt;/a&gt; Summer School. This one-week course is an introduction to text mining from the &amp;quot;bottom up&amp;quot; to a bunch of motivated summer students, with the practical parts based on Python and the &lt;a class="reference external" href="http://www.nltk.org/"&gt;NLTK&lt;/a&gt;. The presentation was part of the 9th iteration of the Summer School that is located in the sunniest capital of Europe: Madrid (well, &lt;em&gt;ex aequo&lt;/em&gt; with Athens, at least). In its context, I presented 15 hours worth of practical and theoretical background on machine learning for text mining to fourteen participants from all over the world. With this post I am sharing the slides and tutorial files (&lt;a class="reference external" href="http://ipython.org/"&gt;IPython&lt;/a&gt; Notebooks) with the world for free (see the Creative Commons &lt;a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/"&gt;BY-SA&lt;/a&gt; licensing details). While much of the material should speak for itself, it might not &amp;quot;save&amp;quot; you from visiting a text mining class (maybe mine, next summer?).&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Florian Leitner</dc:creator><pubDate>Thu, 11 Sep 2014 00:00:00 +0200</pubDate><guid>tag:fnl.es,2014-09-11:medline-kung-fu.html</guid><category>text mining</category><category>bionlp</category><category>pubmed</category></item><item><title>An Introduction to Statistical Text Mining</title><link>http://fnl.es/an-introduction-to-statistical-text-mining.html</link><description>&lt;p&gt;&lt;em&gt;Update&lt;/em&gt; 2015-07-24: Please check out the &lt;a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-from-bayes-rule-to-de"&gt;latest slides&lt;/a&gt; for this course, which now includes a quick introduction to dependency parsing, a more terse start, and several corrections and improvements all over.&lt;/p&gt;
+&lt;p&gt;Last week we had a really great time at the first hands-on text mining workshop in the context of the &lt;a class="reference external" href="http://www.dia.fi.upm.es/ASDM"&gt;Advanced Statistics and Data Mining&lt;/a&gt; Summer School. This one-week course is an introduction to text mining from the &amp;quot;bottom up&amp;quot; to a bunch of motivated summer students, with the practical parts based on Python and the &lt;a class="reference external" href="http://www.nltk.org/"&gt;NLTK&lt;/a&gt;. The presentation was part of the 9th iteration of the Summer School that is located in the sunniest capital of Europe: Madrid (well, &lt;em&gt;ex aequo&lt;/em&gt; with Athens, at least). In its context, I presented 15 hours worth of practical and theoretical background on machine learning for text mining to fourteen participants from all over the world. With this post I am sharing the slides and tutorial files (&lt;a class="reference external" href="http://ipython.org/"&gt;IPython&lt;/a&gt; Notebooks) with the world for free (see the Creative Commons &lt;a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/"&gt;BY-SA&lt;/a&gt; licensing details). While much of the material should speak for itself, it might not &amp;quot;save&amp;quot; you from visiting a text mining class (maybe mine, next summer?).&lt;/p&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;The theory mostly focuses on explaining the methods and statistics behind machine learning &lt;em&gt;for text mining&lt;/em&gt; - without requiring a particular background other than sharp high-school maths. The practicals on the other hand make use of Python, particularly online &lt;a class="reference external" href="http://ipython.org/"&gt;IPython&lt;/a&gt; Notebooks. Therefore, prior contact with Python would be useful to profit the most from the practicals, but it is not required to follow the course. IPython's Notebooks act very much like MATLAB Notebooks, but run online in any modern browser, are based on open source software that requires no license fee, and provide facilities to place documentation and mathematical formulas between the code snippets, evaluation results, and graphical plots. Therefore, these notebooks serve as take home material for the students to study and play around with, even well after the course. To illustrate the power of IPython, learning how to work in this environment immediately enables you to run distributed, high-performance computations &amp;quot;off the shelf&amp;quot; (e.g., via &lt;a class="reference external" href="http://star.mit.edu/cluster/"&gt;StarCluster&lt;/a&gt; on Amazon EC2 Clusters).&lt;/p&gt;
@@ -891,11 +892,11 @@ For this, I use a simple shell script (that I call &lt;tt class="docutils litera
 
 &lt;span class="c"&gt;# setup a directory structure for programming in go&lt;/span&gt;
 &lt;span class="nv"&gt;VCS_HUB&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;github.com/username
-&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 
-mkdir -p &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-mkdir -p &lt;span class="s2"&gt;&amp;quot;src/&lt;/span&gt;&lt;span class="nv"&gt;$VCS_HUB&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$PROJECT&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;&lt;/span&gt;
 mkdir bin
 mkdir pkg
 &lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
