@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/all.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2015-04-06T00:00:00+02:00</updated><entry><title>An efficient online sequence tagger resource for GATE</title><link href="http://fnl.es/an-efficient-online-sequence-tagger-resource-for-gate.html" rel="alternate"></link><updated>2015-04-06T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-04-06:an-efficient-online-sequence-tagger-resource-for-gate.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; for a stressed out generation:
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl.es</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/all.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2015-08-07T00:00:00+02:00</updated><entry><title>What are the best books [for programmers] to get into Data Science?</title><link href="http://fnl.es/what-are-the-best-books-for-programmers-to-get-into-data-science.html" rel="alternate"></link><updated>2015-08-07T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-08-07:what-are-the-best-books-for-programmers-to-get-into-data-science.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is a question I get on a frequent basis by colleagues that are serious programmers or software developers and are planning to pick up data analytics. There are three fundamental topics in mathematics that you need to cover, assuming that you are an expert in software development and informatics already: statistics, linear algebra, and machine learning. Therefore, I will recommend one book associated to each of these topics. Even I continue to consult those books as one of my favorite reference materials.&lt;/p&gt;
+&lt;p&gt;There might be a fourth foundation worth mentioning: calculus. I don't really have a recommendation for that, as it never has been essential to my work. As long as you can remember how to do differentiation and integration and solve an ODE, you are pretty much saddled. In other words, fresh high-school knowledge of calculus has always been good enough for me. And there is no need to make any proofs, unless you want to develop your own machine learning methods…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-r-environment"&gt;
+&lt;h2&gt;The R Environment&lt;/h2&gt;
+&lt;p&gt;Before presenting the books, let me recommend one tool that you should pick up when doing the books' practical exercises: &lt;a class="reference external" href="https://www.r-project.org/"&gt;R&lt;/a&gt;. R is the de facto tool for data science today and, as I would predict, the &lt;a class="reference external" href="https://www.rstudio.com/"&gt;environment&lt;/a&gt; that will (is?) put (putting?) S, SPSS, SAS, and a number of other commercial tools into their digital grave. Even banks and insurances are beginning to embrace R, apparently (not sure that's a good thing, though...). R provides a huge ecosystem of packages that lets you quickly explore and test models, inspect your data, develop theories, and visualize results. Any of these points can be extremely tedious with other tools, but a few other free and commercial statistics, math, and/or machine learning environments (e.g., MatLab or Octave) might be viable alternatives if you already know them. Python in particular is extremely well suited (maybe even better than R) if you are interested in language processing. Overall, I recommend working through the exercises provided by the books with your preferred &lt;em&gt;interactive&lt;/em&gt; environment. Just as with programming and software development, only reading about the relevant material will not provide you with the experience needed to actually “do” data science.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="statistics"&gt;
+&lt;h2&gt;Statistics&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.statisticalsleuth.com/"&gt;The Statistical Sleuth&lt;/a&gt; by Fred Ramsey and Daniel W. Schafer.
+While there might be “simpler” books around, this one has the most compact and best overview of applied statistics that I have read to date (t and F distributions, ANOVA and multivariate regression, etc.). If you can only read one book or only need to work the statistics angle, then this is “the” book. Most of the machine learning stuff can be understood easily after digesting this book, and I particularly like the very applied approach that Ramsey &amp;amp; Schafer take.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="linear-algebra"&gt;
+&lt;h2&gt;Linear Algebra&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://math.mit.edu/~gs/linearalgebra/"&gt;Introduction to Linear Algebra&lt;/a&gt; by Gibert Strang.
+Contrary to statistics, on this topic there certainly are more advanced books around, but this one covers all I ever needed. It takes you from the dot and outer product over eigenspaces to Singular Value Decomposition. And, the author is exceptionally gifted at teaching algebraic thinking (The book can be &amp;quot;watched&amp;quot; for free in form of &lt;a class="reference external" href="http://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/"&gt;videos&lt;/a&gt; of his classes.) As a bonus, the final chapters explain how this material ties in with advanced data science techniques and machine learning models.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="machine-learning"&gt;
+&lt;h2&gt;Machine Learning&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www-bcf.usc.edu/~gareth/ISL/"&gt;An Introduction to Statistical Learning&lt;/a&gt; by James, Witten, Hastie, and Tibshirani.&lt;/p&gt;
+&lt;p&gt;While quite a bit slower moving than the first Hastie &amp;amp; Tibshirani book (The Elements of Statistical Learning), I think it is the better start, and it has a ton of exercises using R. Especially the first few chapters contain discussions about basic aspects that are critical to this line of work, like the bias-variance tradeoff issue to keep in mind when developing your machine learning models. This is an excellent read if the Sleuth above is no longer a problem, as it does assume a solid background on basic statistics, distributions &amp;amp; regression techniques.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;After studying these three books, you will be ready to extend your knowledge with domain-specific techniques. That should be geared at what kind of data you want to process: Text mining, time series, bioinformatics, signal processing, etc. and what specific models you want to apply: Neural networks, graphical models, kernel machines, structured equations, etc. In other words, the above three books will not convert you into a data science expert, but they will provide you with an extremely solid foundation so that you can effortlessly study any advanced topics and techniques that will.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="data science"></category><category term="review"></category></entry><entry><title>An efficient online sequence tagger resource for GATE</title><link href="http://fnl.es/an-efficient-online-sequence-tagger-resource-for-gate.html" rel="alternate"></link><updated>2015-04-06T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2015-04-06:an-efficient-online-sequence-tagger-resource-for-gate.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; for a stressed out generation:
 &lt;a class="reference external" href="https://gate.ac.uk"&gt;GATE&lt;/a&gt;'s &lt;a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework"&gt;Generic Tagger&lt;/a&gt; framework is a CREOLE plug-in that allows you to wrap any existing &lt;a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html"&gt;sequence tagger&lt;/a&gt; and use it to create annotations in your pipeline, but it is a bit slow.
 Therefore, I have created the &lt;a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework"&gt;Online Tagger&lt;/a&gt; GATE plug-in that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &amp;quot;singleton&amp;quot; sub-process per Processing Resource instance.
 This version can in some cases be several &lt;em&gt;orders&lt;/em&gt; of magnitude faster than the built-in framework.&lt;/p&gt;
@@ -172,7 +200,7 @@ Segtok is designed to handle texts with characters from the entire Unicode space
 &lt;/div&gt;
 &lt;div class="section" id="sentence-segmentation-with-segtok"&gt;
 &lt;h2&gt;Sentence segmentation with segtok&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.segmenter import split_single, split_multi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.segmenter&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_single&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;On the sentence level, segtok can detect sentences that are contained inside brackets or quotation marks and maintains those brackets as part of the sentence;
 For example:&lt;/p&gt;
@@ -211,8 +239,8 @@ In summary, while coming at a computational cost, this second check is what allo
 &lt;/div&gt;
 &lt;div class="section" id="segtok-s-tokenization-strategy"&gt;
 &lt;h2&gt;Segtok's tokenization strategy&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;from segtok.tokenizer import symbol_tokenizer, word_tokenizer, web_tokenizer
-from segtok.tokenizer import split_possessive_markers, split_contractions
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;symbol_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;web_tokenizer&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;segtok.tokenizer&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;split_possessive_markers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
@@ -234,16 +262,16 @@ Particularly, when processing biomedical documents, Web content, or patents, too
 As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.&lt;/p&gt;
 &lt;p&gt;After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (&lt;tt class="docutils literal"&gt;split_possessive_markers&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;split_contractions&lt;/tt&gt;).
 To use them, just wrap your tokenizer with the preferred method:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;def SimpleTokenizer(text):
-    for sentence in split_multi(text):
-        for token in split_contractions(word_tokenizer(sentence)):
-            yield token
-        yield None  # None to signal sentence terminals
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;SimpleTokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
+            &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;
+        &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;  &lt;span class="c"&gt;# None to signal sentence terminals&lt;/span&gt;
 
 
-# An even shorter usage example:
-my_tokens = [split_contractions(word_tokenizer(sentence)) for
-             sentence in split_multi(my_text)]
+&lt;span class="c"&gt;# An even shorter usage example:&lt;/span&gt;
+&lt;span class="n"&gt;my_tokens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;split_contractions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_tokenizer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sentence&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt;
+             &lt;span class="n"&gt;sentence&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;split_multi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_text&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="feedback-and-conclusions"&gt;
@@ -705,9 +733,9 @@ You can use either &lt;a class="reference external" href="http://www.postgresql.
 As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;medic parse baseline/medline1?n*.xml.gz
 
-&lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-             identifiers keywords publication_types qualifiers sections;
-  &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
+&lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+             identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you are loading the files into SQLite, you can load the data directly with &lt;tt class="docutils literal"&gt;medic insert&lt;/tt&gt;, although it will be considerably slower than the Postgres parse-and-dump method:&lt;/p&gt;
@@ -715,16 +743,16 @@ As loading all of MEDLINE through the ORM can be very slow for Postgres, it is b
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 &lt;/pre&gt;
 &lt;p&gt;Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the &lt;tt class="docutils literal"&gt;updates&lt;/tt&gt; directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for &lt;/span&gt;file in updates/medline1?n*.xml.gz;
-  &lt;span class="k"&gt;do &lt;/span&gt;medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; file in updates/medline1?n*.xml.gz&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;do&lt;/span&gt; medic --update parse &lt;span class="nv"&gt;$file&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
   &lt;span class="c"&gt;# NB: the above command created the file &amp;quot;delete.txt&amp;quot; (a list of PMIDs to delete)&lt;/span&gt;
   medic delete delete.txt
 
-  &lt;span class="k"&gt;for &lt;/span&gt;table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
-               identifiers keywords publication_types qualifiers sections;
-    &lt;span class="k"&gt;do &lt;/span&gt;psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY $table FROM &amp;#39;`pwd`/${table}.tab&amp;#39;;&amp;quot;&lt;/span&gt;;
-  &lt;span class="k"&gt;done&lt;/span&gt;;
-&lt;span class="k"&gt;done&lt;/span&gt;;
+  &lt;span class="k"&gt;for&lt;/span&gt; table in citations abstracts authors chemicals databases descriptors &lt;span class="se"&gt;\&lt;/span&gt;
+               identifiers keywords publication_types qualifiers sections&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;do&lt;/span&gt; psql medline -c &lt;span class="s2"&gt;&amp;quot;COPY &lt;/span&gt;&lt;span class="nv"&gt;$table&lt;/span&gt;&lt;span class="s2"&gt; FROM &amp;#39;`pwd`/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;table&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tab&amp;#39;;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;With SQLite you can again take the direct, but slower &lt;tt class="docutils literal"&gt;medic update&lt;/tt&gt; route:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -768,15 +796,15 @@ wget &amp;quot;$URL?db=PubMed&amp;amp;retmax=99&amp;amp;term=$QUERY&amp;quot; -O
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env bash&lt;/span&gt;
 &lt;span class="c"&gt;# for a given query (one term per argument), retrieve (up to retmax) matching PMIDs&lt;/span&gt;
 
-&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$@&amp;quot;&lt;/span&gt; | tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;QUERY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tr &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; +&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$QUERY&amp;quot;&lt;/span&gt; 1&amp;gt;&amp;amp;2
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;2
 
-wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmax=99999&amp;amp;term=$QUERY&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-| grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-| sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-| cut -f3
+wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmax=99999&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$QUERY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;^&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="p"&gt;|&lt;/span&gt; cut -f3
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The query argument to this script now can contain space characters which are replaced with &amp;quot;+&amp;quot; characters, e.g., &amp;quot;&lt;tt class="docutils literal"&gt;search_pubmed.sh p53 AND cancer&lt;/tt&gt;&amp;quot; produces the same output as before (with far more PMIDs, however, so please do not try this particular query too often; and using &lt;tt class="docutils literal"&gt;search_pubmed.sh&lt;/tt&gt; as the name of the above script).&lt;/p&gt;
 &lt;p&gt;Given one or a list of PMIDs, however, medic allows you to quickly pull the citations in a number of formats:&lt;/p&gt;
@@ -806,12 +834,12 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 &lt;p&gt;To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;;
-  &lt;span class="k"&gt;do &lt;/span&gt;&lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt;
+&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="sb"&gt;`&lt;/span&gt;cat dois.txt&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="nv"&gt;pmid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="nv"&gt;$pmid&lt;/span&gt; &amp;gt;&amp;gt; doi2pmid.txt&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you use this much, you might even want to put that into a little script:&lt;/p&gt;
@@ -820,11 +848,11 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 
 &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;for &lt;/span&gt;doi in &lt;span class="nv"&gt;$@&lt;/span&gt;; &lt;span class="k"&gt;do&lt;/span&gt;
-&lt;span class="k"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;$URL?db=PubMed&amp;amp;retmode=xml&amp;amp;term=$doi&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
-  | grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  | sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
-  | cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; doi in &lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$doi&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;wget &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;?db=PubMed&amp;amp;retmode=xml&amp;amp;term=&lt;/span&gt;&lt;span class="nv"&gt;$doi&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -O - 2&amp;gt; /dev/null &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;&amp;lt;Id&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; sed -E &lt;span class="s1"&gt;&amp;#39;s|&amp;lt;/?Id&amp;gt;||g&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  &lt;span class="p"&gt;|&lt;/span&gt; cut -f3&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Alternatively, you might want the script to take a file with DOIs as input.
@@ -892,11 +920,11 @@ For this, I use a simple shell script (that I call &lt;tt class="docutils litera
 
 &lt;span class="c"&gt;# setup a directory structure for programming in go&lt;/span&gt;
 &lt;span class="nv"&gt;VCS_HUB&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;github.com/username
-&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="nv"&gt;PROJECT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;basename &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 
-mkdir -p &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
-&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
-mkdir -p &lt;span class="s2"&gt;&amp;quot;src/$VCS_HUB/$PROJECT&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+mkdir -p &lt;span class="s2"&gt;&amp;quot;src/&lt;/span&gt;&lt;span class="nv"&gt;$VCS_HUB&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$PROJECT&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 mkdir bin
 mkdir pkg
 &lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;

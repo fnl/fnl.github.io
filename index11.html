@@ -30,7 +30,7 @@ alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
 <div id="header">
             <ul id="nav">
-                <li class="selected"><a class="flagred" href="http://fnl.es">Home</a></li>
+                <li><a class="flagred" href="http://fnl.es">Home</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
 <li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
@@ -41,7 +41,7 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">Mar 2010</h4>
+                <h4 class="date">Aug 2011</h4>
 
 								<div class="mobile-hide">
 									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
@@ -49,69 +49,21 @@ alt="hit counter"></a></div></noscript>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/rails-rspecing-controllers-with-declarative-authorization-and-authlogic.html" rel="bookmark" title="Permanent Link to &quot;Rails: RSpec'ing controllers with declarative authorization AND AuthLogic&quot;">Rails: RSpec'ing controllers with declarative authorization AND AuthLogic</a>
+                        <a href="http://fnl.es/no-smart-phone-please.html" rel="bookmark" title="Permanent Link to &quot;No &quot;Smart&quot;-Phone, Please&quot;">No &quot;Smart&quot;-Phone, Please</a>
                     </h2>
 
-                    <p>I just had a rough time figuring out how to bypass all the security
-features of the Rails project I am developing to write decent controller
-specs with RSpec. I am using AuthLogic as authentication module and
-declarative authorization (DA) for exactly that. However, when I started
-to write controller specs that would simulate (HTTP) GET requests, I ran
-into a wall: I simply could not digg what the cleanest way would be to
-bypass both AuthLogic and DA. Finally, after finding the right queries
-in Google, I managed to get the necessary snippets. To avoid that the
-same tedious task might befall you, here's what you need to add, e.g.,
-to your spec_helpers directory - I called the file
-&quot;controller_helpers.rb&quot;:</p>
-<div class="highlight"><pre><span class="k">module</span> <span class="nn">SessionHelper</span>
-  <span class="k">def</span> <span class="nf">current_user</span><span class="p">(</span><span class="n">stubs</span> <span class="o">=</span> <span class="p">{})</span>
-    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="n">mock_model</span><span class="p">(</span><span class="no">User</span><span class="p">,</span> <span class="n">stubs</span><span class="p">)</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">user_session</span><span class="p">(</span><span class="n">stubs</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">user_stubs</span> <span class="o">=</span> <span class="p">{})</span>
-    <span class="vi">@current_user_session</span> <span class="o">||=</span> <span class="n">mock_model</span><span class="p">(</span>
-      <span class="no">UserSession</span><span class="p">,</span> <span class="p">{</span> <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="n">current_user</span><span class="p">(</span><span class="n">user_stubs</span><span class="p">)</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">stubs</span><span class="p">)</span>
-    <span class="p">)</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">session_stubs</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">user_stubs</span> <span class="o">=</span> <span class="p">{})</span>
-    <span class="no">UserSession</span><span class="o">.</span><span class="n">stub!</span><span class="p">(</span><span class="ss">:find</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span>
-      <span class="n">user_session</span><span class="p">(</span><span class="n">session_stubs</span><span class="p">,</span> <span class="n">user_stubs</span><span class="p">)</span>
-    <span class="p">)</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">logout</span><span class="p">()</span>
-    <span class="vi">@user_session</span> <span class="o">=</span> <span class="kp">nil</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">disable_authorization</span><span class="p">()</span>
-    <span class="no">Authorization</span><span class="o">.</span><span class="n">ignore_access_control</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</pre></div>
-<p>The trick is that, for AuthLogic, you can now &quot;authenticate&quot; the user
-by the stubbed UserSession that returns a mocked User model. DA is less
-complicated: the <tt class="docutils literal">disable_authorization()</tt> method is all that is
-needed. Now, in your &quot;spec_helper.rb&quot;, you add this line to the top:</p>
-<div class="highlight"><pre><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/spec_helpers/controller_helpers&#39;</span>
-</pre></div>
-<p>And this line somewhere in the <tt class="docutils literal"><span class="pre">Spec::Runner.configure</span></tt> loop:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="no">SessionHelper</span><span class="p">)</span>
-</pre></div>
-<p>Now, in your controller specs, it is more than trivial to disable
-authorization and authentication at once - simply add the following
-line, e.g., to your <tt class="docutils literal"><span class="pre">before(:each)</span></tt> definitions:</p>
-<div class="highlight"><pre><span class="n">disable_authorization</span> <span class="o">&amp;&amp;</span> <span class="n">login</span>
-</pre></div>
-<p>Voila - your GET requests pass; and you can even add stubs to your
-User model, if needed, by adding them as key-value pairs to the
-<tt class="docutils literal">login()</tt> call above! So now you can get back to make your specs
-pass...</p>
+                    <p>Out of my strong opinions about privacy, I avoid the total exposure of my private life to governmental organizations and trans-national cooperations that you (maybe unconciously) subdue yourself by owning a &quot;smart&quot; phone and storing your whole life's data in the Cloud.
+And no, I am not being paranoid: There is hard evidence for the <a class="reference external" href="http://www.zeit.de/digital/datenschutz/2011-03/data-protection-malte-spitz/seite-1">tracking</a> (<em>and</em> now [EDIT in 2013] the <a class="reference external" href="http://www.guardian.co.uk/world/prism">sniffing</a>) going on - <a class="reference external" href="http://www.onread.com/book/Brave-New-World-191056/">Huxley</a> and <a class="reference external" href="http://www.george-orwell.org/1984">Orwell</a> didn't even scratch the surface of what was to come…
+So don't waste your time trying to &quot;Whats-App&quot; me or convince me to contribute &quot;content&quot; via my mobile to &quot;people marketing&quot; (social network) sites.
+Yet another argument: my old-school phone cost me 20 Euros to buy, contract free, and costs be 9 Euros to run, per month - roughly, about one quarter the cost of &quot;smart&quot;-phones.
+In other words, I am saving a small holiday every year, or about 500 Euros.
+Don't tell me again you are saving money because you now have Whats-App...
+On top of all that, it frightens me to see - in restaurants and bars, at dinner tables at home, or in any other place people normally would talk to each other - more and more people turn into &quot;Matrix dummys&quot; that rather stare at their gadget than actually interact with each other.</p>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/rspec.html">rspec</a>                            <a href="http://fnl.es/tag/rails.html">rails</a>                        </div>
+                        <div class="tags">                            <a href="http://fnl.es/tag/privacy.html">privacy</a>                        </div>
 
                     </div>
                     <div class="clear"></div>
@@ -121,7 +73,7 @@ pass...</p>
                 <div class="pages">
                     <a href="http://fnl.es/index10.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/index12.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 11 of 26</span>
+                    <span>Page 11 of 27</span>
                 </div>
 
                 <div class="clear"></div>

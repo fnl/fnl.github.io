@@ -30,7 +30,7 @@ alt="hit counter"></a></div></noscript>
         <!-- End of StatCounter Code for Default Guide -->
 <div id="header">
             <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/tag/text-mining.html">text mining</a></li>
+                <li class="ephemeral selected"><a href="http://fnl.es/tag/text-mining2.html">text mining</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
 <li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
@@ -163,7 +163,7 @@ Segtok is designed to handle texts with characters from the entire Unicode space
 </div>
 <div class="section" id="sentence-segmentation-with-segtok">
 <h2>Sentence segmentation with segtok</h2>
-<div class="highlight"><pre>from segtok.segmenter import split_single, split_multi
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">segtok.segmenter</span> <span class="kn">import</span> <span class="n">split_single</span><span class="p">,</span> <span class="n">split_multi</span>
 </pre></div>
 <p>On the sentence level, segtok can detect sentences that are contained inside brackets or quotation marks and maintains those brackets as part of the sentence;
 For example:</p>
@@ -202,8 +202,8 @@ In summary, while coming at a computational cost, this second check is what allo
 </div>
 <div class="section" id="segtok-s-tokenization-strategy">
 <h2>Segtok's tokenization strategy</h2>
-<div class="highlight"><pre>from segtok.tokenizer import symbol_tokenizer, word_tokenizer, web_tokenizer
-from segtok.tokenizer import split_possessive_markers, split_contractions
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">segtok.tokenizer</span> <span class="kn">import</span> <span class="n">symbol_tokenizer</span><span class="p">,</span> <span class="n">word_tokenizer</span><span class="p">,</span> <span class="n">web_tokenizer</span>
+<span class="kn">from</span> <span class="nn">segtok.tokenizer</span> <span class="kn">import</span> <span class="n">split_possessive_markers</span><span class="p">,</span> <span class="n">split_contractions</span>
 </pre></div>
 <p>The tokenization approach uses a similar approach.
 First, a maximal token split is made, and then several functions wrap this basic approach, encapsulating successively more complex rules that join neighboring tokens back together based on their orthographic properties.
@@ -225,16 +225,16 @@ Particularly, when processing biomedical documents, Web content, or patents, too
 As before with the segmenter, I believe this recovery of false positives is the particular strength of this library.</p>
 <p>After the tokenization step, the API provides two functions to optionally split off English possessive markers (“Fred's”, “Argus'”) and even contractions (“isn't” → “is n't” [note the attachment of the letter n], “he'll” → “he 'll”, “I've” → “I 've”, etc.) as their own tokens, which can be useful for downstream linguistic parsing (<tt class="docutils literal">split_possessive_markers</tt> and <tt class="docutils literal">split_contractions</tt>).
 To use them, just wrap your tokenizer with the preferred method:</p>
-<div class="highlight"><pre>def SimpleTokenizer(text):
-    for sentence in split_multi(text):
-        for token in split_contractions(word_tokenizer(sentence)):
-            yield token
-        yield None  # None to signal sentence terminals
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">SimpleTokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="n">token</span>
+        <span class="k">yield</span> <span class="bp">None</span>  <span class="c"># None to signal sentence terminals</span>
 
 
-# An even shorter usage example:
-my_tokens = [split_contractions(word_tokenizer(sentence)) for
-             sentence in split_multi(my_text)]
+<span class="c"># An even shorter usage example:</span>
+<span class="n">my_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span> <span class="k">for</span>
+             <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">my_text</span><span class="p">)]</span>
 </pre></div>
 </div>
 <div class="section" id="feedback-and-conclusions">
