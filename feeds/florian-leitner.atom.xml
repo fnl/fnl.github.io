@@ -20,8 +20,8 @@ Contrary to statistics, on this topic there certainly are more advanced books ar
 &lt;/div&gt;
 &lt;div class="section" id="machine-learning"&gt;
 &lt;h2&gt;Machine Learning&lt;/h2&gt;
-&lt;p&gt;&lt;a class="reference external" href="http://www-bcf.usc.edu/~gareth/ISL/"&gt;An Introduction to Statistical Learning&lt;/a&gt; by James, Witten, Hastie, and Tibshirani.&lt;/p&gt;
-&lt;p&gt;While quite a bit slower moving than the first Hastie &amp;amp; Tibshirani book (The Elements of Statistical Learning), I think it is the better start, and it has a ton of exercises using R. Especially the first few chapters contain discussions about basic aspects that are critical to this line of work, like the bias-variance tradeoff issue to keep in mind when developing your machine learning models. This is an excellent read if the Sleuth above is no longer a problem, as it does assume a solid background on basic statistics, distributions &amp;amp; regression techniques.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www-bcf.usc.edu/~gareth/ISL/"&gt;An Introduction to Statistical Learning&lt;/a&gt; by James, Witten, Hastie, and Tibshirani.
+While quite a bit slower moving than the first Hastie &amp;amp; Tibshirani book (The Elements of Statistical Learning), I think it is the better start, and it has a ton of exercises using R. Especially the first few chapters contain discussions about basic aspects that are critical to this line of work, like the bias-variance tradeoff issue to keep in mind when developing your machine learning models. This is an excellent read if the Sleuth above is no longer a problem, as it does assume a solid background on basic statistics, distributions &amp;amp; regression techniques.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="conclusion"&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
