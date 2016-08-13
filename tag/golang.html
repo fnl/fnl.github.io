@@ -79,9 +79,9 @@ imports PKGNAME: unrecognized import path &quot;PATH&quot;
 <p>They probably occur while running <tt class="docutils literal">go get SOME_PKG</tt>, and it most likely just means that your <tt class="docutils literal">GOROOT</tt> is wrong or unset.
 Finally, you want to quickly bootstrap a &quot;virtual&quot; development environment for Go.
 For this, I use a simple shell script (that I call <tt class="docutils literal">goinit</tt>) to set up the directory structure and an &quot;<tt class="docutils literal">activate</tt>-able&quot; environment [UPDATE 2013-12-17: additional go get package lines that are extremely useful for development]</p>
-<div class="highlight"><pre><span class="c">#!/bin/sh</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
 
-<span class="c"># setup a directory structure for programming in go</span>
+<span class="c1"># setup a directory structure for programming in go</span>
 <span class="nv">VCS_HUB</span><span class="o">=</span>github.com/username
 <span class="nv">PROJECT</span><span class="o">=</span><span class="sb">`</span>basename <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="sb">`</span>
 

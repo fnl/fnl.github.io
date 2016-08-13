@@ -64,7 +64,7 @@ in Google, I managed to get the necessary snippets. To avoid that the
 same tedious task might befall you, here's what you need to add, e.g.,
 to your spec_helpers directory - I called the file
 &quot;controller_helpers.rb&quot;:</p>
-<div class="highlight"><pre><span class="k">module</span> <span class="nn">SessionHelper</span>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="nn">SessionHelper</span>
   <span class="k">def</span> <span class="nf">current_user</span><span class="p">(</span><span class="n">stubs</span> <span class="o">=</span> <span class="p">{})</span>
     <span class="vi">@current_user</span> <span class="o">||=</span> <span class="n">mock_model</span><span class="p">(</span><span class="no">User</span><span class="p">,</span> <span class="n">stubs</span><span class="p">)</span>
   <span class="k">end</span>
@@ -94,15 +94,15 @@ to your spec_helpers directory - I called the file
 by the stubbed UserSession that returns a mocked User model. DA is less
 complicated: the <tt class="docutils literal">disable_authorization()</tt> method is all that is
 needed. Now, in your &quot;spec_helper.rb&quot;, you add this line to the top:</p>
-<div class="highlight"><pre><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/spec_helpers/controller_helpers&#39;</span>
+<div class="highlight"><pre><span></span><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/spec_helpers/controller_helpers&#39;</span>
 </pre></div>
 <p>And this line somewhere in the <tt class="docutils literal"><span class="pre">Spec::Runner.configure</span></tt> loop:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="no">SessionHelper</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="no">SessionHelper</span><span class="p">)</span>
 </pre></div>
 <p>Now, in your controller specs, it is more than trivial to disable
 authorization and authentication at once - simply add the following
 line, e.g., to your <tt class="docutils literal"><span class="pre">before(:each)</span></tt> definitions:</p>
-<div class="highlight"><pre><span class="n">disable_authorization</span> <span class="o">&amp;&amp;</span> <span class="n">login</span>
+<div class="highlight"><pre><span></span><span class="n">disable_authorization</span> <span class="o">&amp;&amp;</span> <span class="n">login</span>
 </pre></div>
 <p>Voila - your GET requests pass; and you can even add stubs to your
 User model, if needed, by adding them as key-value pairs to the

@@ -99,7 +99,7 @@ Second, you need to decide which database you want to use for MEDLINE.
 You can use either <a class="reference external" href="http://www.postgresql.org/">Postgres</a> or <a class="reference external" href="http://sqlite.org/">SQLite</a> as the back-end for medic (medic uses SQL Alchemy as its ORM, so in theory at least, it should be possible to use medic with other DBs, too.)</p>
 <p>As soon as you have the database installed and running (and CREATEd a DATABASE with UTF-8 text encoding, in the case of Postgres), you are ready to load the baseline files.
 As loading all of MEDLINE through the ORM can be very slow for Postgres, it is better to parse the data into text files and then load them in one go:</p>
-<div class="highlight"><pre>medic parse baseline/medline1?n*.xml.gz
+<div class="highlight"><pre><span></span>medic parse baseline/medline1?n*.xml.gz
 
 <span class="k">for</span> table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
              identifiers keywords publication_types qualifiers sections<span class="p">;</span>
@@ -111,9 +111,9 @@ As loading all of MEDLINE through the ORM can be very slow for Postgres, it is b
 medic --url sqlite:///MEDLINE.db insert baseline/medline1?n*.xml.gz
 </pre>
 <p>Finally, to update the Postgres database to the latest state of MEDLINE, you can parse the <tt class="docutils literal">updates</tt> directory:</p>
-<div class="highlight"><pre><span class="k">for</span> file in updates/medline1?n*.xml.gz<span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> file in updates/medline1?n*.xml.gz<span class="p">;</span>
   <span class="k">do</span> medic --update parse <span class="nv">$file</span><span class="p">;</span>
-  <span class="c"># NB: the above command created the file &quot;delete.txt&quot; (a list of PMIDs to delete)</span>
+  <span class="c1"># NB: the above command created the file &quot;delete.txt&quot; (a list of PMIDs to delete)</span>
   medic delete delete.txt
 
   <span class="k">for</span> table in citations abstracts authors chemicals databases descriptors <span class="se">\</span>
@@ -161,8 +161,8 @@ wget &quot;$URL?db=PubMed&amp;retmax=99&amp;term=$QUERY&quot; -O - 2&gt; /dev/nu
 &gt; pmids.txt
 </pre>
 <p>Again, if you do this often, you might want to stick this into a little script, for example:</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
-<span class="c"># for a given query (one term per argument), retrieve (up to retmax) matching PMIDs</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="c1"># for a given query (one term per argument), retrieve (up to retmax) matching PMIDs</span>
 
 <span class="nv">QUERY</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> tr <span class="s2">&quot; &quot;</span> +<span class="sb">`</span>
 <span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
@@ -200,7 +200,7 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 <div class="section" id="converting-dois-to-pmids">
 <h2>Converting DOIs to PMIDs</h2>
 <p>To finish, here is a nifty little command-line to convert a list of DOIs into a list of PMIDs by using the NCBI eUtils web service:</p>
-<div class="highlight"><pre><span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+<div class="highlight"><pre><span></span><span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 
 <span class="k">for</span> doi in <span class="sb">`</span>cat dois.txt<span class="sb">`</span><span class="p">;</span>
   <span class="k">do</span> <span class="nv">pmid</span><span class="o">=</span><span class="sb">`</span>wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmode=xml&amp;term=</span><span class="nv">$doi</span><span class="s2">&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
@@ -211,8 +211,8 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 <span class="k">done</span>
 </pre></div>
 <p>If you use this much, you might even want to put that into a little script:</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env sh</span>
-<span class="c"># for a argument list of DOIs, print each DOI and matching PubMed ID</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env sh</span>
+<span class="c1"># for a argument list of DOIs, print each DOI and matching PubMed ID</span>
 
 <span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 

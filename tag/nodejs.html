@@ -75,7 +75,7 @@ This introduction will take the reader familiar with Node's basic callback mecha
 <div class="section" id="a-quick-refresher">
 <h2>A Quick Refresher</h2>
 <p>Lets look at a static HTTP file server, using the basic Node modules only.</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">)</span>
@@ -158,7 +158,7 @@ yes
 $ npm install
 </pre>
 <p>We will use the following <tt class="docutils literal">broker.js</tt> script, placed in this same directory:</p>
-<div class="highlight"><pre><span class="cm">/* a &quot;blocking&quot; query */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* a &quot;blocking&quot; query */</span>
 <span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">start</span> <span class="o">+</span> <span class="s2">&quot;: query started&quot;</span><span class="p">)</span>
@@ -178,7 +178,7 @@ $ npm install
 </pre></div>
 <p>Obviously, this is quite a a toy example, because our worker receives and returns only one single message before shutting down.
 Similarly, our server API for this broker in <tt class="docutils literal">app.js</tt> will be just as simple:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">broker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">broker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">)</span>
 
 <span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">bucket</span><span class="p">,</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">channel</span> <span class="o">=</span> <span class="nx">broker</span><span class="p">.</span><span class="nx">fork</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/db.js&#39;</span><span class="p">)</span>
@@ -208,7 +208,7 @@ Upon receiving the user's ID, the server should query the broker for the user's 
 In other words, we have a serial flow of fetching user and the an parallel step of fetching post and comment data.
 Once all this data is collected, the server should respond with a JSON object containing this data.</p>
 <p>In the simplest case, you would string a few calls to your query API together and return the results, maybe like this (<em>anti-pattern</em>):</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)()</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)()</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/sync/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
@@ -253,7 +253,7 @@ This takes us straight into the realm of asynchronous programming.</p>
 <div class="section" id="home-brew-asynchronicity">
 <h2>Home-brew Asynchronicity</h2>
 <p>While this certainly is not the cleanest code, here is a quick shot at solving the problem of concurrently running these three queries:</p>
-<div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/brew/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/brew/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="kd">var</span> <span class="nx">cbCounter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -303,7 +303,7 @@ Luckily, these issues have been solved with the second most popular node module 
 <p>We wil use the <a class="reference external" href="https://github.com/caolan/async#auto">auto</a> method of <a class="reference external" href="https://github.com/caolan/async">async</a> to make the code more readable, leaving all the mentioned issues up to the library to take care of.
 <tt class="docutils literal">auto</tt> takes a &quot;tasks object&quot; (an object where each property is a function considered a task) and returns an equally shaped object with the results if all tasks were run without errors.
 In addition to the tasks, you can list any other tasks you handed to auto that have to be completed before that specific task is run:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">)</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/async/:userId&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span>
@@ -344,7 +344,7 @@ So far, we were using callbacks, that is, functions that do not return a value. 
 This means that both <em>function composition</em> and <em>unit testing</em> of these callbacks is rather a pain.
 And it means that you have to manually control the &quot;flow&quot; of your data through these callbacks.
 For example, to read a file in Node, the idiomatic structure is:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
 
 <span class="kd">function</span> <span class="nx">finish</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
@@ -377,7 +377,7 @@ For example, to read a file in Node, the idiomatic structure is:</p>
 However, as we know, at the time of calling <tt class="docutils literal">readFile</tt>, no such value exists - as a matter of fact, we do not even know if we will be able to read the file at all.
 So the only thing we can return is a &quot;future&quot; value, or a &quot;promise&quot; to return such a value (hence the name of these data structures).
 For this reason, such a data type would have to provide three methods:</p>
-<div class="highlight"><pre><span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 <span class="nx">promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span>
 <span class="nx">result</span> <span class="o">=</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">onFulfilled</span><span class="p">(</span><span class="nx">result</span><span class="p">),</span> <span class="nx">onRejected</span><span class="p">(</span><span class="nx">error</span><span class="p">))</span>
 </pre></div>
@@ -394,10 +394,10 @@ The return value of <tt class="docutils literal">then</tt> (<tt class="docutils 
 </blockquote>
 <p>This means you can comfortably chain promises, while you can rely on <em>return values</em> (instead of side effects).
 With this, we now can separate the concerns and instead describe the asynchronous reading of a file using the promise:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
-<span class="kd">var</span> <span class="nx">Promise</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nb">Promise</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
 <span class="c1">// wrap fs.readFile as a &quot;promise-returning function&quot;:</span>
-<span class="kd">var</span> <span class="nx">readFile</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">readFile</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">)</span>
 
 <span class="kd">function</span> <span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span>
@@ -443,7 +443,7 @@ $ npm install q
 $ npm install underscore
 </pre>
 <p>Without much fanfare, this is how our JSON-REST service looks like using promises and some functional trickery:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Q</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Q</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">q_query</span> <span class="o">=</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">nfbind</span><span class="p">(</span><span class="nx">db_query</span><span class="p">)</span>
 
