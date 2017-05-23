@@ -32,8 +32,6 @@ alt="hit counter"></a></div></noscript>
             <ul id="nav">
                 <li class="ephemeral selected"><a href="http://fnl.es/author/florian-leitner16.html">Florian Leitner</a></li>
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
-<li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
-<li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
 <li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
             </ul>
             <div class="header_box">
@@ -98,7 +96,7 @@ stupid, but you can interpolate the danger, I hope) snippet from
 Python's Unicode HOWTO might exemplify this:</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
     <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">u&quot;&#39;/&#39; not allowed in filename&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;&#39;/&#39; not allowed in filename&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
 </pre></div>

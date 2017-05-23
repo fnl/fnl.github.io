@@ -31,8 +31,6 @@ alt="hit counter"></a></div></noscript>
 <div id="header">
             <ul id="nav">
                 <li><a class="flagred" href="http://fnl.es">Home</a></li>
-<li><a class="flagyellow" href="http://fnl.es/pages/about.html">About</a></li>
-<li><a class="flagyellow" href="http://fnl.es/pages/projects.html">Projects</a></li>
 <li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
             </ul>
             <div class="header_box">
@@ -167,9 +165,9 @@ wget &quot;$URL?db=PubMed&amp;retmax=99&amp;term=$QUERY&quot; -O - 2&gt; /dev/nu
 <span class="nv">QUERY</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> tr <span class="s2">&quot; &quot;</span> +<span class="sb">`</span>
 <span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 
-<span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$QUERY</span><span class="s2">&quot;</span> 1&gt;<span class="p">&amp;</span>2
+<span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$QUERY</span><span class="s2">&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
 
-wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmax=99999&amp;term=</span><span class="nv">$QUERY</span><span class="s2">&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmax=99999&amp;term=</span><span class="nv">$QUERY</span><span class="s2">&quot;</span> -O - <span class="m">2</span>&gt; /dev/null <span class="se">\</span>
 <span class="p">|</span> grep <span class="s2">&quot;^&lt;Id&gt;&quot;</span> <span class="se">\</span>
 <span class="p">|</span> sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
 <span class="p">|</span> cut -f3
@@ -203,7 +201,7 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 <div class="highlight"><pre><span></span><span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 
 <span class="k">for</span> doi in <span class="sb">`</span>cat dois.txt<span class="sb">`</span><span class="p">;</span>
-  <span class="k">do</span> <span class="nv">pmid</span><span class="o">=</span><span class="sb">`</span>wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmode=xml&amp;term=</span><span class="nv">$doi</span><span class="s2">&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+  <span class="k">do</span> <span class="nv">pmid</span><span class="o">=</span><span class="sb">`</span>wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmode=xml&amp;term=</span><span class="nv">$doi</span><span class="s2">&quot;</span> -O - <span class="m">2</span>&gt; /dev/null <span class="se">\</span>
   <span class="p">|</span> grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> <span class="se">\</span>
   <span class="p">|</span> sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
   <span class="p">|</span> cut -f3<span class="sb">`</span><span class="p">;</span>
@@ -217,7 +215,7 @@ This means that if you want to fetch more than 999 PMIDs from a SQLite database,
 <span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
 
 <span class="k">for</span> doi in <span class="nv">$@</span><span class="p">;</span> <span class="k">do</span>
-  <span class="nb">echo</span> <span class="nv">$doi</span> <span class="sb">`</span>wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmode=xml&amp;term=</span><span class="nv">$doi</span><span class="s2">&quot;</span> -O - 2&gt; /dev/null <span class="se">\</span>
+  <span class="nb">echo</span> <span class="nv">$doi</span> <span class="sb">`</span>wget <span class="s2">&quot;</span><span class="nv">$URL</span><span class="s2">?db=PubMed&amp;retmode=xml&amp;term=</span><span class="nv">$doi</span><span class="s2">&quot;</span> -O - <span class="m">2</span>&gt; /dev/null <span class="se">\</span>
   <span class="p">|</span> grep <span class="s2">&quot;&lt;Id&gt;&quot;</span> <span class="se">\</span>
   <span class="p">|</span> sed -E <span class="s1">&#39;s|&lt;/?Id&gt;||g&#39;</span> <span class="se">\</span>
   <span class="p">|</span> cut -f3<span class="sb">`</span>
