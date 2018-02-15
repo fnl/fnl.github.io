@@ -47,42 +47,360 @@ alt="hit counter"></a></div></noscript>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/what-are-the-best-books-for-programmers-to-get-into-data-science.html" rel="bookmark" title="Permanent Link to &quot;What are the best books [for programmers] to get into Data Science?&quot;">What are the best books [for programmers] to get into Data Science?</a>
+                        <a href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html" rel="bookmark" title="Permanent Link to &quot;A quick reference for working with TensorFlow&quot;">A quick reference for working with TensorFlow</a>
                     </h2>
 
                     <div class="section" id="introduction">
 <h2>Introduction</h2>
-<p>This is a question I get on a frequent basis by colleagues that are serious programmers or software developers and are planning to pick up data analytics. There are three fundamental topics in mathematics that you need to cover, assuming that you are an expert in software development and informatics already: statistics, linear algebra, and machine learning. Therefore, I will recommend one book associated to each of these topics. Even I continue to consult those books as reference material.</p>
-<p>There might be a fourth foundation worth mentioning: calculus. I don't really have a recommendation for that, as it never has been essential to my work. As long as you can remember how to do differentiation and integration and solve an ODE, you are pretty much saddled. In other words, fresh high-school knowledge of calculus has always been good enough for me. And there is no need to make any proofs, unless you want to develop your own machine learning methods…</p>
+<p>Given the last few years of hype around Deep Learning, knowing one of those frameworks is probably no longer an option, at least if you are a professional Machine Learning engineer. Personally, I always favor free, open source solutions, so Apache MXNet would be the natural fit. However, I must admit that for research &amp; development, Facebook's PyTorch is probably the nicer API, and for operations &amp; production, Google's TensorFlow is beyond doubt the best fit right now. And, as I've mostly moved out of academia/research lately, and am pretty dedicated to consulting by now (and loving it!), I am mostly interested in a tooling that I can put to good use in my day-to-day work. Hence, I have been - not without remorse - focusing on TensorFlow and want to share my personal notes with you, to use as a quick reference when setting up a new tensor graph.</p>
+<p>I mostly learned how to use TensorFlow from Aurélien Géron's book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; So if you are familiar with it and my notes below remind you of it, that is not by accident: These are my modified excerpts, all taken from that book. In fact, if you really are interested in using TensorFlow, I cannot emphasize enough how much I recommend reading this book. And, if you are not familiar with the SciKit-Learn world, or simply want to learn how you can combine these two essential Machine Learning frameworks into&quot;one ring to rule them all&quot;, you need to read this book. Full-stop. In fact, if you are a serious Machine Learning practitioner, you either should have read it, or at least make sure you know the techniques presented in it already. Beyond just giving you tips, the book is chock-a-block full of up-to-date examples and highly relevant exercises. Aurélien even recently <a class="reference external" href="https://github.com/ageron/handson-ml/blob/master/extra_capsnets.ipynb">released more example code</a>, to produce G. E. Hinton's Capsule Network architecture (using dynamic routing) with TensorFlow, and generally ensures the practical material is very much up to date with the latest TensorFlow releases. (Disclaimer: I am in no way affiliated with Aurélien, O'Reilly, or would otherwise benefit from sales of this book!)</p>
+<p>That being said, let's dive right in!</p>
 </div>
-<div class="section" id="the-r-environment">
-<h2>The R Environment</h2>
-<p>Before presenting the books, let me recommend one tool that you should pick up when doing the books' practical exercises: <a class="reference external" href="https://www.r-project.org/">R</a>. R is the de facto tool for data science today and, as I would predict, the <a class="reference external" href="https://www.rstudio.com/">environment</a> that will (is?) put (putting?) S, SPSS, SAS, and a number of other commercial tools into their digital grave. Even banks and insurances are beginning to embrace R, apparently (not sure that's a good thing, though...). R provides a huge ecosystem of packages that lets you quickly explore and test models, inspect your data, develop theories, and visualize results. Any of these points can be extremely tedious with other tools, but a few free and commercial statistics, math, and/or machine learning environments (e.g., MatLab or Octave) might be viable alternatives if you already know them. Python in particular is extremely well suited (maybe even better than R) if you are interested in language processing or neural networks. Overall, I recommend working through the exercises provided by the books with your preferred interactive environment. Just as with programming and software development, only reading about the relevant material will not provide you with the experience needed to actually “do” data science.</p>
+<div class="section" id="setup">
+<h2>Setup</h2>
+<div class="section" id="miniconda">
+<h3>Miniconda</h3>
+<p>I strongly recommend using the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a> distribution to set up TensorFlow, and Python in general. And, for the more expert users, do go directly to _miniconda (&quot;don't go over Anaconda, and don't collect 200MB of (irrelevant) bytes&quot;). The packages you want to install (and that will also fetch all other, relevant dependencies, like Jupyter, SciPy, or NumPy) are:</p>
+<div class="highlight"><pre><span></span>conda install -c conda-forge tensorflow
+conda install -c conda-forge scikit-learn
+conda install -c conda-forge matplotlib
+conda install -c conda-forge jupyter_contrib_nbextensions
+</pre></div>
 </div>
-<div class="section" id="statistics">
-<h2>Statistics</h2>
-<p><a class="reference external" href="http://www.statisticalsleuth.com/">The Statistical Sleuth</a> by Fred Ramsey and Daniel W. Schafer.
-While there might be “simpler” books around, this one has the most compact and best overview of applied statistics that I have read to date (t and F distributions, ANOVA and multivariate regression, etc.). If you can only read one book or only need to work the statistics angle, then this is “the” book. Most of the machine learning stuff can be understood easily after digesting this book, and I particularly like the very applied approach that Ramsey &amp; Schafer take.</p>
 </div>
-<div class="section" id="linear-algebra">
-<h2>Linear Algebra</h2>
-<p><a class="reference external" href="http://math.mit.edu/~gs/linearalgebra/">Introduction to Linear Algebra</a> by Gibert Strang.
-Contrary to my statistics recommendation, on this topic there certainly are more in-depth introductory books around, but this one covers all I ever needed. It takes you from the dot and outer product over eigenspaces to Singular Value Decomposition. And, the author is exceptionally gifted at teaching algebraic thinking (The book can be &quot;watched&quot; for free in form of <a class="reference external" href="http://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/">videos</a> of his classes.) As a bonus, the final chapters explain how this material ties in with advanced data science techniques and machine learning models.</p>
+<div class="section" id="graph-design">
+<h2>Graph Design</h2>
+<div class="section" id="back-propagation-basics">
+<h3>Back-propagation Basics</h3>
+<p>Input is feed into TensorFlow's (static) computational graphs via <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/placeholder">tf.placeholder</a> (<strong>placeholder</strong>) nodes. Typically, those placeholders will be accepting a tensor <tt class="docutils literal">X</tt> and some array or matrix of labels <tt class="docutils literal">y</tt>. Input is part of the <a class="reference external" href="https://www.tensorflow.org/api_guides/python/io_ops">io_ops</a> package; Input values for placeholders must be provided (see &quot;Feeding the Graph&quot;) during graph evaluation, or cause exceptions if left unset.</p>
+<p><strong>Weights</strong> <tt class="docutils literal">W</tt> and <strong>bias</strong> <tt class="docutils literal">B</tt> tensors are represented by <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/Variable">tf.Variable</a> nodes, via the <a class="reference external" href="https://www.tensorflow.org/api_guides/python/state_ops">state_ops</a> package; <strong>Variables</strong> are stateful, that is, they maintain their values across session runs.
+<strong>Operations</strong> are defined by either applying standard Python operators (+, -, /, *) to nodes, or by using the <tt class="docutils literal">tf.add</tt>, <tt class="docutils literal">tf.matmul</tt>, etc. functions from the TF <a class="reference external" href="https://www.tensorflow.org/api_guides/python/math_ops">math_ops</a> packages.</p>
+<p>The final operation typically evaluates the error or cost between the predicted <tt class="docutils literal">y_hat</tt>, modeled as a state node, and [minus] the true <tt class="docutils literal">y</tt>, modeled as an io node, as shown above.
+Common loss functions for this task are found in TensorFlow's <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/losses">losses</a> package.
+The outcome of this operation (by following Aurélien nomenclature, the <tt class="docutils literal">cost_op</tt> node) is the one you typically want to plot on your TensorBoard (more on that at the end of this post).</p>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="c1"># n variables + 1 constant bias input</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="c1"># ... graph setup with tf.Variables ...</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="c1"># some last step...</span>
+<span class="n">cost_op</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+<p>The final touch is to create and append the optimizer (e.g, <tt class="docutils literal">tf.train.GradientDescentOptimizer</tt>):
+That creates the <tt class="docutils literal">training_op</tt> (for minimizing the cost/error), which typically will be the node that gets sent to evaluations of a TensorFlow graph via a <strong>Session</strong> (<tt class="docutils literal">sess.run</tt>):</p>
+<div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">()</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">)</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="section" id="machine-learning">
-<h2>Machine Learning</h2>
-<p><a class="reference external" href="http://www-bcf.usc.edu/~gareth/ISL/">An Introduction to Statistical Learning</a> by James, Witten, Hastie, and Tibshirani.
-While quite a bit slower moving than the first Hastie &amp; Tibshirani book (The Elements of Statistical Learning), I think it is the better start, and it has a ton of exercises using R. Especially the first few chapters contain discussions about basic aspects that are critical to this line of work, like the bias-variance tradeoff issue to keep in mind when developing your machine learning models. This is an excellent read if the Sleuth above is no longer a problem, as it does assume a solid background on basic statistics, distributions &amp; regression techniques.</p>
+<div class="section" id="placeholder-nodes">
+<h3>Placeholder Nodes</h3>
+<p>As discussed already, to supply data to your TF graph you designed, you insert <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/placeholder">tf.placeholder</a> nodes in the graph (e.g., in the bottom-most layer of your net). Placeholders don’t perform any computation, they just output any data you tell them to, during the graph evaluation (&quot;execution&quot;) phase. Optionally, you can also specify the node's <tt class="docutils literal">shape</tt> , if you want to enforce it: And, if you furthermore specify <tt class="docutils literal">None</tt> for any tensor dimension, that dimension will adapt to any size (according to the next node's input).</p>
+<p>In the example shown below, the placeholder <tt class="docutils literal">A</tt> must be of rank 2 (i.e., two-dimensional), and the tensor must have three columns, but it can have any number of rows (which typically will be the current batch' examples).</p>
+<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
 </div>
-<div class="section" id="conclusion">
-<h2>Conclusion</h2>
-<p>After studying these three books, you will be ready to extend your knowledge with domain-specific techniques. That should be geared at what kind of data you want to process: Text mining, time series, bioinformatics, signal processing, etc. and what specific models you want to apply: Neural networks, graphical models, kernel machines, structured equations, etc. In other words, the above three books will not convert you into a data science expert, but they will provide you with an extremely solid foundation so that you can effortlessly study any advanced topics and techniques that will.</p>
+<div class="section" id="reassignable-variables">
+<h3>Reassignable Variables</h3>
+<p>Note that it is possible to feed values into variables, too, not just to placeholders, even if it is a tad unusual.
+To set a variable to some value during graph evaluation, use the <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/assign">tf.assign</a> state operator:</p>
+<div class="highlight"><pre><span></span><span class="c1"># sample a random variable:</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="c1"># or feed a variable:</span>
+<span class="n">x_new_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">x_assign</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_new_val</span><span class="p">)</span>
+
+<span class="c1"># now, you can feed new values into X:</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">():</span>
+    <span class="n">x_assign</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x_new_val</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">})</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span> <span class="c1"># always 0.5</span>
+</pre></div>
+</div>
+<div class="section" id="optimizing-the-graph">
+<h3>Optimizing the Graph</h3>
+<p>The <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/gradients">tf.gradients</a> function takes a cost operator (e.g., to calculate the MSE) and a list of variables to optimize, and creates a list of ops (one per variable) to compute the gradients of each op with regard to each variable, returning the desired list of gradients (aka. performa <em>reverse-mode autodiff</em>):</p>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">var1grad</span><span class="p">,</span> <span class="n">var2grad</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">cost_op</span><span class="p">,</span> <span class="p">[</span><span class="n">var1</span><span class="p">,</span> <span class="n">var2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+</pre></div>
+<p>However, TensorFlow provides a good number of <a class="reference external" href="https://www.tensorflow.org/api_guides/python/train#Optimizers">optimizers</a> right out of the box, for example, the Adam optimizer, saving you the need to explicitly calculate gradients or update variables yourself:</p>
+<div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">()</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="adding-regularization">
+<h3>Adding Regularization</h3>
+<p>Regularization (typically, L1 or L2) prevents overfitting and therefore allows you to train your model for more epochs. Simply add the appropriate operations to your graph, to get to a regularized cost (or <tt class="docutils literal">loss</tt>):</p>
+<div class="highlight"><pre><span></span><span class="o">...</span> <span class="c1"># construct the neural network</span>
+<span class="n">base_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">xentropy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;avg_xentropy&quot;</span><span class="p">)</span>
+<span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights1</span><span class="p">))</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights2</span><span class="p">))</span> <span class="c1"># L1</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">base_loss</span><span class="p">,</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+</pre></div>
+<p>However, if you have many layers, this approach quickly becomes inconvenient. Instead,
+most TensorFlow functions in the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers">tf.contrib.layers</a> package that create variables accept a <tt class="docutils literal"><span class="pre">..._regularizer</span></tt> argument for their weights and biases.
+Those arguments need to be functions that takes the weights as their argument, and return the regularization losses of that layer.</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">arg_scope</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">fully_connected</span><span class="p">],</span>
+        <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">l1_regularizer</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)):</span>
+    <span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden1&quot;</span><span class="p">)</span>
+    <span class="n">hidden2</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden2&quot;</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">activation_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
+</pre></div>
+<p>TensorFlow automatically adds these nodes to a special collection containing all the regularization losses.
+Then, when calculating the final loss, you add them up to find your overall, final loss:</p>
+<div class="highlight"><pre><span></span><span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">REGULARIZATION_LOSSES</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">([</span><span class="n">base_loss</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+</pre></div>
+<p><strong>Max-norm regularization</strong> (clipping the L2-norm at some threshold) has become quite popular, yet TensorFlow does not provide an off-the-shelf max-norm regularizer. The following code creates a node <tt class="docutils literal">clip_weights</tt> that will clip your <tt class="docutils literal">weights</tt> along their second axis ( <tt class="docutils literal">axes=1</tt> ), so that every resulting row vector will have a max-norm of 1.0:</p>
+<div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">clipped_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clip_norm</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">clip_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clipped_weights</span><span class="p">)</span>
+</pre></div>
+<p>The issue then becomes accessing the weights of a <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers">tf.contrib.layers</a> module; A better solution therefore is to create a function equivalent to the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers/l1_regularizer">l1_regularizer</a> found in the layers module:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_norm_regularizer</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;max_norm&quot;</span><span class="p">,</span>
+                         <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;max_norm&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">max_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+        <span class="n">clipped</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clip_norm</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+        <span class="n">clip_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clipped</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">clip_weights</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">None</span>  <span class="c1"># there is no regularization loss term</span>
+    <span class="k">return</span> <span class="n">max_norm</span>
+</pre></div>
+<p>Now, this regularization function can be used as an argument like any other regularizer would be:</p>
+<div class="highlight"><pre><span></span><span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden1&quot;</span><span class="p">,</span>
+                          <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">max_norm_regularizer</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+<p>And to actually clip weights using max-norm during session evaluation, finally, add this to your execution phase:</p>
+<div class="highlight"><pre><span></span><span class="n">clip_all_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;max_norm&quot;</span><span class="p">)</span> <span class="c1"># note we used &quot;max_norm&quot; above</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_batches</span><span class="p">,</span> <span class="n">y_batches</span><span class="p">):</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">clip_all_weights</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="scopes-modules-and-shared-variables">
+<h3>Scopes, Modules, and Shared Variables</h3>
+<p>Variables and nodes created within a named scope are prefixed with the scopes' name, and such scopes are collapsed into single nodes on the TensorBoard:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mse&quot;</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">loss</span><span class="o">/</span><span class="n">sub</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">mse</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">loss</span><span class="o">/</span><span class="n">mse</span>
+</pre></div>
+<p>E.g., to define a ReLU within a named scope (just in case: normally, you would use <tt class="docutils literal">tf.nn.relu</tt> ):</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">):</span>
+        <span class="n">w_shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">w_shape</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weights&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bias&quot;</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span>
+</pre></div>
+<p>If you want to share a variable between various components of your graph, (e.g., thresholds, biases, etc.), TensorFlow provides the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> function, that creates a shared variable if it does not exist, or reuses it, if it does. The desired behavior (creating or reusing) is controlled by an attribute of the current <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/variable_scope">tf.variable_scope</a>, <tt class="docutils literal">reuse</tt> . Note that <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> raises an exception if <tt class="docutils literal">reuse</tt> is <tt class="docutils literal">False</tt> or <tt class="docutils literal">scope.reuse_variables()</tt> has not been set.</p>
+<div class="highlight"><pre><span></span><span class="c1"># as attribute:</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
+
+<span class="c1"># as function:</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
+    <span class="n">scope</span><span class="o">.</span><span class="n">reuse_variables</span><span class="p">()</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="xavier-and-he-initialization-of-model-weights">
+<h3>Xavier and He Initialization of Model Weights</h3>
+<p>You need to use an initializer to avoid the uniform initialization of weights to all the same values.</p>
+<p>By default, TensorFlow's layers are initialized using Xavier initialization: The fully connected layers in <tt class="docutils literal">tf.contrib.layers</tt> use Xavier initialization, with a normal dist. using µ=``0``, sigma=``sqrt[ 2 / (n_in + n_out) ]`` or a uniform dist. using <tt class="docutils literal">+/- sqrt[ 6 / (n_in + n_out) ]</tt> , where the <tt class="docutils literal">n</tt>'s are the sizes of the input/output connections.</p>
+<p>To use He initialization instead (which is mostly a matter of preference, but has been made popular with ResNet), you can use variance scaling initialization:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tf.contrib.layers</span> <span class="kn">import</span> <span class="n">fully_connected</span><span class="p">,</span> <span class="n">variance_scaling_initializer</span>
+<span class="n">initializer</span> <span class="o">=</span> <span class="n">variance_scaling_initializer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;FAN_AVG&quot;</span><span class="p">)</span>
+<span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">weights_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;h1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="implementing-a-learning-rate-scheduler">
+<h3>Implementing a Learning Rate Scheduler</h3>
+<p>Normally, it is not necessary to add a learning rate scheduler, because the AdaGrad, RMSProp, and Adam optimizers automatically reduce the learning rate for you during training. Yet, implementing a learning rate scheduler is fairly straightforward with TensorFlow; Typically, exponential decay is recommended, because it is easy to tune and will converge (slightly) faster than the optimal solution. Here, we adapt Momentum to use a dynamic learning rate: Note how the decay depends on the current global step that is set by the optimizer's minimization function.</p>
+<div class="highlight"><pre><span></span><span class="n">initial_learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">decay_steps</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">decay_rate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">exponential_decay</span><span class="p">(</span><span class="n">initial_learning_rate</span><span class="p">,</span> <span class="n">global_step</span><span class="p">,</span>
+                                           <span class="n">decay_steps</span><span class="p">,</span> <span class="n">decay_rate</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">MomentumOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">global_step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interactive-sessions">
+<h2>Interactive Sessions</h2>
+<p>Before we get to the actual evaluation of TF graphs with sessions, let me add in a few tips that come in handy when working in interactive Python sessions.</p>
+<div class="section" id="resetting-the-default-graph">
+<h3>Resetting the Default Graph</h3>
+<div class="highlight"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span>
+</pre></div>
+<p>In Jupyter (or if using TF in a Python shell), it is common to run the same commands more than once while you are experimenting. As a result, you may end up with a <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_default_graph">default graph</a> containing many duplicate nodes. One solution is to restart the Jupyter kernel (or the Python shell), but a more convenient solution is to just reset the default graph by running:</p>
+<div class="highlight"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+</pre></div>
+<p>In single-process TensorFlow, multiple sessions do not share any state, even if they reuse the same graph (and each session gets its own copy of every variable). Beware though, that in distributed TensorFlow, variable state is stored on the servers, not in the sessions, so multiple sessions can <em>share</em> the same <em>variables</em> (actually, that is a good, desired thing, obviously).</p>
+</div>
+<div class="section" id="using-tensorflow-s-interactive-sessions">
+<h3>Using TensorFlow's [Interactive] Sessions</h3>
+<p>Use <tt class="docutils literal">InteractiveSession</tt> in notebooks to automatically set a default session, relieving you from the need of a <tt class="docutils literal">with</tt> block for the evaluation/execution phase. But do remember to close the session manually when you are done with it!</p>
+<div class="highlight"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">()</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="o">...</span> <span class="c1"># do graph setup</span>
+<span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="o">...</span> <span class="c1"># do evaluation</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+<p>When running TensorFlow <strong>locally</strong>, the sessions manage your variable values. So if you create a graph, then start two threads, and open a local session in either thread, both will use the same graph, yet each session will have its <em>own</em> copy of the variables.</p>
+<p>However, in <strong>distributed</strong> TensorFlow sessions, variable values are stored in containers managed by the TF cluster (see <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a>). So if both sessions connect to the same cluster and use the same container, then they will share the same variable value for w.</p>
+</div>
+</div>
+<div class="section" id="model-evaluation">
+<h2>Model Evaluation</h2>
+<div class="section" id="scaling-variables">
+<h3>Scaling Variables</h3>
+<p>When using a Gradient Descent method, remember that it is important to <strong>normalize</strong> the input feature vectors, or else training may progress much slower.
+You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any other solution you prefer. In fact, with NumPy arrays, this is pretty straightforward:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">scaled</span> <span class="o">=</span> <span class="n">data</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="running-the-graph">
+<h3>Running the Graph</h3>
+<p>Once the graph has been designed (incl. a <tt class="docutils literal">training_op</tt> node) and the initializer (an <tt class="docutils literal">init</tt> node) has been set up (see Graph Design), a typical snippet for the (batched) executing of the training phase is:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_examples</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">):</span>
+            <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">next_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="feeding-the-graph-with-data">
+<h3>Feeding the Graph with Data</h3>
+<p>When you evaluate the graph, you pass a feed dictionary (<tt class="docutils literal">feed_dict</tt>) to the target (&quot;output&quot;) node's <tt class="docutils literal">eval()</tt> method. And you specify the value of the placeholder (input) node by using the node itself as the key of the feed dictionary.</p>
+<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="o">...</span> <span class="c1"># more graph setup, down to the training_op</span>
+<span class="n">training_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">A</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>  <span class="c1"># &lt;- feeding</span>
+</pre></div>
+<p>Note that you can feed data into <em>any</em> kind of node, not just placeholders. Note that when using other nodes, TensorFlow will not evaluate their operations; If fed to, TF uses the values you feed to that node, only (see Reassignable Variables in Graph Design for more info).</p>
+</div>
+<div class="section" id="mini-batching-with-tensorflow">
+<h3>Mini-batching with TensorFlow</h3>
+<p>Instead of feeding all data at once, you typically will mini-batch your data as follows:</p>
+<ol class="arabic simple">
+<li>Create a session (<tt class="docutils literal">with tf.Session() as sess</tt>)</li>
+<li>Run the variable initializer (<tt class="docutils literal">sess.run(init)</tt>)</li>
+<li>Loop over the epochs and batches, feeding each mini-batch to the session (<tt class="docutils literal">sess.run(training_op, <span class="pre">feed_dict={X:</span> X_batch, y: y_batch})</tt>)</li>
+<li>Optionally: Write a summary every n mini-batches, to visualize the progress on your TensorBoard.</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="c1"># somehow fetch data and labels (numpy arrays) to feed...</span>
+    <span class="k">return</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">batch_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+        <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">get_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="saving-and-restoring-models">
+<h3>Saving and Restoring Models</h3>
+<p>Create a Saver node at the end of the construction phase (after all variable nodes are created); Then, during the execution phase, call the node's <tt class="docutils literal">save()</tt> method whenever you want to save the model, passing it the session and path of the <strong>checkpoint</strong> file to create:</p>
+<div class="highlight"><pre><span></span><span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
+<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s2">&quot;/tmp/my_classifier.tfckpt&quot;</span>
+<span class="n">checkpoint_epoch_path</span> <span class="o">=</span> <span class="n">checkpoint_path</span> <span class="o">+</span> <span class="s2">&quot;.tfepoch&quot;</span>
+<span class="n">final_model_path</span> <span class="o">=</span> <span class="s2">&quot;./my_classifier.tfmodel&quot;</span>
+<span class="n">best_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">):</span>
+        <span class="c1"># if the checkpoint file exists, restore the model and load the epoch number</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">start_epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training was interrupted. Continuing at epoch&quot;</span><span class="p">,</span> <span class="n">start_epoch</span><span class="p">)</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_epoch</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># checkpoint every 100 epochs</span>
+            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">loss_val</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">loss_val</span> <span class="o">&lt;</span> <span class="n">best_loss</span><span class="p">:</span>
+            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">final_model_path</span><span class="p">)</span>
+            <span class="n">best_loss</span> <span class="o">=</span> <span class="n">loss_val</span>
+            <span class="c1"># best_parameters = parameters.eval()</span>
+</pre></div>
+<p>To use a trained model <em>in production</em>, restoring a model is just as easy: You create a Saver node at the end of the graph, just like before, but then, when beginning the execution phase, instead of initializing the variables using the typical <tt class="docutils literal">init</tt> node, you call the <tt class="docutils literal">restore()</tt> method of the Saver object:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./my_model_final.ckpt&quot;</span><span class="p">)</span>
+    <span class="n">X_unseen</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># some unseen (scaled) data</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_unseen</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="monitoring-with-tensorboard">
+<h2>Monitoring with TensorBoard</h2>
+<p>One of the biggest advantages of TensorFlow over many other frameworks is the TensorBoard. It allows you to visualize the progression of any variable in your graph.</p>
+<div class="section" id="writing-session-summaries">
+<h3>Writing Session Summaries</h3>
+<p>To provide TensorBoard with data, you need to write TF's graph definition and some training stats (like the cost/loss) to a log directory that TensorBoard reads from. You need to use a different log directory on every run, to avoid that TensorBoard will merge the output of different runs. The solution to this here will be to include a timestamp in the log directory name.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">root_logdir</span> <span class="o">=</span> <span class="s2">&quot;tf_logs&quot;</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
+<span class="n">logdir</span> <span class="o">=</span> <span class="s2">&quot;{}/run-{}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">root_logdir</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</pre></div>
+<p>Next, add a <strong>summary node</strong> and attach a <strong>file writer</strong> to the node you wish to visualize on your TensorBoard; The <tt class="docutils literal">FileWriter</tt> shown below will create any missing directories for you:</p>
+<div class="highlight"><pre><span></span><span class="n">mse_summary</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span>
+<span class="n">file_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">logdir</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">())</span>
+</pre></div>
+<p>The first line creates a node in the graph that will evaluate the MSE value and write it to a TensorBoard-compatible binary log string called a <strong>summary</strong>. The second line creates a <tt class="docutils literal">FileWriter</tt> that you will use to write summaries into the log directory. The second (optional) parameter is the graph you want to visualize. Upon creation, the FileWriter creates the directory path if it does not exist, and writes the graph definition in a binary log file called an <strong>events</strong> file.</p>
+<p>Next, you need to update the execution phase, to evaluate the summary node regularly during training, and you should not forget to close the writer after training:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">update_summary</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">batch_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+        <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">fetch_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">update_summary</span><span class="p">(</span><span class="n">batch_index</span><span class="p">):</span>
+            <span class="n">summary_str</span> <span class="o">=</span> <span class="n">mse_summary</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">*</span> <span class="n">n_batches</span> <span class="o">+</span> <span class="n">batch_index</span>
+            <span class="n">file_writer</span><span class="o">.</span><span class="n">add_summary</span><span class="p">(</span><span class="n">summary_str</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+
+<span class="n">file_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+<p>Finally, you now can visualize the stats you are recording by starting the TensorBoard server and pointing it at the log directory:</p>
+<div class="highlight"><pre><span></span>$ tensorboard --logdir tf_logs/
+</pre></div>
+</div>
+</div>
+<div class="section" id="epilogue">
+<h2>Epilogue</h2>
+<p>As I already advised in the beginning, if you want to learn more, I can warmly recommend you get Aurélien Géron's fantastic book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; The more advanced topics covered (and that would explode this blog post...) are transfer learning, distributed training, designing Recurrent Networks and Auto-encoders, and even a &quot;beginner's guide&quot; to Deep Reinforcement Learning. Yet, I hope, this tiny taste of the book's contents, spiced up with a bit of my own &quot;opinionated&quot; modifications, will provide you with  a handy quick-reference when building and using TensorFlow graphs. (And, that I don't get sued by him or O'Reilly for plagiarism! :-) Please just contact me if this post is an issue -- I have no problem taking the post down again, if it is problematic.)</p>
 </div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/data-science.html">data science</a>                            <a href="http://fnl.es/tag/review.html">review</a>                        </div>
+                        <div class="tags">                            <a href="http://fnl.es/tag/tensorflow.html">tensorflow</a>                            <a href="http://fnl.es/tag/machine-learning.html">machine learning</a>                        </div>
 
                     </div>
                     <div class="clear"></div>
@@ -91,7 +409,7 @@ While quite a bit slower moving than the first Hastie &amp; Tibshirani book (The
                 <div class="clear"></div>
                 <div class="pages">
                     <a href="http://fnl.es/index2.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 1 of 27</span>
+                    <span>Page 1 of 28</span>
                 </div>
 
                 <div class="clear"></div>

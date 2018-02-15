@@ -40,7 +40,7 @@ alt="hit counter"></a></div></noscript>
         </div>
         <div id="wrapper">
             <div id="content">
-                <h4 class="date">Apr 2015</h4>
+                <h4 class="date">Aug 2015</h4>
 
 								<div class="mobile-hide">
 									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
@@ -48,77 +48,42 @@ alt="hit counter"></a></div></noscript>
 								</div>
                 <div class="post">
 <h2 class="title">
-                        <a href="http://fnl.es/an-efficient-online-sequence-tagger-resource-for-gate.html" rel="bookmark" title="Permanent Link to &quot;An efficient online sequence tagger resource for GATE&quot;">An efficient online sequence tagger resource for GATE</a>
+                        <a href="http://fnl.es/what-are-the-best-books-for-programmers-to-get-into-data-science.html" rel="bookmark" title="Permanent Link to &quot;What are the best books [for programmers] to get into Data Science?&quot;">What are the best books [for programmers] to get into Data Science?</a>
                     </h2>
 
-                    <p><strong>tl;dr</strong> for a stressed out generation:
-<a class="reference external" href="https://gate.ac.uk">GATE</a>'s <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework">Generic Tagger</a> framework is a CREOLE plug-in that allows you to wrap any existing <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">sequence tagger</a> and use it to create annotations in your pipeline, but it is a bit slow.
-Therefore, I have created the <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> GATE plug-in that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &quot;singleton&quot; sub-process per Processing Resource instance.
-This version can in some cases be several <em>orders</em> of magnitude faster than the built-in framework.</p>
-<p><a class="reference external" href="https://gate.ac.uk">GATE</a> (General Architecture for Text Engineering) has crystallized itself as my preferred tool for teaching text mining and information extraction.
-While anybody might argue that there are leaner and faster frameworks around, it has one pretty outstanding, unique quality: it is (mostly) GUI-based.</p>
-<p>During any text mining course I teach, the most frequent question I get is what text mining software is around that can be used <em>without any a priori programming skills</em>.
-In other words, most of my audience is looking for a &quot;graphical&quot; text mining environment that can be used without first having to learn how to program.
-For example, to use NLTK, LingPipe, OpenNLP, StandfordNLP, UIMA, etc., you will first have to learn how to program in the chosen framework's API language.
-Therefore, the only entirely true answer is that only commercial tools can offer a <strong>pure</strong> &quot;graphical user interface&quot; and require no programming experience.</p>
-<p>However, GATE can be used <em>mostly</em> without having to write code - with the exception of its &quot;JAPE-glue&quot;.
-<a class="reference external" href="https://gate.ac.uk/sale/tao/splitch8.html#chap:jape">JAPE</a> stands for &quot;Java Annotation Patterns Engine&quot; and is GATE's solution to make data inter-operable between different text mining resources that commonly have different I/O requirements.
-Furthermore, JAPE can be used to design entire rule-based annotation resources of their own right.
-However, JAPE &quot;grammars&quot; consist of rules where the left-hand side of the grammatical rule matches (existing) GATE annotations using a (clear and simple) syntax, while the right-hand side of those rules can contain Java code that will somehow modify those annotations.
-Therefore, GATE rids you from the need of writing code of your own, except for (small) blocks of (simple) code for the right-hand sides of JAPE's rules.
-Luckily, GATE's extensive documentation provides lots of <a class="reference external" href="https://gate.ac.uk/wiki/jape-repository/">examples</a> to start with for the novice.</p>
-<p>Overall, this makes GATE the only free open source text mining software that provides a graphical interface <em>and</em> requires (nearly) no programming skills to use it.
-As I stated initially, this fact alone makes it the best fit for my typical tutorial audiences, because most of them are neither computer scientists nor do they (want to) know how to code.</p>
-<p>As mentioned in the introduction, &quot;out-of-the-box&quot; GATE isn't always the fastest solution.
-However, due to its open source nature that only means that if you need to go faster, you always can replace any slow pieces with whatever you consider a better fit (if you know how to program, that is...)
-For example, the <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework">Generic Tagger</a> framework is a <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch4.html#x7-690004">CREOLE</a> <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-540003.7">Processing Resource</a> that allows you to take any existing <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">sequence tagger</a> and use it to create annotations for a GATE pipeline.
-This is pretty nifty, because you can use whatever Part-of-Speech tagger or Named Entity Recognition system you like.
-You can even use a generic sequence tagger, train your own model, and integrate it in your text mining and information extraction pipelines, all without having to learn how to program first.</p>
-<p>However, precisely due to the highly generic nature of the Generic Tagger framework, it is not very efficient.
-To create GATE annotations with it, this tagger &quot;wrapper&quot; operates as follows <strong>on each input</strong>:</p>
-<ul class="simple">
-<li>A file with the input text for the tagger is written to disk.</li>
-<li>A new tagger sub-process is launched by the wrapper, reading the input from the file.</li>
-<li>The tagger's results are written back to disk.</li>
-<li>The wrapper resource reads the result file, generates the annotations, and deletes the two temporary files.</li>
-</ul>
-<p>I have highlighted &quot;on each input&quot;, because this loop might be run for each processed document, for each sentence in each document, or, even worse, for each and every token in your documents.
-If you have already thought that doing this for each document is pretty bad, doing that loop for each token grinds your pipeline to a standstill.
-Second, if you are a programmer, the expression &quot;a new sub-process is launched&quot; in the second point should be alarming to you.
-If the tagger uses some large resources, like a dictionary (which they quite frequently do), starting up a new tagger process can be extremely expensive.
-In general, of all concurrent programming concepts, launching a new <em>process</em> is the probably most expensive resource you can create &quot;within&quot; a program and should be done as sparingly as possible.
-The reason the plug-in is designed in this peculiar way isn't because the framework was written by inexperienced programmers, however.
-It is that way because due to this design, it truly generic: Most I/O formats and tagger can be handled with this wrapper.</p>
-<p>However, while the Generic Tagger is pretty cool to have on board so you can to try out &quot;foreign&quot; sequence taggers, the way it is implemented makes it rather useless for a &quot;real&quot; pipeline, i.e., beyond experimentation.
-For example, just tagging all gene mentions in a few thousand <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed">PubMed</a> sentences with this wrapper takes <em>days</em>.
-But PubMed has over 24 million abstracts and (I think to recall) roughly around 100 million sentences, so go figure...</p>
-<p>Therefore, I am releasing my own CREOLE processing resource that works similarly to the Generic Tagger, but does not do any disk I/O for inter-process communication or launch more than one &quot;singleton&quot; process for the entire pipeline you are designing.
-However, this puts some restrictions on the kinds of taggers you can use:</p>
-<p>1. The tagger must support a <strong>streaming I/O</strong> model.
-That is, the tagger must be able to read from some &quot;input stream&quot;, such as UNIX' <cite>STDIN</cite>, and write to some &quot;output stream&quot;, commonly UNIX' <cite>STDOUT</cite>.
-Another way of putting this is that your tagger should be able to handle UNIX' piped command syntax, something like this: <tt class="docutils literal">cat plain_text.txt | some_tagger &gt; tagged_text.txt</tt>.</p>
-<p>2. The tagger must work with POSIX' classical line-based interface.
-That is, the tagger must take one continuous block of text as <em>input</em>, <strong>terminated with a newline</strong> character.
-For example, it should take one token, sentences or block of text as input (not containing any newlines), and, once it receives a newline character, start tagging that input.</p>
-<p>3. The tagger must produce <strong>one annotation per line</strong> as <em>output</em>, and those annotations must be <strong>in the same order</strong> as the (input) text spans which they annotate.
-Those annotations commonly are expected to be in the OTPL (one token per line) format.
-For example, the output line <tt class="docutils literal">Nouns noun NN <span class="pre">B-NP</span> O</tt> might annotate the token &quot;Noun&quot; (verbatim, as found in the input text) with the lemma &quot;noun&quot;, the PoS-tag &quot;NN&quot;, the BIO-chunk &quot;B-NP&quot; and the BIO-NER-tag &quot;O&quot; (&quot;outside&quot; any entity mention).</p>
-<p>If you have a tagger that follows those requirements (it turns out, most sequence taggers I know of work precisely like this), you can instead use my <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> framework.
-What it does differently to the Generic Tagger is the following:</p>
-<ul class="simple">
-<li>On Processing Resource <strong>initialization</strong>, you have to specify the location of the tagger and GATE launches the tagger with the supplies parameters (directory where to run the tagger and any arguments, such as dictionaries to load or command-line flags to set).</li>
-<li>The Processing Resource <strong>configuration</strong> is nearly the same, but some of the defaults have been adapted to better reflect the nature of the on-line processing model.</li>
-<li>Once your pipeline is <strong>running</strong>, the text is piped into the tagger sub-process and results are read from the output stream, while intermediary files are no longer created.</li>
-</ul>
-<p>Please clone the tagger from GitHub (<tt class="docutils literal">git clone <span class="pre">https://github.com/fnl/OnlineTaggerFramework</span></tt>) into your local CREOLE <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch3.html#x6-530003.6">user plugin directory</a>.
-Then you can load my plug-in from the CREOLE Plugin Manager and once you instantiate a new <tt class="docutils literal">GenericOnlineTagger</tt> Processing Resource, you will be asked to supply the initial configuration data to launch the tagger in its own sub-process (tagger binary path, directory to run in [if any], runtime flags and arguments [if any]).</p>
-<p>If you run into any issue using this plug-in, please consider filing a <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework/issues">bug report</a> on GitHub so I can fix the problem for everybody using it.
-I hope the this plug-in will make you enjoy the new-found efficiency when integrating sequence taggers into your GATE pipelines!</p>
+                    <div class="section" id="introduction">
+<h2>Introduction</h2>
+<p>This is a question I get on a frequent basis by colleagues that are serious programmers or software developers and are planning to pick up data analytics. There are three fundamental topics in mathematics that you need to cover, assuming that you are an expert in software development and informatics already: statistics, linear algebra, and machine learning. Therefore, I will recommend one book associated to each of these topics. Even I continue to consult those books as reference material.</p>
+<p>There might be a fourth foundation worth mentioning: calculus. I don't really have a recommendation for that, as it never has been essential to my work. As long as you can remember how to do differentiation and integration and solve an ODE, you are pretty much saddled. In other words, fresh high-school knowledge of calculus has always been good enough for me. And there is no need to make any proofs, unless you want to develop your own machine learning methods…</p>
+</div>
+<div class="section" id="the-r-environment">
+<h2>The R Environment</h2>
+<p>Before presenting the books, let me recommend one tool that you should pick up when doing the books' practical exercises: <a class="reference external" href="https://www.r-project.org/">R</a>. R is the de facto tool for data science today and, as I would predict, the <a class="reference external" href="https://www.rstudio.com/">environment</a> that will (is?) put (putting?) S, SPSS, SAS, and a number of other commercial tools into their digital grave. Even banks and insurances are beginning to embrace R, apparently (not sure that's a good thing, though...). R provides a huge ecosystem of packages that lets you quickly explore and test models, inspect your data, develop theories, and visualize results. Any of these points can be extremely tedious with other tools, but a few free and commercial statistics, math, and/or machine learning environments (e.g., MatLab or Octave) might be viable alternatives if you already know them. Python in particular is extremely well suited (maybe even better than R) if you are interested in language processing or neural networks. Overall, I recommend working through the exercises provided by the books with your preferred interactive environment. Just as with programming and software development, only reading about the relevant material will not provide you with the experience needed to actually “do” data science.</p>
+</div>
+<div class="section" id="statistics">
+<h2>Statistics</h2>
+<p><a class="reference external" href="http://www.statisticalsleuth.com/">The Statistical Sleuth</a> by Fred Ramsey and Daniel W. Schafer.
+While there might be “simpler” books around, this one has the most compact and best overview of applied statistics that I have read to date (t and F distributions, ANOVA and multivariate regression, etc.). If you can only read one book or only need to work the statistics angle, then this is “the” book. Most of the machine learning stuff can be understood easily after digesting this book, and I particularly like the very applied approach that Ramsey &amp; Schafer take.</p>
+</div>
+<div class="section" id="linear-algebra">
+<h2>Linear Algebra</h2>
+<p><a class="reference external" href="http://math.mit.edu/~gs/linearalgebra/">Introduction to Linear Algebra</a> by Gibert Strang.
+Contrary to my statistics recommendation, on this topic there certainly are more in-depth introductory books around, but this one covers all I ever needed. It takes you from the dot and outer product over eigenspaces to Singular Value Decomposition. And, the author is exceptionally gifted at teaching algebraic thinking (The book can be &quot;watched&quot; for free in form of <a class="reference external" href="http://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/">videos</a> of his classes.) As a bonus, the final chapters explain how this material ties in with advanced data science techniques and machine learning models.</p>
+</div>
+<div class="section" id="machine-learning">
+<h2>Machine Learning</h2>
+<p><a class="reference external" href="http://www-bcf.usc.edu/~gareth/ISL/">An Introduction to Statistical Learning</a> by James, Witten, Hastie, and Tibshirani.
+While quite a bit slower moving than the first Hastie &amp; Tibshirani book (The Elements of Statistical Learning), I think it is the better start, and it has a ton of exercises using R. Especially the first few chapters contain discussions about basic aspects that are critical to this line of work, like the bias-variance tradeoff issue to keep in mind when developing your machine learning models. This is an excellent read if the Sleuth above is no longer a problem, as it does assume a solid background on basic statistics, distributions &amp; regression techniques.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>After studying these three books, you will be ready to extend your knowledge with domain-specific techniques. That should be geared at what kind of data you want to process: Text mining, time series, bioinformatics, signal processing, etc. and what specific models you want to apply: Neural networks, graphical models, kernel machines, structured equations, etc. In other words, the above three books will not convert you into a data science expert, but they will provide you with an extremely solid foundation so that you can effortlessly study any advanced topics and techniques that will.</p>
+</div>
 
 
                     <div class="clear"></div>
                     <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/text-mining.html">text mining</a>                            <a href="http://fnl.es/tag/nlp.html">nlp</a>                            <a href="http://fnl.es/tag/java.html">Java</a>                        </div>
+                        <div class="tags">                            <a href="http://fnl.es/tag/data-science.html">data science</a>                            <a href="http://fnl.es/tag/review.html">review</a>                        </div>
 
                     </div>
                     <div class="clear"></div>
@@ -128,7 +93,7 @@ I hope the this plug-in will make you enjoy the new-found efficiency when integr
                 <div class="pages">
                     <a href="http://fnl.es/author/florian-leitner.html" class="prev_page">&larr;&nbsp;Previous</a>
                     <a href="http://fnl.es/author/florian-leitner3.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 2 of 27</span>
+                    <span>Page 2 of 28</span>
                 </div>
 
                 <div class="clear"></div>
