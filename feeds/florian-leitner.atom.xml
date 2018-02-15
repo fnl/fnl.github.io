@@ -11,7 +11,7 @@
 &lt;h2&gt;Setup&lt;/h2&gt;
 &lt;div class="section" id="miniconda"&gt;
 &lt;h3&gt;Miniconda&lt;/h3&gt;
-&lt;p&gt;I strongly recommend using the &lt;a class="reference external" href="https://www.anaconda.com/download/"&gt;Anaconda&lt;/a&gt; distribution to set up TensorFlow, and Python in general. And, for the more expert users, do go directly to _miniconda (&amp;quot;don't go over Anaconda, and don't collect 200MB of (irrelevant) bytes&amp;quot;). The packages you want to install (and that will also fetch all other, relevant dependencies, like Jupyter, SciPy, or NumPy) are:&lt;/p&gt;
+&lt;p&gt;I strongly recommend using the &lt;a class="reference external" href="https://www.anaconda.com/download/"&gt;Anaconda&lt;/a&gt; distribution to set up TensorFlow, and Python in general. And, for the more expert users, do go directly to &lt;a class="reference external" href="https://conda.io/miniconda.html"&gt;miniconda&lt;/a&gt; (&amp;quot;don't go over Anaconda, and don't collect 200MB of (irrelevant) bytes&amp;quot;). The packages you want to install (and that will also fetch all other, relevant dependencies, like Jupyter, SciPy, or NumPy) are:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda install -c conda-forge tensorflow
 conda install -c conda-forge scikit-learn
 conda install -c conda-forge matplotlib
