@@ -1,57 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>fnl.es &middot; articles tagged "machine learning"</title>
-        <link rel="shortcut icon" href="http://fnl.es/favicon.ico" />
-<link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
-        <link href="http://fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+<head>
+        <meta charset="utf-8" />
+        <title>fnl en España - machine learning</title>
+        <link rel="stylesheet" href="http://fnl.es/theme/css/main.css" />
+        <link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl en España Atom Feed" />
 
-        <link rel="stylesheet" href="http://fnl.es/theme/css/screen.css" type="text/css" />
-        <link rel="stylesheet" href="http://fnl.es/theme/css/pygments.css" type="text/css" />
-        <!-- Start of StatCounter Code for Default Guide -->
-<script type="text/javascript">
-var sc_project=3728421; 
-var sc_invisible=1; 
-var sc_security="a5624e69"; 
-</script>
-<script type="text/javascript"
-src="http://www.statcounter.com/counter/counter.js"></script>
-        <!-- End of StatCounter Code for Default Guide -->
-    </head>
-    <body>
-        <!-- Start of StatCounter Code for Default Guide -->
-<noscript><div class="statcounter"><a title="hit counter"
-href="http://statcounter.com/free-hit-counter/"
-target="_blank"><img class="statcounter"
-src="http://c.statcounter.com/3728421/0/a5624e69/1/"
-alt="hit counter"></a></div></noscript>
-        <!-- End of StatCounter Code for Default Guide -->
-<div id="header">
-            <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/tag/machine-learning.html">machine learning</a></li>
-                <li><a class="flagred" href="http://fnl.es">Home</a></li>
-<li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
-            </ul>
-            <div class="header_box">
-                <h1><a href="http://fnl.es">fnl.es</a></h1>
-                <h2><a href = "mailto:flo@fnl.es" id="webmaster">fnl</a> en España</h2>            </div>
-        </div>
-        <div id="wrapper">
-            <div id="content">
-                <h4 class="date">Feb 2018</h4>
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
 
-								<div class="mobile-hide">
-									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
-									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-								</div>
-                <div class="post">
-<h2 class="title">
-                        <a href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html" rel="bookmark" title="Permanent Link to &quot;A quick reference for working with TensorFlow&quot;">A quick reference for working with TensorFlow</a>
-                    </h2>
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://fnl.es/">fnl en España </a></h1>
+                <nav><ul>
+                    <li><a href="http://fnl.es/pages/about.html">About</a></li>
+                    <li><a href="http://fnl.es/pages/projects.html">Projects</a></li>
+                    <li><a href="http://fnl.es/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="http://fnl.es/category/misc.html">misc</a></li>
+                    <li><a href="http://fnl.es/category/programming.html">Programming</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-                    <div class="section" id="introduction">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html">A quick reference for working with TensorFlow</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-02-15T00:00:00+01:00">
+                Published: Thu 15 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/tensorflow.html">tensorflow</a> <a href="http://fnl.es/tag/machine-learning.html">machine learning</a> </p>
+</footer><!-- /.post-info --><div class="section" id="introduction">
 <h2>Introduction</h2>
 <p>Given the last few years of hype around Deep Learning, knowing one of those frameworks is probably no longer an option, at least if you are a professional Machine Learning engineer. Personally, I always favor free, open source solutions, so Apache MXNet would be the natural fit. However, I must admit that for research &amp; development, Facebook's PyTorch is probably the nicer API, and for operations &amp; production, Google's TensorFlow is beyond doubt the best fit right now. And, as I've mostly moved out of academia/research lately, and am pretty dedicated to consulting by now (and loving it!), I am mostly interested in a tooling that I can put to good use in my day-to-day work. Hence, I have been - not without remorse - focusing on TensorFlow and want to share my personal notes with you, to use as a quick reference when setting up a new tensor graph.</p>
 <p>I mostly learned how to use TensorFlow from Aurélien Géron's book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; So if you are familiar with it and my notes below remind you of it, that is not by accident: These are my modified excerpts, all taken from that book. In fact, if you really are interested in using TensorFlow, I cannot emphasize enough how much I recommend reading this book. And, if you are not familiar with the SciKit-Learn world, or simply want to learn how you can combine these two essential Machine Learning frameworks into&quot;one ring to rule them all&quot;, you need to read this book. Full-stop. In fact, if you are a serious Machine Learning practitioner, you either should have read it, or at least make sure you know the techniques presented in it already. Beyond just giving you tips, the book is chock-a-block full of up-to-date examples and highly relevant exercises. Aurélien even recently <a class="reference external" href="https://github.com/ageron/handson-ml/blob/master/extra_capsnets.ipynb">released more example code</a>, to produce G. E. Hinton's Capsule Network architecture (using dynamic routing) with TensorFlow, and generally ensures the practical material is very much up to date with the latest TensorFlow releases. (Disclaimer: I am in no way affiliated with Aurélien, O'Reilly, or would otherwise benefit from sales of this book!)</p>
@@ -397,24 +382,25 @@ You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any
 <h2>Epilogue</h2>
 <p>As I already advised in the beginning, if you want to learn more, I can warmly recommend you get Aurélien Géron's fantastic book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; The more advanced topics covered (and that would explode this blog post...) are transfer learning, distributed training, designing Recurrent Networks and Auto-encoders, and even a &quot;beginner's guide&quot; to Deep Reinforcement Learning. Yet, I hope, this tiny taste of the book's contents, spiced up with a bit of my own &quot;opinionated&quot; modifications, will provide you with  a handy quick-reference when building and using TensorFlow graphs. (And, that I don't get sued by him or O'Reilly for plagiarism! :-) Please just contact me if this post is an issue -- I have no problem taking the post down again, if it is problematic.)</p>
 </div>
+                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-                    <div class="clear"></div>
-                    <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/tensorflow.html">tensorflow</a>                            <a href="http://fnl.es/tag/machine-learning.html" class="selected">machine learning</a>                        </div>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
-                <div class="clear"></div>
-                <div id="footer">
-                    <p>
-                    <a class="atom" href="http://fnl.es/feeds/all.atom.xml">RSS Feed</a>
-                    </p>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </body>
+</body>
 </html>

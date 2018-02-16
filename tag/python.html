@@ -1,57 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>fnl.es &middot; articles tagged "Python"</title>
-        <link rel="shortcut icon" href="http://fnl.es/favicon.ico" />
-<link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl.es Atom Feed" />
-        <link href="http://fnl.es/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="fnl.es RSS Feed" />
+<head>
+        <meta charset="utf-8" />
+        <title>fnl en España - Python</title>
+        <link rel="stylesheet" href="http://fnl.es/theme/css/main.css" />
+        <link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl en España Atom Feed" />
 
-        <link rel="stylesheet" href="http://fnl.es/theme/css/screen.css" type="text/css" />
-        <link rel="stylesheet" href="http://fnl.es/theme/css/pygments.css" type="text/css" />
-        <!-- Start of StatCounter Code for Default Guide -->
-<script type="text/javascript">
-var sc_project=3728421; 
-var sc_invisible=1; 
-var sc_security="a5624e69"; 
-</script>
-<script type="text/javascript"
-src="http://www.statcounter.com/counter/counter.js"></script>
-        <!-- End of StatCounter Code for Default Guide -->
-    </head>
-    <body>
-        <!-- Start of StatCounter Code for Default Guide -->
-<noscript><div class="statcounter"><a title="hit counter"
-href="http://statcounter.com/free-hit-counter/"
-target="_blank"><img class="statcounter"
-src="http://c.statcounter.com/3728421/0/a5624e69/1/"
-alt="hit counter"></a></div></noscript>
-        <!-- End of StatCounter Code for Default Guide -->
-<div id="header">
-            <ul id="nav">
-                <li class="ephemeral selected"><a href="http://fnl.es/tag/python.html">Python</a></li>
-                <li><a class="flagred" href="http://fnl.es">Home</a></li>
-<li><a class="flagred" href="http://fnl.es/archives.html">Archives</a></li>
-            </ul>
-            <div class="header_box">
-                <h1><a href="http://fnl.es">fnl.es</a></h1>
-                <h2><a href = "mailto:flo@fnl.es" id="webmaster">fnl</a> en España</h2>            </div>
-        </div>
-        <div id="wrapper">
-            <div id="content">
-                <h4 class="date">Jan 2015</h4>
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
 
-								<div class="mobile-hide">
-									<a class="twitter-timeline" width="180px" data-dnt="true" data-chrome="noheader nofooter transparent" href="https://twitter.com/flowing" data-widget-id="393739277646852096"></a>
-									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-								</div>
-                <div class="post">
-<h2 class="title">
-                        <a href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html" rel="bookmark" title="Permanent Link to &quot;segtok - a segmentation and tokenization library&quot;">segtok - a segmentation and tokenization library</a>
-                    </h2>
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://fnl.es/">fnl en España </a></h1>
+                <nav><ul>
+                    <li><a href="http://fnl.es/pages/about.html">About</a></li>
+                    <li><a href="http://fnl.es/pages/projects.html">Projects</a></li>
+                    <li><a href="http://fnl.es/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="http://fnl.es/category/misc.html">misc</a></li>
+                    <li><a href="http://fnl.es/category/programming.html">Programming</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-                    <p><strong>tl;dr</strong>
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://fnl.es/segtok-a-segmentation-and-tokenization-library.html">segtok - a segmentation and tokenization library</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-01-12T00:00:00+01:00">
+                Published: Mon 12 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/text-mining.html">text mining</a> <a href="http://fnl.es/tag/nlp.html">nlp</a> <a href="http://fnl.es/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info --><p><strong>tl;dr</strong>
 Surprisingly, it is hard to find a good command-line tool for sentence segmentation and word tokenization that works well with European languages.
 Here, I present <a class="reference external" href="https://pypi.python.org/pypi/segtok">segtok</a>, a <strong>Python 2.7 and 3</strong> package, API, and Unix command-line tool to remedy this shortcoming.</p>
 <div class="section" id="text-processing-pipelines">
@@ -251,30 +236,135 @@ PT is a unsupervised, statistical approach to segmentation that “learns” whe
 While quite impressive and very versatile due to its unsupervised nature, I can state clearly that segtok's segmenter works substantially better on Germanic and Romance texts that (mostly) have a proper orthography.
 Unsurprisingly, segtok's sentence segmenter is substantially faster than a comparable Python <a class="reference external" href="http://www.nltk.org/_modules/nltk/tokenize/punkt.html">implementation</a> of the Punkt Tokenizer by NLTK.</p>
 </div>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
 
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://fnl.es/an-introduction-to-statistical-text-mining.html" rel="bookmark"
+                           title="Permalink to An Introduction to Statistical Text Mining">An Introduction to Statistical Text Mining</a></h1>
+                </header>
 
-                    <div class="clear"></div>
-                    <div class="info">
-                        <div class="tags">                            <a href="http://fnl.es/tag/text-mining.html">text mining</a>                            <a href="http://fnl.es/tag/nlp.html">nlp</a>                            <a href="http://fnl.es/tag/python.html" class="selected">Python</a>                        </div>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-07-07T00:00:00+02:00">
+                Published: Mon 07 July 2014
+        </abbr>
 
-                    </div>
-                    <div class="clear"></div>
-                </div>
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/text-mining.html">text mining</a> <a href="http://fnl.es/tag/python.html">python</a> <a href="http://fnl.es/tag/nltk.html">nltk</a> </p>
+</footer><!-- /.post-info -->                <p><em>Update</em> 2015-07-24: Please check out the <a class="reference external" href="http://www.slideshare.net/asdkfjqlwef/text-mining-from-bayes-rule-to-de">latest slides</a> for this course, which now includes a quick introduction to dependency parsing, a more terse start, and several corrections and improvements all over.</p>
+<p>Last week we had a really great time at the first hands-on text mining workshop in the context of …</p>
+                <a class="readmore" href="http://fnl.es/an-introduction-to-statistical-text-mining.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
-                <div class="clear"></div>
-                <div class="pages">
-                    <a href="http://fnl.es/tag/python2.html" class="next_page">Next&nbsp;&rarr;</a>
-                    <span>Page 1 of 5</span>
-                </div>
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html" rel="bookmark"
+                           title="Permalink to Installing a full stack Python data analysis environment on OSX">Installing a full stack Python data analysis environment on OSX</a></h1>
+                </header>
 
-                <div class="clear"></div>
-                <div id="footer">
-                    <p>
-                    <a class="atom" href="http://fnl.es/feeds/all.atom.xml">RSS Feed</a>
-                    </p>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </body>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-11T00:00:00+01:00">
+                Published: Mon 11 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/programming.html">Programming</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/python.html">python</a> <a href="http://fnl.es/tag/apple.html">apple</a> <a href="http://fnl.es/tag/data-mining.html">data mining</a> </p>
+</footer><!-- /.post-info -->                <p><strong>UPDATE</strong>: Installing the Scientific Python stack from &quot;source&quot; has become a lot simpler recently and this tutorial was updated accordingly in November 2013 to use with OSX Mavericks and, in particular, <strong>Python 3</strong>.</p>
+<p>Installing a full-stack scientific data analysis environment on Mac OSX for Python 3 and making sure the …</p>
+                <a class="readmore" href="http://fnl.es/installing-a-full-stack-python-data-analysis-environment-on-osx.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://fnl.es/why-i-love-python-30-unicode-utf-8.html" rel="bookmark"
+                           title="Permalink to Why I love Python 3.0: Unicode + UTF-8">Why I love Python 3.0: Unicode + UTF-8</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-04-27T00:00:00+02:00">
+                Published: Mon 27 April 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/programming.html">Programming</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/unicode.html">unicode</a> <a href="http://fnl.es/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="section" id="tl-dr-summary">
+<h2>tl;dr summary</h2>
+<table> <tbody>
+<tr> <th align="left"> <strong>Python pre-3.0</strong> </th>
+     <th align="left"> <strong>Python post-3.0</strong> </th> </tr>
+<tr> <td> str.encode </td> <td> bytes.translate or (new) str.encode </td> </tr>
+<tr> <td> str.decode </td> <td> bytes.decode </td> </tr>
+<tr> <td> unicode </td> <td> str </td> </tr>
+<tr> <td> unicode.encode </td> <td> str.encode </td> </tr>
+<tr> <td> unicode.decode </td> <td> *n/a* </td> </tr>
+<tr> <td> str("x") == unicode("x") &nbsp;&nbsp; </td> <td> bytes("x") != str("x") </td> </tr>
+</tbody> </table><p>This change in Python 3.0 might be more than useful …</p></div>
+                <a class="readmore" href="http://fnl.es/why-i-love-python-30-unicode-utf-8.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://fnl.es/textmate-python-and-django-cheat-sheet.html" rel="bookmark"
+                           title="Permalink to TextMate Python and Django cheat sheet">TextMate Python and Django cheat sheet</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2007-09-07T00:00:00+02:00">
+                Published: Fri 07 September 2007
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/programming.html">Programming</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/python.html">python</a> <a href="http://fnl.es/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>After not finding anything appropriate, I decided to do my own reference
+card (aka cheat sheet) for the pythonic and django commands you can use
+in TextMate. If you want to have it, download it from <a class="reference external" href="http://www.scribd.com/doc/7759743/TextMate-PythonDjango-Cheat-Sheet">here</a>.</p>
+
+                <a class="readmore" href="http://fnl.es/textmate-python-and-django-cheat-sheet.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
 </html>
