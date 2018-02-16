@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl en España - Miscellaneous</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/miscellaneous.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2009-05-26T00:00:00+02:00</updated><entry><title>MobileMe vs. SugarSync vs. DropBox</title><link href="http://fnl.es/mobileme-vs-sugarsync-vs-dropbox.html" rel="alternate"></link><published>2009-05-26T00:00:00+02:00</published><updated>2009-05-26T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-05-26:/mobileme-vs-sugarsync-vs-dropbox.html</id><summary type="html">&lt;p&gt;I now have tested MobileMe, SugarSync, and DropBox for quite a while to
+decide which service to buy for syncing my “electronic life” between my
+Macs (soon I’ll be managing two OSX Server blades, one Mini, and two
+MBPs!). After this period, there is no doubt to me: I …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I now have tested MobileMe, SugarSync, and DropBox for quite a while to
+decide which service to buy for syncing my “electronic life” between my
+Macs (soon I’ll be managing two OSX Server blades, one Mini, and two
+MBPs!). After this period, there is no doubt to me: I’m syncing my iCal
+calendars and Address Book content via Google, my bookmarks with XMarks,
+and everything else via DropBox.&lt;/p&gt;
+&lt;p&gt;MobileMe’s iDisk is nothing more than a pain and a piece of junk, which
+I honestly did not expect. After all the problems they had last year
+launching Me.com, I thought they would have by now created a working
+service. But the iDisk and syncing my PIM (Personal Information Manager
+- I still use Yojimbo, as Evernote’s and Together’s handling of
+encryption are pure patched add-ons) was just a [bad] joke: You even
+need to buy extra software if you want to do file syncing, as iDisk’s
+“offline” sync is so slow and error prone I could not believe Apple
+dares to offer something like that. So you need to either use Lingon and
+rsync to sync to your online mode iDisk which doesn’t win a medal for
+simplicity, or buy something like ChronoSync - and that takes hours
+(!!!) to ensure 10 GB of data in about 30-40k Files are synced, &lt;strong&gt;every
+time&lt;/strong&gt;. All the more, ChronoSync may be the fastest and safest syncer in
+the wild! What finally got me mad was the sync agent using 90% CPU all
+of the time, at times virtually locking you out of your own machine,
+while performing almost nothing. Finally, if you ever try to navigate
+that online iDisk, get yourself a cup of tea, you will have plenty of
+time to drink it up until that file is open…&lt;/p&gt;
+&lt;p&gt;Compared to SugarSync, DropBox with its simplicity and real versioning
+of files is significantly better performing than SugarSync, espcially if
+we talk upload and real volume, and if you ever tried SugarSync, it is a
+resource hugger (not as bad as iDisk, but it will stop your workflow).
+So in the end the choice for me was based on “mutual exclusion”, there
+is simply still no service that can hold the candle to DropBox - and
+just got me Pro account. As I am writing this, I am syncing up dozens of
+gigs of data to my 50 GB DropBox, and I hardly notice it happening!&lt;/p&gt;
+&lt;p&gt;Oh, if you get yourself an account for DropBox, either the free 2 GB or
+a full Pro account, I would appreciate if you register via &lt;a class="reference external" href="https://www.getdropbox.com/referrals/NTE0NTA0OTk"&gt;this link&lt;/a&gt;,
+as it creates me some 500 MB extra space for referring you :o).&lt;/p&gt;
+</content><category term="apple"></category><category term="cloud storage"></category></entry><entry><title>News, Swines &amp; Pigs</title><link href="http://fnl.es/news-swines-pigs.html" rel="alternate"></link><published>2009-04-30T00:00:00+02:00</published><updated>2009-04-30T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-04-30:/news-swines-pigs.html</id><summary type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
+even I have to accept a low level of &amp;quot;noise&amp;quot; if I want to know at least
+something about the most significant things going on. However, currently
+I get the overwhelming feeling that the whole news world is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
+even I have to accept a low level of &amp;quot;noise&amp;quot; if I want to know at least
+something about the most significant things going on. However, currently
+I get the overwhelming feeling that the whole news world is grunting and
+snorting like a pigsty. You guessed it, I am concerned about all this
+&amp;quot;swine flu&amp;quot; reporting going on. As can be easily demonstrated, this
+whole &amp;quot;pandemic alert&amp;quot; and panic-making has gone completely out of
+proportion. It is yet another example of how ridiculous news agencies
+exaggerate or even blur the facts, and this attitude might be much more
+lethal than most biological illnesses if measured by its indirect
+impact.&lt;/p&gt;
+&lt;p&gt;First of, some flu virus classification: There are three types of
+influenza virus: A, B, and C. B and C play only very minor roles as they
+mutate slower, are less virulent, and affect far less species. Usually,
+when talking about a flu virus, type A is implied. Type A influenza then
+is further categorized by the HxNx nomenclature. The H refers to the
+hemagglutinin (HA) lectin and the N to the neuroaminidase (NA)
+glycoprotein. Both are found on the outside coat of the virus particle.
+HA mediates the virus' binding to target cells, while NA is responsible
+for the release of progeny virus from infected host cells. The numbers
+denote the antibody response of the virus, ordered by historic discovery
+- meaning, a virus with the same H/N number is identified by the same
+&lt;em&gt;type&lt;/em&gt; of antibodies, which form part of your immune system/defense. HA
+and NA are essential for the virulence (the relative ability to cause
+disease) in terms of infectiveness and the epidemic capabilities of the
+strain. H1N1 denotes the class of flu virus HA/NA proteins that is the
+most commonly found form in human influenza. Our immune system defends
+us by recognizing mainly those two proteins (the &amp;quot;antigenes&amp;quot;) through
+our antibodies. This means, from a pure immuno-defense point of view,
+this kind of strain is the most well known to the human body and immune
+system. This is one of the reasons why the new Hong Kong avian flu, with
+its H5N1 composition, is much more virulent than the current H1N1 swine
+flu or any other &amp;quot;regular&amp;quot; flu.&lt;/p&gt;
+&lt;p&gt;Endemic states and lethal properties: H1N1 most deadly appearance and
+the worst pandemic in modern human history was what we now know as the
+&amp;quot;Spanish Flu&amp;quot; in 1918; This specific influenza virus transformed its
+endemic properties (the ability to propagate within one kind of species,
+in this case birds) to a panzootic state (affecting animals including
+humans - epizootic would be the intermediate state that does not affect
+humans). Note that this pandemic occurred during WW I, largely
+facilitating its spread. In general, any kind of virus capable of
+overcoming the species barrier is potentially more dangerous, as it is
+likely to carry genetic material and protein structures the newly
+infected species has never seen before, therefor being much more
+virulent and lethal than the existing endemic strains. However, the
+Spanish Flu killed somewhere around 20 million people (taking
+conservative, low estimates), and its symptoms were so strong it was
+often misdiagnosed as some much more severe infection. Apart from the
+HA/NA properties already mentioned, there is the actual RNA (viruses
+commonly use RNA instead of DNA to carry their genetic information) that
+a virus uses to encode its proteins and other functions that are
+important to the survival and impact of a virus. Our immune defense
+looks for RNA sequences those are different to any sequence found in our
+body and &amp;quot;destroys&amp;quot; those foreign sequences by cleaving the strands into
+non-functional pieces with the help of so-called RNases. For this to
+work, the immune system therefor has to identify the RNA [as foreign].
+But a strand of RNA coming from another species might actually contain
+nucleotide base sequences our immune system does not recognize (because
+it only recognizes already &lt;em&gt;known&lt;/em&gt; foreign sequences), making the virus
+much more lethal. This process of changing the RNA and protein
+configuration is amplified by two related mechanisms called &amp;quot;genetic
+drift&amp;quot; and &amp;quot;antigenic shift&amp;quot;. In the case of the Spanish flu, the RNA
+was very &amp;quot;new&amp;quot; to the human's immune system and had a very high mutation
+rate: how often the RNA sequence changes, roughly the meaning of the
+aforementioned genetic drift and antigenic shift. On the contrary, the
+new &amp;quot;Mexican&amp;quot; swine flu virus has a very similar RNA composition to
+regular virus strains found in humans, i.e. it does not appear to be
+significantly more leathal than any other flu. The only known difference
+to the regular flu circulating in humans is that it seems to affect more
+younger than older people, possibly due to the fact that older people's
+immune systems already have &amp;quot;seen&amp;quot; a similar version of this virus some
+time ago and therefor have antibodies that recognize the HA/NA
+glycoproteins.&lt;/p&gt;
+&lt;p&gt;Now compare this swine flu against any regular flu by numbers: The
+regular flu kills about 250,000 to &lt;em&gt;half a million&lt;/em&gt; people &lt;em&gt;per year&lt;/em&gt;.
+This overhyped swine flu managed to kill &lt;em&gt;eight&lt;/em&gt; (8!) humans so far and
+it has been confirmed to have infected about 150 people worldwide (WHO
+data, 29th of April, 2009). I.e., on a daily average about a
+&lt;strong&gt;thousand times more&lt;/strong&gt; people die from the regular flu than this new
+strain. Regular flu is almost continuously spreading somewhere in the
+world, i.e., if the WHO took this into account, we would be living in a
+nearly constant influenza pandemic. The swine flu just now made it to
+the last stage before &lt;em&gt;even being defined&lt;/em&gt; as a WHO &amp;quot;pandemic&amp;quot;: There
+must be a few known infections in at least two countries. Recall this
+definition and check the real numbers when somebody is talking about a
+new &amp;quot;pandemic&amp;quot;. The infection with swine flu seems to be no more lethal
+than with any other flu, so your chances of dying from the swine flu
+outside of Mexico are so marginal it makes no sense to take them into
+account, while if you do go to Mexico, all you seriously need to do is
+make sure your current health state is good enough to survive any flu
+anywhere, which is much more prevalent and 1,000 times more likely to
+kill you by a global statistic&lt;em&gt;.&lt;/em&gt; But the main point is: there is
+nothing dangerous or wrong about going to Mexico, at least concerning
+the flu. I would be much more worried about drug gangsters and hijackers
+there if I were you: They managed to kill several thousands of people
+this year alone already. In other words, the WHO rulings and
+suggestions, that are close to ridiculous given the circumstances,
+combined with the media hype are about to isolate Mexico from the world,
+which leads me to my final and most important point.&lt;/p&gt;
+&lt;p&gt;In general, this &amp;quot;pig-hyped&amp;quot; flu without any review of its background,
+no factual content, and exclusively based on beliefs and propaganda has
+only one really worrisome influence: it is weakening and isolating
+Mexico, both socially and economically. Our ignorance to real facts are
+estimated to cost Mexico &lt;em&gt;City&lt;/em&gt; (&amp;quot;D.F.&amp;quot;) alone around $88 million &lt;em&gt;per
+day&lt;/em&gt;, and this figure will need huge updates for the crash Mexico's main
+(legal) economic sector, tourism, will suffer, plus the costs incurred
+on the country as a whole. This number will be similar to or more likely
+even exceed the daily cost of the U.S. oil war in Irak (estimated to
+about $250 million, in case you didn't know) - the only good news being
+that instead of about 100 (direct, not counting the indirect toll, which
+is estimated to be around five times higher) deaths per day, the swine
+flu's daily death toll is still below one. In other words, the combined
+direct and indirect negative impact of this insubstantial media hype on
+a close to imaginary &amp;quot;Mexican Flu&amp;quot; will cost and destroy much more lives
+than the virus itself most likely ever will have been capable of. Media
+propaganda crusades against a country nowadays have the same
+socioeconomic impact as the largest &amp;quot;real&amp;quot; war in decades if measured by
+the daily cost. Keep this in mind the next time you read news about
+swines from pigs.&lt;/p&gt;
+</content><category term="politics"></category></entry></feed>

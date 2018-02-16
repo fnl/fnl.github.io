@@ -3,7 +3,8 @@
 <head>
         <meta charset="utf-8" />
         <title>An efficient online sequence tagger resource for GATE</title>
-        <link rel="stylesheet" href="./theme/css/main.css" />
+        <link rel="stylesheet" href="http://fnl.es/theme/css/main.css" />
+        <link href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="fnl en España Atom Feed" />
 
         <!--[if IE]>
             <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -12,20 +13,20 @@
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="./">fnl en España </a></h1>
+                <h1><a href="http://fnl.es/">fnl en España </a></h1>
                 <nav><ul>
-                    <li><a href="./pages/about.html">About</a></li>
-                    <li><a href="./pages/projects.html">Projects</a></li>
-                    <li class="active"><a href="./category/machine-learning.html">Machine Learning</a></li>
-                    <li><a href="./category/miscellaneous.html">Miscellaneous</a></li>
-                    <li><a href="./category/programming.html">Programming</a></li>
+                    <li><a href="http://fnl.es/pages/about.html">About</a></li>
+                    <li><a href="http://fnl.es/pages/projects.html">Projects</a></li>
+                    <li class="active"><a href="http://fnl.es/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="http://fnl.es/category/miscellaneous.html">Miscellaneous</a></li>
+                    <li><a href="http://fnl.es/category/programming.html">Programming</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="./an-efficient-online-sequence-tagger-resource-for-gate.html" rel="bookmark"
+        <a href="http://fnl.es/an-efficient-online-sequence-tagger-resource-for-gate.html" rel="bookmark"
            title="Permalink to An efficient online sequence tagger resource for GATE">An efficient online sequence tagger resource for GATE</a></h1>
     </header>
 
@@ -36,10 +37,10 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="./author/florian-leitner.html">Florian Leitner</a>
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
         </address>
-<p>In <a href="./category/machine-learning.html">Machine Learning</a>.</p>
-<p>tags: <a href="./tag/text-mining.html">text mining</a> <a href="./tag/nlp.html">nlp</a> <a href="./tag/java.html">Java</a> </p>
+<p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/text-mining.html">text mining</a> <a href="http://fnl.es/tag/nlp.html">nlp</a> <a href="http://fnl.es/tag/java.html">Java</a> </p>
 </footer><!-- /.post-info -->      <p><strong>tl;dr</strong> for a stressed out generation:
 <a class="reference external" href="https://gate.ac.uk">GATE</a>'s <a class="reference external" href="https://gate.ac.uk/sale/tao/splitch23.html#sec:parsers:taggerframework">Generic Tagger</a> framework is a CREOLE plug-in that allows you to wrap any existing <a class="reference external" href="http://fnl.es/a-review-of-sparse-sequence-taggers.html">sequence tagger</a> and use it to create annotations in your pipeline, but it is a bit slow.
 Therefore, I have created the <a class="reference external" href="https://github.com/fnl/OnlineTaggerFramework">Online Tagger</a> GATE plug-in that works similarly to the Generic Tagger framework, but does not do any disk I/O for inter-process communication or launch more than one &quot;singleton&quot; sub-process per Processing Resource instance.
@@ -109,6 +110,13 @@ I hope the this plug-in will make you enjoy the new-found efficiency when integr
   </article>
 </section>
         <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://fnl.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
         </section><!-- /#extras -->
 
         <footer id="contentinfo" class="body">
