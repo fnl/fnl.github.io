@@ -985,9 +985,9 @@ h6:hover .anchor-link {
 If you like, particularly the 20 Newsgroups corpus is the equivalent of "MINST" for computer vision, but for text mining.
 However, one caveat applies: The datasets are relatively small for what Deep Learning "needs" (and this has a huge impact on the final results), and for the Reuters dataset, most of the categories indeed are far too small to apply any serious Deep Learning techniques.
 Therefore, we will only look into the 20 Newsgroups dataset here.&lt;/p&gt;
-&lt;p&gt;For those two corpora, the best (non-neural) baselines achieve around 90% accuracy on the 20 Newsgroups  coprus, using the official (roughly 3:2) split (see below!). Even the &lt;a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"&gt;off-the-shelf SciKit-Learn setup&lt;/a&gt; achieves around 85% accuracy on this set (using a Linear SVM).
+&lt;p&gt;For those two corpora, the best (non-neural) baselines achieve around 90% accuracy on the 20 Newsgroups  corpus, using the official (roughly 3:2) split. Even the &lt;a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"&gt;off-the-shelf SciKit-Learn setup&lt;/a&gt; achieves around 85% accuracy on this set (using a Linear SVM).
 For Reuters-21578, the state-of-the-art ("ante Deep Learning") was 94% micro-averaged $F_1$ Score using the official ModApte split, but only selecting documents among the ten most frequent categories (200 or more documents), and a micro-averaged 89% $F_1$ Score is using all 90 categories.
-And, obviously, it is important that the evaluation follows a single multilabel classification setting, not 10 or 90 individual binary classification problems... Most deep lerning literature only focuses on the simpler 10-categories subset of Reuter-21578, and/or treat is as 10 distinct binary classification problems, because otherwise there are too few examples to work with. Yet the "true" SOTA baseline you should keep in mind for that set when reading a paper oon Deep Learning using it, is the 94% micro-averaged $F_1$ score on the mulit-label task with the top 10 categories; Anything else is just "cheating yourself".&lt;/p&gt;
+And, obviously, it is important that the evaluation follows a single multilabel classification setting, not 10 or 90 individual binary classification problems... Most Deep Learning literature only focuses on the simpler 10-categories subset of Reuter-21578, and/or treats it as 10 distinct binary classification problems, because otherwise there are too few examples to work with. Yet the "true" SOTA baseline you should keep in mind for that set when reading a paper oon Deep Learning using it, is the 94% micro-averaged $F_1$ score on the mulit-label task with the top 10 categories; Anything else is just "cheating yourself".&lt;/p&gt;
 &lt;h2 id="Installation-and-setup"&gt;Installation and setup&lt;a class="anchor-link" href="#Installation-and-setup"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We will be using &lt;a href="https://keras.io/"&gt;Keras&lt;/a&gt; "on Theano" (or CNTK or TensorFlow, as you prefer [1]) to understand how to build a simple classifier with a neural network - that short-handedly beats all results you've seen so far.&lt;/p&gt;
 &lt;p&gt;[1] Theano is probably well suited for teaching/learning networks, while Microsoft's CNTK is probably best suited for langauge modeling (of those three choices!) and Google's TensorFlow is certainly the best all-rounder and probably the most popular. If you already have something else than Theano (the default, AFAIK) set up with Keras, go with that.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://keras.io/#installation"&gt;Installing Keras&lt;/a&gt; is simple:&lt;/p&gt;
@@ -1001,7 +1001,6 @@ conda install theano pygpu &lt;span class="c1"&gt;# with Nvidia GPU support&lt;/
 &lt;span class="c1"&gt;# or:&lt;/span&gt;
 pip install Theano&lt;span class="o"&gt;[&lt;/span&gt;doc&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that your instructor has a laptop without an Nvidia GPU, and this tutorial has been "calibarated" so that it can be run without one.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1034,13 +1033,13 @@ pip install Theano&lt;span class="o"&gt;[&lt;/span&gt;doc&lt;span class="o"&gt;]
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h2 id="Word-embeddings"&gt;Word embeddings&lt;a class="anchor-link" href="#Word-embeddings"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Instead of properly building your own word embeddings, we will take a "shortcut" and use a precomputed set of (single) word embeddings, &lt;a href="https://nlp.stanford.edu/projects/glove/"&gt;GloVe&lt;/a&gt;, which is &lt;a href="https://nlp.stanford.edu/data/"&gt;hosted and distributed by Stanford&lt;/a&gt;.
-(Yes, so our results will be sub-SOTA-par, but this is a tutorial, not an attempt to beat the SOTA in a peer reviewed journal...)
+(Yes, so our results will be sub-SOTA-par, but this is a blog post, not an attempt to beat the SOTA in a peer reviewed journal...)
 We'll "pretend" that we are just trying to get a quick prototype running to see if our idea (multi-label classification of documents with convolutional networks) works.
-Once we've ensured it does, we can "scale" it to larger and/or more specific embeddings [1] and deeper networks (we'll use just a 1D conv net here).&lt;/p&gt;
-&lt;p&gt;[1] Generally, if you have the time and resources to build your own embeddings, you will always be better off with that avenue.
-As discussed before, is particularly true for capturing named entities and idioms that are highly specific for your specific domain and where the meaning of the collocations go beyond that of the single words.&lt;/p&gt;
+Once we've ensured it does, feel free to "scale" it to larger and/or more specific embeddings [1] and/or more complex networks (we'll use just a 1D conv net here).&lt;/p&gt;
+&lt;p&gt;[1] Generally, if you have the time and resources to build your own embeddings, you will &lt;em&gt;always&lt;/em&gt; be better off with embeddings from the most representative documents for your target domain.
+This is particularly true for capturing the right embeddings of named entities and idioms that are highly specific for your specific domain, while the semantics of collocations go well beyond that of single words.&lt;/p&gt;
 &lt;p&gt;If you are more of a fan of the FastText model, language-specific 300 dimensional word embeddings for a great many languages were &lt;a href="https://github.com/facebookresearch/fastText/blob/master/pretrained-vectors.md"&gt;made available by Facebook's research department&lt;/a&gt; recently.&lt;/p&gt;
-&lt;p&gt;For now, we'll just stick to the smallest possible set (in the hopes that your local laptops can cope with the data): please download &lt;code&gt;glove.6B.zip&lt;/code&gt;, word embeddings created from WikiPedia, and will just use the 50 dimensional embeddings (again, in the hopes that this works on your laptop; if you have a GPU, use 100 dimensional set for a [little] performance gain - while the 300d set contributes no gains over 100d). Note the download is almost 1GB ("As homework" you can experiment with larger GloVe collections [42B, 840B] to see if that helps improve the final performance.)&lt;/p&gt;
+&lt;p&gt;For now, we'll just stick to the smallest possible/simplest set (in the hopes that our laptops can cope with the data): &lt;code&gt;glove.6B.zip&lt;/code&gt; - word embeddings created from WikiPedia. And, we will only use the 50 dimensional embeddings (again, in the hopes that this works on your local laptop; if you have a GPU, use 100 dimensional set for a [little] performance gain - while the 300d set contributes no gains over 100d). Note the download is almost 1GB ("As homework" you can experiment with larger GloVe collections [42B, 840B] to see if that helps improve the final performance.)&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1110,7 +1109,7 @@ Found 400000 word vectors with dim=100.
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;You should have loaded 400,000 word vectors.&lt;/p&gt;
+&lt;p&gt;I.e., we now have loaded 400,000 word vector representations.&lt;/p&gt;
 &lt;h2 id="Corpus-setup"&gt;Corpus setup&lt;a class="anchor-link" href="#Corpus-setup"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Here, &lt;strong&gt;we shall differ from the blog post&lt;/strong&gt; in a positive sense:
 We will keep using the headers, which contain the subject, and can often give us critcal hints.&lt;/p&gt;
 &lt;/div&gt;
@@ -1202,7 +1201,7 @@ LABEL: soc.religion.christian = 15
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;However, the GloVe word vectors don't come with "apostrophe forms" and instead expand those contractions to full words; Here, we will do the same (thereby differing from the blog post).&lt;/p&gt;
+&lt;p&gt;However, the GloVe word vectors don't come with "apostrophe forms" and instead expand those contractions to full words; Here, we will do the same (removing them, thereby once more differing from the orignal Keras blog post).&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1279,7 +1278,7 @@ LABEL: soc.religion.christian = 15
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Limit extraction to the words found in the &lt;strong&gt;training set&lt;/strong&gt; (only [1]!), selecting the &lt;code&gt;NUM_UNIQ_WORDS&lt;/code&gt; most frequent tokens as feature &lt;em&gt;candidates&lt;/em&gt; (see padding below) only; It turns out we can live with less than the blog post uses and still get nearly the "same" results, and that we should remove the single quote apostrophe character (&lt;code&gt;'&lt;/code&gt;):&lt;/p&gt;
+&lt;p&gt;Limit extraction to the words found in the &lt;strong&gt;training set&lt;/strong&gt; (only [2]!), selecting the &lt;code&gt;NUM_UNIQ_WORDS&lt;/code&gt; most frequent tokens as feature &lt;em&gt;candidates&lt;/em&gt; (see padding below) only; It turns out, we can live with less than what the blog post uses and still get nearly the "same" results, and, as already descibed, we will remove the single quote apostrophe character (&lt;code&gt;'&lt;/code&gt;):&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1305,14 +1304,13 @@ LABEL: soc.religion.christian = 15
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;[1] About that above remark regarding "only", and the next step:
+&lt;p&gt;[2] About that above remark regarding "only", and the next step:
 The original tutorial makes a rather typical mistake - it fits the word extraction on the test data, too.
 Therefore, the blog post's preprocessing takes its own test data into account.&lt;/p&gt;
-&lt;p&gt;But the test data is only there to &lt;em&gt;apply&lt;/em&gt; and &lt;em&gt;evaluate&lt;/em&gt; your model, not to evaluate it.
+&lt;p&gt;The test data is only there to &lt;em&gt;apply&lt;/em&gt; and &lt;em&gt;evaluate&lt;/em&gt; your model, not to develop it:
 "In real life", you don't actually get a chance to tune your setup against the test data.
 Therefore, such errors lead to overley optimistic evaluation results of classifiers and machine learning models (and possibly "irreproducible results" for your fellow researchers).
-As a sad word of warning, a far too big proportion of peer-reviewed research contains such trivial, but mission-critical errors, and for "papers" on arXiv and similar sites, the only right assumption is that the evaluation results presented are probably wrong, unless you can prove yourself otherwise.
-In this particular case, the mistake in the post is isn't too dramatic, but it does have a noticable impact (some percentage points performance loss).&lt;/p&gt;
+As a sad word of warning, a far too big proportion of peer-reviewed research contains such trivial, but mission-critical errors, and for "papers" on arXiv and similar sites, the only right assumption is that the evaluation results presented are probably wrong, unless you can prove (yourself) otherwise.&lt;/p&gt;
 &lt;p&gt;In any case, you should &lt;strong&gt;never "fit" or "tune"&lt;/strong&gt; anything in your (preprocessing or not) pipeline &lt;strong&gt;using test data&lt;/strong&gt;, as you are guaranteed to get an overly optimistic result (that will not hold against truly "unseen" data, because you now have &lt;em&gt;overfitted&lt;/em&gt; your model).
 At least if you are building a real-life, "production" classifier, this single advice will be probably the most imporant thing you need to keep in mind.&lt;/p&gt;
 &lt;/div&gt;
@@ -1410,7 +1408,7 @@ Shape of test label tensor: (7532, 20)
 &lt;p&gt;We have 11,311 training examples/documents for training, characterized as a 1000-dimensional word &lt;em&gt;count&lt;/em&gt; vecotor, and a 20-dimensional label vector (20 Newsgroups...) for each example/document.
 And we have 7532 test examples/documents for evaluating our approach.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Note that here, too, we significantly deviate from the blog post.&lt;/strong&gt; Instead of using the official ~3:~2 split (for each 3 training articles, you leave aside 2 test articles, roughly) on the 20 Newsgroups corpus, the post uses an easier 4:1 random split.
-Between the preprocessing issues and the non-standard split, these two issues alone explain why the blog post achieves such hair-raisingly good results with such a simple architecture, with way higher performance scores than anything previously seen in the research literature.&lt;/p&gt;
+Between the preprocessing issues and the non-standard split, these two issues alone explain why the blog post achieves such a surprisingly good results with such a simple architecture, with way higher performance scores than anything previously seen in the research literature.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1742,8 +1740,8 @@ _________________________________________________________________
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h2 id="Model-training"&gt;Model training&lt;a class="anchor-link" href="#Model-training"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Now, we train... Note that we here actually commit another crime: We evaluate the model on the test data! Instead, if done properly, you should be evaluating on a subset of the &lt;em&gt;training&lt;/em&gt; data, and only once your entire model is build, evaluate it on the official test data.
-But that would leave our model with even less training data to work with...&lt;/p&gt;
-&lt;p&gt;At the end of the day, we can probably assume that no researcher gets stuff published without that "cheat" [1], we will just do the same: Evaluate training progress directly against (aka. "by overfitting the model on") the test data.&lt;/p&gt;
+But that would leave our model with even less training data to work with...
+At the end of the day, we can probably assume that no researcher gets stuff published without that "cheat" [1], we will just do the same: Evaluate training progress directly against (aka. "by overfitting the model on") the test data.&lt;/p&gt;
 &lt;p&gt;[1] And that explains why community evaluations exist: To tell you the "real truth"! Because only then nobody gets access to the test data before the final evaluation. That is, community evaluations are like (IMO: far) more serious versions of the now popular Kaggle tasks.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;WARNING&lt;/strong&gt;: This step can take &lt;em&gt;a &lt;strong&gt;very long&lt;/strong&gt; time&lt;/em&gt; unless you have a (or more...) GPU[s] (just see how long you wait for the next Epoch and multiply by n. epochs to estimate the overall runtime). Using 100 (or 300) dimensional embeddings and training them makes the epochs take much longer.&lt;/p&gt;
 &lt;/div&gt;
@@ -1828,10 +1826,10 @@ Wall time: 1h 43s
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Geat! So we've built a neural network that learns to classify documents.
-Yet, as we can see, it takes &lt;em&gt;ages&lt;/em&gt; to train (and even with a GPU: a lot more time) compared to all former models. Worse, it does not achieve the accuracy of the best models from day 1, either. The above model can be made to achieve around 80% max. accuracy if you can use 300- or 100-dimensional word-embeddings and train the model long enough (15-20 epochs). With 50d embeddings and no embedding layer training, you need to run for about 20-30 epochs to converge on around 67% accuracy. So these results are a long shot from the 90% SOTA accuracy that is possible on this dataset and even the 85% we can achieve with &lt;a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"&gt;a very ad-hoc "blitz-classification-experiment" with SciKit-Learn itself&lt;/a&gt;.&lt;/p&gt;
+Yet, as we can see, it takes &lt;em&gt;ages&lt;/em&gt; to train (and even with a GPU: a lot more time) compared to all former models. Worse, it does not achieve the accuracy of the best &lt;a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"&gt;off-the shelf models from SciKit-Learn&lt;/a&gt;. The above model can be made to achieve around 80% max. accuracy if you can use 300- or 100-dimensional word-embeddings and train the model long enough (15-20 epochs). With 50d embeddings and no embedding layer training, you need to run for about 20-30 epochs to converge on around 67% accuracy. So these results are a long shot from the 90% SOTA accuracy that is possible on this dataset and even the 85% we can achieve with the very ad-hoc "blitz-classification-experiment" from SciKit-Learn's own tutorial.&lt;/p&gt;
 &lt;h2 id="Conclusion"&gt;Conclusion&lt;a class="anchor-link" href="#Conclusion"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Overall, I wrote this "tutorial" mostly to demonstrate that you should probably focus on simple things first, before you dive head-first into Deep Learning:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Learn your own embeddings (ideally from a text collection matching your target domain), and make sure to add those mission-critical collocations that Mikolov points out in his famous word2vec NIPS paper (all of which is trivial when working with Gensim).&lt;/li&gt;
+&lt;li&gt;Learn your own embeddings (ideally from a text collection matching your target domain), and make sure to add those mission-critical collocations that Mikolov points out in his famous &lt;a href="http://papers.nips.cc/paper/5021-distributed-representations-of-words-andphrases"&gt;word2vec NIPS paper&lt;/a&gt; (pro-tip: all of which is trivial when working with &lt;a href="https://radimrehurek.com/gensim/index.html"&gt;Gensim&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;It is cool that we now can replace old-school TF-IDF vectors with modern-day neural word embeddings; But do use them in an "old school" ML model first, because its simple and fast; If for nothing else than to make sure you need or even can expect more performance from a Deep Learning classifier at an &lt;em&gt;econmically viable&lt;/em&gt; expense.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;And so, the challenge remains: How to actually beat the state-of-the-art in text classification with Deep Learning?
@@ -1840,7 +1838,7 @@ Very &lt;a href="https://link.springer.com/chapter/10.1007/978-3-662-44851-9_28"
 (Which is not to say that stuff like VAEs are very cool though - and probalby would unfold their "full beauty" if you had a much larger dataset - see next.)
 And probably by using LSTMs, GRU-RNNs, and (IMO: in particular) CharCNNs, to train sequence models might get you even beyond the state-of-the-art - if you have the resources and the data to even think of that, and an extensive amount of time to develop your specialized classifier/system.
 (And the resources to run the inference on that mega-model in production, too, by the way...)&lt;/p&gt;
-&lt;p&gt;That is to say, yes, Deep Learning can claim it beats standard ML methods on this task (text classification), but the effort to do so is highly disproptionate if compared to "traditional" ML methods: You need very large datasets, designing the model is incredibly complex and time consuming, and training and using them is several orders of magnitude more costly.&lt;/p&gt;
+&lt;p&gt;That is to say, yes, Deep Learning can claim it beats standard ML methods on this task (text classification), but the effort to do so is highly disproptionate if compared to "traditional" ML methods: You need very large datasets, designing the model is incredibly complex and time consuming, and training and using the setup is several orders of magnitude more costly.&lt;/p&gt;
 &lt;h2 id="Take-home-message"&gt;Take-home message&lt;a class="anchor-link" href="#Take-home-message"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In my opinion, the Deep Learning literature is &lt;em&gt;littered&lt;/em&gt; with evaluation results that claim to beat all former state-of-the-art, but indeed are quite frequently not much better (or ex-aequo, and often even worse). However, computer vision, machine translation, and dependency parsing being the now famous cases where Deep Learning indeed has "pushed the envelope" by a substantial margin &lt;em&gt;on the &lt;strong&gt;same&lt;/strong&gt;, &lt;strong&gt;public&lt;/strong&gt; (and often, small) community datasets&lt;/em&gt; for evaluating the approach and comparing it to existing methods. And nearly no paper at all discusses how much more resources go into setting up, developing, training, and using Deep Learning models as opposed to traditional Machine Learning.&lt;/p&gt;
 &lt;p&gt;That being said, many other applications (apart from CV, MT, and DP) can profit from Deep Learning for the following reason:
 &lt;em&gt;Iff&lt;/em&gt; you have much more training data (thousands, or even millions of examples per label), then, because Deep Learning can easily be scaled to work on such gigantic datasets, it indeed beats other methods (Support Vector Machines, Random Forrests, Nearest Neighbours, Gradient Boosting, etc.).&lt;/p&gt;
