@@ -2012,7 +2012,52 @@ gigs of data to my 50 GB DropBox, and I hardly notice it happening!&lt;/p&gt;
 &lt;p&gt;Oh, if you get yourself an account for DropBox, either the free 2 GB or
 a full Pro account, I would appreciate if you register via &lt;a class="reference external" href="https://www.getdropbox.com/referrals/NTE0NTA0OTk"&gt;this link&lt;/a&gt;,
 as it creates me some 500 MB extra space for referring you :o).&lt;/p&gt;
-</content><category term="apple"></category><category term="cloud storage"></category></entry><entry><title>News, Swines &amp; Pigs</title><link href="http://fnl.es/news-swines-pigs.html" rel="alternate"></link><published>2009-04-30T00:00:00+02:00</published><updated>2009-04-30T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-04-30:/news-swines-pigs.html</id><summary type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
+</content><category term="apple"></category><category term="cloud storage"></category></entry><entry><title>My first visit to a volcano</title><link href="http://fnl.es/my-first-visit-to-a-volcano.html" rel="alternate"></link><published>2009-05-01T00:00:00+02:00</published><updated>2009-05-01T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-05-01:/my-first-visit-to-a-volcano.html</id><summary type="html">&lt;p&gt;Actually, I already considered myself very lucky this year for visiting
+the jungle in the Amazons. I would have not thought I could repeat such
+an experience that soon again, but was proven wrong shortly after. A few
+weeks ago, my girlfriend spent some weeks in Spain and we used …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Actually, I already considered myself very lucky this year for visiting
+the jungle in the Amazons. I would have not thought I could repeat such
+an experience that soon again, but was proven wrong shortly after. A few
+weeks ago, my girlfriend spent some weeks in Spain and we used the last
+long weekend we had together to go to Tenerife, Canary islands. There I
+had the pleasure to visit yet another really strange and amazing place
+in our world: a volcano! My girlfriend, who grew up in Mexico, thought
+it was quite funny I had not seen a volcano before... Well, she has not
+been on a glacier so far :-P. I can only recommend this place - if you
+do not know where to go for a short trip for a few days, you just have
+found it. We rented a very romantic small house on the north-eastern tip
+of the island, far away from all the tourist places. The owner renting
+it to us (Juan Ramón) is a very kind and friendly guy, and he even went
+into the trouble to send me my keys and a whole load of money I forgot
+in the house - without even taking a cent for the troubles, although I
+kept insisting! (Anybody knowing me don't laugh! Okay, I know, typically
+Flo...) The house itself is built into the cliffs, with a marvelous view
+over the sea and the beach below, and a great terrace. Mayte, my
+girlfriend, found it and I can only say this was a great choice. If you
+feel like renting it, follow this &lt;a class="reference external" href="http://www.casas-turismo-rural.com/alojamiento.phtml?alojamiento=2740"&gt;link&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We spent five days there, which is just enough time to visit the island
+in a hurry - time flew by like nothing. You have to ask permission to
+access the volcano in the capital city, Santa Cruz, which will then be
+granted to you for a following day at a certain hour. Naturally, we
+managed to be there too late the next day, but arrived again the day
+after and the friendly guys guarding the entrance let us up anyways. Oh,
+and pleeease dress appropriately: you can't imagine the scores of stupid
+(Russian) girls trying to walk a volcano in high heels and with almost
+nothing on - freezing to death at 3.700 m ASL and not able to walk in the
+rocky area... Well, at least this allowed us to be completely alone at the
+top of the crater! Another great feat of the park is, as it's at 2000+ m
+ASL, that even if it's cloudy down on the beach, it might be a gorgeous
+day in the park!&lt;/p&gt;
+&lt;p&gt;Finally, one last word of warning: do not take residence on the south
+side of the island except if you like artificial touristic sprawls: the
+whole area is one urban block of concrete and completely hideous. As far
+as I can tell, the north-east tip is best, maybe the (north-)western
+areas may have some nice hideaways from the touristic towns, too. As for
+the climate: just expect 20-25 ˚C in winter, 20-30 ˚C in summer - great!
+One final recommendation if you like driving on narrow, curvy mountain
+roads: rent a powerful car - I haven't had so much fun riding a car in a
+long time!&lt;/p&gt;
+</content><category term="mayte"></category><category term="spain"></category><category term="travel"></category></entry><entry><title>News, Swines &amp; Pigs</title><link href="http://fnl.es/news-swines-pigs.html" rel="alternate"></link><published>2009-04-30T00:00:00+02:00</published><updated>2009-04-30T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-04-30:/news-swines-pigs.html</id><summary type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
 even I have to accept a low level of &amp;quot;noise&amp;quot; if I want to know at least
 something about the most significant things going on. However, currently
 I get the overwhelming feeling that the whole news world is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
@@ -2303,10 +2348,192 @@ literals (&amp;quot;my_set = {1, 2}&amp;quot;),&lt;/li&gt;
 &lt;li&gt;and tons of streamlining the syntax and Standard Library.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</content><category term="unicode"></category><category term="python"></category></entry><entry><title>TextMate Python and Django cheat sheet</title><link href="http://fnl.es/textmate-python-and-django-cheat-sheet.html" rel="alternate"></link><published>2007-09-07T00:00:00+02:00</published><updated>2007-09-07T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2007-09-07:/textmate-python-and-django-cheat-sheet.html</id><summary type="html">&lt;p&gt;After not finding anything appropriate, I decided to do my own reference
+</content><category term="unicode"></category><category term="python"></category></entry><entry><title>Amazonas 101</title><link href="http://fnl.es/amazonas-101.html" rel="alternate"></link><published>2008-04-14T00:00:00+02:00</published><updated>2008-04-14T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2008-04-14:/amazonas-101.html</id><summary type="html">&lt;p&gt;Colombia is one of the most magnificent countries I have been so far.
+If you know a tiny bit of its history with all the bloody civil wars
+which have been almost continuously tormenting the country since the
+40s, it is more than astonishing to find that the people themselves …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Colombia is one of the most magnificent countries I have been so far.
+If you know a tiny bit of its history with all the bloody civil wars
+which have been almost continuously tormenting the country since the
+40s, it is more than astonishing to find that the people themselves are
+very open and friendly. The lush green on the countryside and the
+amazing beaches on the coasts, mixed with some really high mountain
+peaks allow for a variety you will not find in many other countries.
+Finally, as it is next to the equator, the climate is almost all year
+round the same: warm and mostly sunny (well, Bogotá is at 2,600 ASL, so
+bring a warm jacket for the capital...).&lt;/p&gt;
+&lt;p&gt;The current president, Uribe, is sending military forces everywhere in
+the country to protect the civilians and tourists from attacks from
+guerilla and paramilitary groups. Although you might not agree that this
+is the best solution to the problem, you have to admit that he so far is
+probably the most successful president in terms of restoring relative
+security - at the great price of sacrificing the peoples personal
+freedom, obviously; Colombia probably never has been as safe in the past
+few decades as it is now - and it has by far less hostage-takings per
+year as most uninformed people would make you believe (by now, something
+below 600 per year). In my travels, I never felt more unsafe than in any
+place in Europe - at least if you learn to ignore that at every second
+corner you see a small group of military personnel or police.&lt;/p&gt;
+&lt;p&gt;Both major cities I visited, Bogotá and Cartagena, are really nice
+cities - although the crazy traffic and taxi drivers in Bogotá can make
+you feel a little ill to you stomach... Especially Cartagena is really
+worth the visit, the old town being built in a style slightly similar to
+the houses in Extremadura (Spain) - and not without reason probably,
+as most Conquistadores came from this region of Spain. Yet, the bright
+colors and plenty of flowers and green give the town a very unique and
+lovely look. Last but not least, Cartagena is on the Caribbean coast and
+therefore you have plenty of wonderful beaches to choose to spend your
+day. On a general advice: usually, you take boats to get to those
+beaches, which leave from the town center. Insist, really, to be taken
+there by a tiny private boat (not more than 20 or so passengers) and do
+not take one of the big ships: it cuts your beach stay in half, you are
+dumped at a super-touristic aquarium nobody seemed interested in anyway,
+and spend the boat time with hundreds of Colombian families (including
+everything from grandmother to great-grand child). Not that it was my
+worst experience ever, but there are more fun ways to waste your time...&lt;/p&gt;
+&lt;p&gt;The major part of our travels - with my [now (*kiss*)] girlfriend
+Mayte and two of her friends from Portugal and Spain, Xana and Ivan - we
+spent in the Amazons. It is hard to describe the experience of visiting
+the jungle, but if you have been to a real desert, on top of high
+mountains or glaciers, or other really strange places, you know what I
+am talking about. The biodiversity is so amazing you will never be able
+to go back to a zoo or botanic garden without a knowing smile on your
+face. I have no idea how many different plants I saw - including the
+Victoria amazonica, the largest lotus in the world - but when one of our
+guides was telling us about which plant heals what while in the jungle,
+I got the impression of walking though a pharmacy... The animal life is
+just as amazing: alligators, snakes, birds in all varieties and kinds,
+spiders, sloths, insects of all sizes, piranhas (we even caught our own
+- but as far as I can tell, it took us more chicken meat to catch them
+than they yielded...), even dolphins (which get a pink tint when they
+hunt because of their circulation - a really unique view) - plus another
+few dozen or so I have missed to list here.&lt;/p&gt;
+&lt;p&gt;Moving around the jungle might seem tough and dangerous at first - and
+I make a bet it is, if you try to move cross-country straight through
+the jungle for days. We were not intending to do that - we were moving
+along the Amazonas river only - and always had at least a hut to sleep
+in, with beds and mosquito nets in the most &amp;quot;extreme&amp;quot; cases. Most of the
+time we spent in villages and towns (Leticia -&amp;gt; Puerto Nariño [a little
+jewel in the Colombian Amazons and a must visit] -&amp;gt; Leticia/Tabatinga -&amp;gt;
+and Manaus) in hotels, where you do not even need to use mosquito nets.
+The greatest danger is you doing something stupid on your own. The
+interested might want an advice on what to bring, so I'd suggest to
+pack:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;lots of insect repellent (we used Relec extra fuerte, about 1 bottle
+[100 mL each] per person and week),&lt;/li&gt;
+&lt;li&gt;a light rain protection (if it rains really heavy - which it does
+more or less every morning - just forget protection... this is more
+against the wind and on boats),&lt;/li&gt;
+&lt;li&gt;some long-sleeves and long pants (protection against sun and/or while
+hiking in the jungle),&lt;/li&gt;
+&lt;li&gt;decent (!) hiking shoes,&lt;/li&gt;
+&lt;li&gt;very strong sun protection (factor 40 or more - I used 60!),&lt;/li&gt;
+&lt;li&gt;a towel (no, this is no Hitchhikers Guide joke :-) - preferentially,
+one of those micro-towels to save space and weight),&lt;/li&gt;
+&lt;li&gt;a flashlight,&lt;/li&gt;
+&lt;li&gt;a small first aid kit with antibiotics against diarrhea, pills to
+dampen fever and Malaria effects (Ibuprofen 600, Malaron - just in
+case - I strongly advise against taking those Malaria pills on the
+trip as prevention if you do not go jungle-trekking for many days!
+The side effects are rather ugly, and actually the pills only reduce
+the effects of Malaria, they do not really help prevent it.),&lt;/li&gt;
+&lt;li&gt;Suero (salt &amp;amp; electrolytes) powder, and a lots of it! This protects you
+from dehydrating and diarrhea; My friends all laughed at me for
+drinking a liter of it a day (it tastes rather ugly), but I was the
+only of our group to not have to spend a day on the pot in the end...&lt;/li&gt;
+&lt;li&gt;a very light (I used silk) sleeping bag, and&lt;/li&gt;
+&lt;li&gt;something to pass time (books, card games, etc. - hey, it's Colombia,
+no need to be in a hurry).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On a final shout-out: many thanks to my amazing travel companions (aka
+&amp;quot;los pendejos/tottos&amp;quot;...) and some very special ones to the most
+gorgeous girl in the world that I am more than just happy to have become
+close with during this trip: You provided me with one of the most
+exciting trips I ever have made in my life!&lt;/p&gt;
+</content><category term="travel"></category></entry><entry><title>TextMate Python and Django cheat sheet</title><link href="http://fnl.es/textmate-python-and-django-cheat-sheet.html" rel="alternate"></link><published>2007-09-07T00:00:00+02:00</published><updated>2007-09-07T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2007-09-07:/textmate-python-and-django-cheat-sheet.html</id><summary type="html">&lt;p&gt;After not finding anything appropriate, I decided to do my own reference
 card (aka cheat sheet) for the pythonic and django commands you can use
 in TextMate. If you want to have it, download it from &lt;a class="reference external" href="http://www.scribd.com/doc/7759743/TextMate-PythonDjango-Cheat-Sheet"&gt;here&lt;/a&gt;.&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;After not finding anything appropriate, I decided to do my own reference
 card (aka cheat sheet) for the pythonic and django commands you can use
 in TextMate. If you want to have it, download it from &lt;a class="reference external" href="http://www.scribd.com/doc/7759743/TextMate-PythonDjango-Cheat-Sheet"&gt;here&lt;/a&gt;.&lt;/p&gt;
-</content><category term="python"></category><category term="django"></category></entry></feed>
+</content><category term="python"></category><category term="django"></category></entry><entry><title>Travelling around Spain</title><link href="http://fnl.es/travelling-around-spain.html" rel="alternate"></link><published>2007-08-19T00:00:00+02:00</published><updated>2007-08-19T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2007-08-19:/travelling-around-spain.html</id><summary type="html">&lt;p&gt;In the last few weeks I had been to Cadiz and Almeria, both in
+the south of Spain. Well, actually I was in none of those cities, but in
+places close by.&lt;/p&gt;
+&lt;p&gt;The first trip was down to Cadiz, about 30 km south
+of the city some of our friends …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In the last few weeks I had been to Cadiz and Almeria, both in
+the south of Spain. Well, actually I was in none of those cities, but in
+places close by.&lt;/p&gt;
+&lt;p&gt;The first trip was down to Cadiz, about 30 km south
+of the city some of our friends were renting a flat in &lt;a class="reference external" href="http://maps.google.es/maps?f=q&amp;amp;hl=en&amp;amp;geocode=&amp;amp;q=Conil,+Spain&amp;amp;amp;ie=UTF8&amp;amp;z=11&amp;amp;om=1"&gt;Conil&lt;/a&gt;, a
+village nearby. South of Cadiz you basically find the probably most
+beautiful beaches of Spain, at least that was my impression and what my
+Spanish friends told me (and, on a side note, the most incredible amount
+of beautiful girls, too...). The only downside is that it can be kind of
+windy, but if you know it, just bring some very stable wind protection,
+and you should be fine. Actually, the one day it was windy, I was quite
+happy, because with the burning sun having a swim and then cooling in
+the breeze is a real relief. We also visited Tarifa, one of the main
+wind- and kite surfing sites of Europe. You never saw a village so small
+just full of surf shops - if you ask me, more dense than the skiing
+shops in the tourist-trap villages in Tirol. Also we spent some time in
+Los Caños de Meca, right between Conil and Tarifa, which is a real hippy
+town and has a cool bar which is made up a bit like a ship deck and is
+above a cliff looking out over the Atlantic. Great place to have some
+&amp;quot;copas&amp;quot; (drinks)! On our way back to Madrid we took the time to stop in
+Cordoba, which might be, together with Sevilla, the hottest (in
+temperature, man!) town of Spain. In the center you can visit an
+enormous (like in really enormous) mosque, as Cordoba and Granade where
+interchangeably the capitals of the Arabian empire during the medieval
+ages. Now it houses several (!!!) churches inside and it is really worth
+paying the 8 Euros entry. My GF was slightly angry about my cultural
+blasphemy, as the first thing that came to my mind upon entering was
+&amp;quot;and where is Indiana Jones?&amp;quot;...&lt;/p&gt;
+&lt;p&gt;The second trip to Almeria in the southeast corner of Spain was
+actually for a festival, the &lt;a class="reference external" href="http://www.creamfields-andalucia.com/"&gt;Creamfields&lt;/a&gt; in Spain. This festival is
+exclusively for electronic music, and the lineup were bands and DJs like
+Basement Jaxx, The Prodigy, or John Digweed. It's a 14 h festival
+&amp;quot;only&amp;quot;, starting at 6 pm and lasting until about 8 am the next morning.
+But believe me, that was by far enough for me, and it took me several
+days to recover... The greatest thing about this location is that you
+have the After Hour right smack on the beach, hanging out in the sun and
+taking an occasional bath to cool down. Although it was great, I am not
+sure to recommend it again: This year they had 50k visitors, and the
+only access is a single little road, which meant we were jamming 2 1/2 h
+in the car just to get in, and then another 1/2 h walk from the parking
+place to the actual festival. Considering that they have more attendees
+every year, I don't want to know how bad it will be next year. So if you
+feel like going, I might recommend you come a day earlier and put up
+tent there on the beach (actually, better in the wood at the side of the
+beach - if you can't imagine why, just do as I recommend...).&lt;/p&gt;
+&lt;p&gt;So, all in all, two really gorgeous trips around Spain, and I am
+looking forward to some more in the days to come this year. The only
+thing I could slap my ass for is that I on both occasions forgot to
+bring my camera...&lt;/p&gt;
+</content><category term="spain"></category><category term="travel"></category><category term="music"></category></entry><entry><title>Skiing in Spain</title><link href="http://fnl.es/skiing-in-spain.html" rel="alternate"></link><published>2007-03-27T00:00:00+02:00</published><updated>2007-03-27T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2007-03-27:/skiing-in-spain.html</id><summary type="html">&lt;p&gt;When I decided to move to Spain, I would never have thought of
+skiing here. There are the Pyrenees, where you could expect some areas,
+but I was not expecting anything anywhere else. Meanwhile, I have been
+skiing in Asturias (north, center) and Sierra Nevada (south, with a view
+of …&lt;/p&gt;</summary><content type="html">&lt;p&gt;When I decided to move to Spain, I would never have thought of
+skiing here. There are the Pyrenees, where you could expect some areas,
+but I was not expecting anything anywhere else. Meanwhile, I have been
+skiing in Asturias (north, center) and Sierra Nevada (south, with a view
+of Africa!)... Especially the latter was quite convincing: a large skiing
+area with a lot of people who can actually ski (for Tyrolean standards
+quite hard to achieve!). Just thought it would be kind of crazy to be
+skiing end of March in Spain, while having a glimpse at Africa and
+enjoying almost 20 ˚C in the &amp;quot;valley&amp;quot; (that is, Granada).&lt;/p&gt;
+&lt;p&gt;While I am at it: Granada is quite a beautiful town, and naturally there
+is the Alhambra to visit (but I did not enter: you have to reserve at
+least 2 months ahead if you want to get in...). There are more foreigners
+here than in Madrid, naturally, and it seems to have slightly less extreme
+temperatures than the capital. Nice place to live, I guess: 1 hour for
+skiing, 1 hour to the beach!&lt;/p&gt;
+&lt;p&gt;In summary, there are 3 decent areas for skiing in Spain: the Pyrenees,
+Asturias and Granada/Sierra Nevada. I have not seen the first, but
+everybody tells me it is the best place (Update: I've been there, in
+Formigal - yes, it is nice there). Anyway, I'd say Granada is
+definitely the fanciest and worth a visit, too. And then you can ski on
+about any other mountain range here, too (e.g., Gredos, Guadarrama, etc.),
+but for my taste, the slopes there are not quite as steep and long as I'd
+like them.&lt;/p&gt;
+</content><category term="spain"></category><category term="skiing"></category></entry></feed>
