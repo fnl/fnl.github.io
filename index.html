@@ -26,7 +26,1904 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html">A quick reference for working with TensorFlow</a></h1>
+                    <h1 class="entry-title"><a href="http://fnl.es/a-sober-perspective-on-deep-learning.html">A sober perspective on Deep Learning</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-02-17T00:00:00+01:00">
+                Published: Sat 17 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
+        </address>
+<p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
+<p>tags: <a href="http://fnl.es/tag/keras.html">keras</a> <a href="http://fnl.es/tag/scikit-learn.html">scikit-learn</a> <a href="http://fnl.es/tag/deep-learning.html">deep learning</a> </p>
+</footer><!-- /.post-info --><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a short tutorial to compare the outcome of applying Deep Learning techniques to a text classification problem, using word embeddings and a convolutional neural network (CNN), via Keras (with Theano, for simplicity - but any Keras backend will do), GloVe embeddings, and a SciKit-Learn dataset. The original tutorial is taken from very useful <a href="https://blog.keras.io/index.html">blog</a> about "doing" Deep Learning with Keras (in Python) and you might find different details in the <a href="https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html">original tutorial post</a> that I will highlight. Our goal will be to beat the state-of-the-art (SOTA) with Deep Learning (spoiler alert: we will not beat it), to better understand the limits and considerations you need to take into acoount with this machine learning technique.</p>
+<p>We will work with a CNN to try and beat <a href="http://clair.si.umich.edu/%7Eradev/papers/tc.pdf">the best <em>published</em> results</a> from models <em>other</em> than neural networks on the 20 Newsgroup dataset (and will discuss Reuters-21578 a bit, too).
+If you like, particularly the 20 Newsgroups corpus is the equivalent of "MINST" for computer vision, but for text mining.
+However, one caveat applies: The datasets are relatively small for what Deep Learning "needs" (and this has a huge impact on the final results), and for the Reuters dataset, most of the categories indeed are far too small to apply any serious Deep Learning techniques.
+Therefore, we will only look into the 20 Newsgroups dataset here.</p>
+<p>For those two corpora, the best (non-neural) baselines achieve around 90% accuracy on the 20 Newsgroups  coprus, using the official (roughly 3:2) split (see below!). Even the <a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py">off-the-shelf SciKit-Learn setup</a> achieves around 85% accuracy on this set (using a Linear SVM).
+For Reuters-21578, the state-of-the-art ("ante Deep Learning") was 94% micro-averaged $F_1$ Score using the official ModApte split, but only selecting documents among the ten most frequent categories (200 or more documents), and a micro-averaged 89% $F_1$ Score is using all 90 categories.
+And, obviously, it is important that the evaluation follows a single multilabel classification setting, not 10 or 90 individual binary classification problems... Most deep lerning literature only focuses on the simpler 10-categories subset of Reuter-21578, and/or treat is as 10 distinct binary classification problems, because otherwise there are too few examples to work with. Yet the "true" SOTA baseline you should keep in mind for that set when reading a paper oon Deep Learning using it, is the 94% micro-averaged $F_1$ score on the mulit-label task with the top 10 categories; Anything else is just "cheating yourself".</p>
+<h2 id="Installation-and-setup">Installation and setup<a class="anchor-link" href="#Installation-and-setup">¶</a></h2><p>We will be using <a href="https://keras.io/">Keras</a> "on Theano" (or CNTK or TensorFlow, as you prefer [1]) to understand how to build a simple classifier with a neural network - that short-handedly beats all results you've seen so far.</p>
+<p>[1] Theano is probably well suited for teaching/learning networks, while Microsoft's CNTK is probably best suited for langauge modeling (of those three choices!) and Google's TensorFlow is certainly the best all-rounder and probably the most popular. If you already have something else than Theano (the default, AFAIK) set up with Keras, go with that.</p>
+<p><a href="https://keras.io/#installation">Installing Keras</a> is simple:</p>
+<div class="highlight"><pre><span></span>conda install keras
+<span class="c1"># or:</span>
+pip3 install keras
+</pre></div>
+<p>Similarly, <a href="http://deeplearning.net/software/theano/install.html#install">installing Theano</a> is easy, too, although getting it to work with your Nvidia GPU - assuming you have one in your laptop in the first place - might be more fidegty (see Theano's instructions about <code>libgpuarray</code> if you are not using <code>conda</code>, which does that for you via <code>pygpu</code>) - but still a lot simpler than with most other neural network libraries (if they are not supported by <code>conda</code>...)</p>
+<div class="highlight"><pre><span></span>conda install theano <span class="c1"># no Nvidia GPU</span>
+conda install theano pygpu <span class="c1"># with Nvidia GPU support</span>
+<span class="c1"># or:</span>
+pip install Theano<span class="o">[</span>doc<span class="o">]</span>
+</pre></div>
+<p>Note that your instructor has a laptop without an Nvidia GPU, and this tutorial has been "calibarated" so that it can be run without one.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">keras</span>
+<span class="c1"># only to ensure its installed:</span>
+<span class="kn">import</span> <span class="nn">theano</span> <span class="c1"># or your favorite choice</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Using Theano backend.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Word-embeddings">Word embeddings<a class="anchor-link" href="#Word-embeddings">¶</a></h2><p>Instead of properly building your own word embeddings, we will take a "shortcut" and use a precomputed set of (single) word embeddings, <a href="https://nlp.stanford.edu/projects/glove/">GloVe</a>, which is <a href="https://nlp.stanford.edu/data/">hosted and distributed by Stanford</a>.
+(Yes, so our results will be sub-SOTA-par, but this is a tutorial, not an attempt to beat the SOTA in a peer reviewed journal...)
+We'll "pretend" that we are just trying to get a quick prototype running to see if our idea (multi-label classification of documents with convolutional networks) works.
+Once we've ensured it does, we can "scale" it to larger and/or more specific embeddings [1] and deeper networks (we'll use just a 1D conv net here).</p>
+<p>[1] Generally, if you have the time and resources to build your own embeddings, you will always be better off with that avenue.
+As discussed before, is particularly true for capturing named entities and idioms that are highly specific for your specific domain and where the meaning of the collocations go beyond that of the single words.</p>
+<p>If you are more of a fan of the FastText model, language-specific 300 dimensional word embeddings for a great many languages were <a href="https://github.com/facebookresearch/fastText/blob/master/pretrained-vectors.md">made available by Facebook's research department</a> recently.</p>
+<p>For now, we'll just stick to the smallest possible set (in the hopes that your local laptops can cope with the data): please download <code>glove.6B.zip</code>, word embeddings created from WikiPedia, and will just use the 50 dimensional embeddings (again, in the hopes that this works on your laptop; if you have a GPU, use 100 dimensional set for a [little] performance gain - while the 300d set contributes no gains over 100d). Note the download is almost 1GB ("As homework" you can experiment with larger GloVe collections [42B, 840B] to see if that helps improve the final performance.)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="ch">#!wget http://nlp.stanford.edu/data/glove.6B.zip</span>
+<span class="c1">#!unzip glove.6B.zip</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">EMBEDDING_DIM</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># use 100 on a GPU, or to get max. performance</span>
+<span class="n">WORD_VECTOR_FILE</span> <span class="o">=</span> <span class="s1">'glove.6B.</span><span class="si">%d</span><span class="s1">d.txt'</span> <span class="o">%</span> <span class="n">EMBEDDING_DIM</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline --no-import-all
+<span class="n">embeddings_index</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">WORD_VECTOR_FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'float32'</span><span class="p">)</span>
+        <span class="n">embeddings_index</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">coefs</span>
+        
+    <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Found </span><span class="si">%s</span><span class="s1"> word vectors with dim=</span><span class="si">%s</span><span class="s1">.'</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">embeddings_index</span><span class="p">),</span>
+    <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">embeddings_index</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Populating the interactive namespace from numpy and matplotlib
+Found 400000 word vectors with dim=100.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You should have loaded 400,000 word vectors.</p>
+<h2 id="Corpus-setup">Corpus setup<a class="anchor-link" href="#Corpus-setup">¶</a></h2><p>Here, <strong>we shall differ from the blog post</strong> in a positive sense:
+We will keep using the headers, which contain the subject, and can often give us critcal hints.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">fetch_20newsgroups</span>
+
+<span class="n">train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">()</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">'test'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"------------ TRAIN ------------"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">LABEL:"</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+      <span class="s2">"="</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">------------ TEST ------------"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">LABEL:"</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">test</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+      <span class="s2">"="</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>------------ TRAIN ------------
+From: lerxst@wam.umd.edu (where's my thing)
+Subject: WHAT car is this!?
+Nntp-Posting-Host: rac3.wam.umd.edu
+Organization: University of Maryland, College Park
+Lines: 15
+
+ I was wondering if anyone out there could enlighten me on this car I saw
+the other day. It was a 2-door sports car, looked to be from the late 60s/
+early 70s. It was called a Bricklin. The doors were really small. In addition,
+the front bumper was separate from the rest of the body. This is 
+all I know. If anyone can tellme a model name, engine specs, years
+of production, where this car is made, history, or whatever info you
+have on this funky looking car, please e-mail.
+
+Thanks,
+- IL
+   ---- brought to you by your neighborhood Lerxst ----
+
+LABEL: rec.autos = 7
+
+
+------------ TEST ------------
+From: adamsj@gtewd.mtv.gtegsc.com
+Subject: Re: Homosexuality issues in Christianity
+Reply-To: adamsj@gtewd.mtv.gtegsc.com
+Organization: GTE Govt. Systems, Electronics Def. Div.
+Lines: 18
+
+In article <may.13.02.29.39.1993.1505@geneva.rutgers.edu>, revdak@netcom.com (D. Andrew Kille) writes:
+> Of course the whole issue is one of discernment.  It may be that Satan
+> is trying to convince us that we know more than God.  Or it may be that
+> God is trying (as God did with Peter) to teach us something we don't
+> know- that "God shows no partiality, but in every nation anyone who fears
+> him and does what is right is acceptable to him." (Acts 10:34-35).
+> 
+> revdak@netcom.com
+
+Fine, but one of the points of this entire discussion is that "we"
+(conservative, reformed christians - this could start an argument...
+But isn't this idea that homosexuality is ok fairly "new" [this
+century] ? Is there any support for this being a viable viewpoint
+before this century? I don't know.) don't believe that homosexuality
+is "acceptable to Him". So your scripture quotation doesn't work for
+"us".
+
+-jeff adams-
+
+LABEL: soc.religion.christian = 15
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, the GloVe word vectors don't come with "apostrophe forms" and instead expand those contractions to full words; Here, we will do the same (thereby differing from the blog post).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">lexicon</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bdon't\b"</span><span class="p">),</span> <span class="s2">"do not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bit's\b"</span><span class="p">),</span> <span class="s2">"it is"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bi'm\b"</span><span class="p">),</span> <span class="s2">"i am"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bi've\b"</span><span class="p">),</span> <span class="s2">"i have"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bcan't\b"</span><span class="p">),</span> <span class="s2">"cannot"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bdoesn't\b"</span><span class="p">),</span> <span class="s2">"does not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bthat's\b"</span><span class="p">),</span> <span class="s2">"that is"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bdidn't\b"</span><span class="p">),</span> <span class="s2">"did not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bi'd\b"</span><span class="p">),</span> <span class="s2">"i would"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\byou're\b"</span><span class="p">),</span> <span class="s2">"you are"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bisn't\b"</span><span class="p">),</span> <span class="s2">"is not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bi'll\b"</span><span class="p">),</span> <span class="s2">"i will"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bthere's\b"</span><span class="p">),</span> <span class="s2">"there is"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwon't\b"</span><span class="p">),</span> <span class="s2">"will not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwoudn't\b"</span><span class="p">),</span> <span class="s2">"would not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bhe's\b"</span><span class="p">),</span> <span class="s2">"he is"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bthey're\b"</span><span class="p">),</span> <span class="s2">"they are"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwe're\b"</span><span class="p">),</span> <span class="s2">"we are"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\blet's\b"</span><span class="p">),</span> <span class="s2">"let us"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bhaven't\b"</span><span class="p">),</span> <span class="s2">"have not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwhat's\b"</span><span class="p">),</span> <span class="s2">"what is"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\baren't\b"</span><span class="p">),</span> <span class="s2">"are not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwasn't\b"</span><span class="p">),</span> <span class="s2">"was not"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bwouldn't\b"</span><span class="p">),</span> <span class="s2">"would not"</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fix_apostrophes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span> <span class="ow">in</span> <span class="n">lexicon</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="n">text_train</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">fix_apostrophes</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="n">text_test</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">fix_apostrophes</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data-preparation">Data preparation<a class="anchor-link" href="#Data-preparation">¶</a></h2><p>Keras comes with its own <a href="https://keras.io/preprocessing/text/">test preprocessing facilities</a> (very much like <a href="https://radimrehurek.com/gensim/index.html">Gensim</a>'s, by the way, but not quite as powerful).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="k">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.sequence</span> <span class="k">import</span> <span class="n">pad_sequences</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Limit extraction to the words found in the <strong>training set</strong> (only [1]!), selecting the <code>NUM_UNIQ_WORDS</code> most frequent tokens as feature <em>candidates</em> (see padding below) only; It turns out we can live with less than the blog post uses and still get nearly the "same" results, and that we should remove the single quote apostrophe character (<code>'</code>):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NUM_UNIQ_WORDS</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span>
+    <span class="n">num_words</span><span class="o">=</span><span class="n">NUM_UNIQ_WORDS</span><span class="p">,</span>
+    <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># use True if you don't fix_apostrophes</span>
+    <span class="c1"># Keras' default filters don't remove the single quote</span>
+    <span class="c1"># apostrophe (') - filter it, as GloVe doesn't know it </span>
+    <span class="n">filters</span><span class="o">=</span><span class="s1">'!"</span><span class="se">\'</span><span class="s1">#$%&()*+,-./:;<=>?@[</span><span class="se">\\</span><span class="s1">]^_`{|}~</span><span class="se">\t\n</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>[1] About that above remark regarding "only", and the next step:
+The original tutorial makes a rather typical mistake - it fits the word extraction on the test data, too.
+Therefore, the blog post's preprocessing takes its own test data into account.</p>
+<p>But the test data is only there to <em>apply</em> and <em>evaluate</em> your model, not to evaluate it.
+"In real life", you don't actually get a chance to tune your setup against the test data.
+Therefore, such errors lead to overley optimistic evaluation results of classifiers and machine learning models (and possibly "irreproducible results" for your fellow researchers).
+As a sad word of warning, a far too big proportion of peer-reviewed research contains such trivial, but mission-critical errors, and for "papers" on arXiv and similar sites, the only right assumption is that the evaluation results presented are probably wrong, unless you can prove yourself otherwise.
+In this particular case, the mistake in the post is isn't too dramatic, but it does have a noticable impact (some percentage points performance loss).</p>
+<p>In any case, you should <strong>never "fit" or "tune"</strong> anything in your (preprocessing or not) pipeline <strong>using test data</strong>, as you are guaranteed to get an overly optimistic result (that will not hold against truly "unseen" data, because you now have <em>overfitted</em> your model).
+At least if you are building a real-life, "production" classifier, this single advice will be probably the most imporant thing you need to keep in mind.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># only fit on training data!</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">text_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Found </span><span class="si">%s</span><span class="s1"> unique tokens.'</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">))</span>
+<span class="c1"># so that texts_to_sequences will only be using</span>
+<span class="c1"># the NUM_UNIQ_WORDS most frequent *training* words!</span>
+
+<span class="c1"># generate "word index" vectors from both train and test</span>
+<span class="c1"># (using only the NUM_UNIQ_WORDS most frequent ones)</span>
+<span class="n">seq_train</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">text_train</span><span class="p">)</span>
+<span class="n">seq_test</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">text_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Found 126595 unique tokens.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that our sequences are now integers, where each integer is an index (from <code>tokenizer.word_index</code>), in the order in which the tokens appeared in the document, and only for the "selected" (<code>NUM_UNIQ_WORDS</code>) tokens.</p>
+<p>Next, we chop our sequences to equally sized vectors of <code>MAX_SEQ_LEN</code>, thereby generating the actual input "document vector" for our model.
+Unlike the blog post, though, we will take the <em>first</em> <code>MAX_SEQ_LEN</code> words (by setting <code>truncating='post'</code>), not the last.
+That is, we will be using at most the first <code>MAX_SEQ_LEN</code> words of each document, and each element in the vector will be an index for that word at the given position:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.preprocessing.sequence</span> <span class="k">import</span> <span class="n">pad_sequences</span>
+<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">to_categorical</span>
+
+<span class="n">MAX_SEQ_LEN</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">data_train</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">seq_train</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">MAX_SEQ_LEN</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s1">'post'</span><span class="p">)</span>
+<span class="n">data_test</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">seq_test</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">MAX_SEQ_LEN</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s1">'post'</span><span class="p">)</span>
+
+<span class="n">labels_train</span> <span class="o">=</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+<span class="n">labels_test</span> <span class="o">=</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Size of training set:'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Shape of training data tensor:'</span><span class="p">,</span> <span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Shape of taraining label tensor:'</span><span class="p">,</span> <span class="n">labels_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Size of test set:'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Shape of test data tensor:'</span><span class="p">,</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Shape of test label tensor:'</span><span class="p">,</span> <span class="n">labels_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Size of training set: 11314
+Shape of training data tensor: (11314, 1000)
+Shape of taraining label tensor: (11314, 20)
+
+Size of test set: 7532
+Shape of test data tensor: (7532, 1000)
+Shape of test label tensor: (7532, 20)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have 11,311 training examples/documents for training, characterized as a 1000-dimensional word <em>count</em> vecotor, and a 20-dimensional label vector (20 Newsgroups...) for each example/document.
+And we have 7532 test examples/documents for evaluating our approach.</p>
+<p><strong>Note that here, too, we significantly deviate from the blog post.</strong> Instead of using the official ~3:~2 split (for each 3 training articles, you leave aside 2 test articles, roughly) on the 20 Newsgroups corpus, the post uses an easier 4:1 random split.
+Between the preprocessing issues and the non-standard split, these two issues alone explain why the blog post achieves such hair-raisingly good results with such a simple architecture, with way higher performance scores than anything previously seen in the research literature.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data_train</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">],</span> <span class="s2">"..."</span><span class="p">,</span> <span class="n">data_train</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 0 0 0 0 0 0 0 0 0] ... [ 113  186  203 1438 1327    2   14   37   58 7828]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What you see above are word indexes - and/or leading zeros, if the document didn't contain enough words.</p>
+<p>Finally, we rename the dataset to follow the same nomencalture as used in the blog post (instead of using the random 1:4 split).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_train</span> <span class="o">=</span> <span class="n">data_train</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">labels_train</span>
+<span class="n">x_val</span> <span class="o">=</span> <span class="n">data_test</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">labels_test</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Building-the-model">Building the model<a class="anchor-link" href="#Building-the-model">¶</a></h2><p>This is probably the "technically" most interesting part - you will see just how incredibly easy it is to transform our word count vectors into proper word embedding vectors and plug that into a neural network with Keras.
+This is really the part where Keras shines - unlike "low-level" APIs provided directly by the framework, Keras makes building standard (and not <em>so</em> standard...) networks really easy.</p>
+<p>First, we generate the weight matrix for the connections between the input (the padded "document vector" sequences) and the embedding layer. Those weights therefore will be the  GloVe word embedding vectors, one for each of the <code>NUM_UNIQ_WORDS</code> possible words we have.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [18]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_uniq_input_words</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">NUM_UNIQ_WORDS</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">))</span>
+<span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_uniq_input_words</span><span class="p">,</span> <span class="n">EMBEDDING_DIM</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">NUM_UNIQ_WORDS</span><span class="p">:</span>
+        <span class="k">break</span>
+        
+    <span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embeddings_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">embedding_vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding_vector</span>
+    <span class="c1">#else:</span>
+    <span class="c1">#    # words not found in the index use all-zero vectors</span>
+    <span class="c1">#    print("not in index:", word)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we need a bunch of "components" used to build our neural network:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [31]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">MaxPooling1D</span><span class="p">,</span> <span class="n">Embedding</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <a href="https://keras.io/layers/embeddings/">embedding layer</a>; Note that the tutorial set <code>trainable</code> to <code>False</code>, to avoid that the embeddings get change; However, there is no conceivable reason to do that, and in fact, performance suffers if held constant. So this layer will expand our one-dimensional <code>MAX_SEQ_LEN</code> "document word index vectors" into <code>MAX_SEQ_LEN</code> times <code>EMBEDDING_DIM</code> matrices, replacing the index values with the appropriate GloVe word embedding vector, hence it is a a simple "vector lookup" this layer is doing.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [49]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">embedding_layer</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">num_uniq_input_words</span><span class="p">,</span>
+    <span class="n">EMBEDDING_DIM</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="n">embedding_matrix</span><span class="p">],</span>
+    <span class="n">input_length</span><span class="o">=</span><span class="n">MAX_SEQ_LEN</span><span class="p">,</span>
+    <span class="n">trainable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># no need to keep embeddings fixed (as in the blog post)!</span>
+<span class="c1"># use True if you have a GPU, False if not or to get max. performance</span>
+<span class="c1"># note that with False, your final accuracy will be 5-10% lower</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Plugging our input tensor shape ("layer") and the embeddings lookup layer together:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [41]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sequence_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">MAX_SEQ_LEN</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'int32'</span><span class="p">)</span>
+<span class="n">embedded_sequences</span> <span class="o">=</span> <span class="n">embedding_layer</span><span class="p">(</span><span class="n">sequence_input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So that's it - at this point, you've seen how easy it is to "transform" a collection of words in a document into a semantically meaningful tensor ready for Deep Learning.</p>
+<p>Next, we shall set up a conv net with three 5 word-window-sized, 1-dimensional (documents are "linear") convolutions, each followed by a max-pooling regularization (with a factor of 2, 5, and 35 max-pooling of our words).
+Why? Because you are an expert, or read tons of literature to find the "best" architecture, or (here) are simply following a blog post...
+In essence, these max-pooled convolutions "compress" the <code>MAX_SEQ_LEN</code> document vector into one one single number (times the <code>EMBEDDING_DIM</code>).</p>
+<p>The WildML blog has excellent posts explaining the <a href="http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/">basics of text classiciation with conv nets</a> and an example <a href="http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/">conv net for text classification</a>. Note that the posts assumes you have a 2-dimenstional word-sentence document matrix as input, while we are using a 1-dimensional document vector (and hence use <code>Conv1D</code>, not <code>Conv2D</code>).</p>
+<p>With that in mind, we make a few minor tweaks to the blog post:</p>
+<ul>
+<li>Instead of using fixed, 128 dimensional outputs, we stick with our embedding dimension.</li>
+<li>We remove the final ReLU layer and add a Dropout layer to get stronger regularization (which will allows us to keep training for more epochs, getting to a higher accuracy - but also training longer...).</li>
+</ul>
+<p>And after the convolutions, we "roll out" (aka. flatten) the convolutions into a single-dimensional "document vector".</p>
+<p>(Tip: for better -but far more complex- architectures look at the Conclusions...)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [50]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">embedded_sequences</span>
+
+<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="n">Conv1D</span><span class="p">(</span><span class="n">EMBEDDING_DIM</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">),</span>
+    <span class="n">MaxPooling1D</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">Conv1D</span><span class="p">(</span><span class="n">EMBEDDING_DIM</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">),</span>
+    <span class="n">MaxPooling1D</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">Conv1D</span><span class="p">(</span><span class="n">EMBEDDING_DIM</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">),</span>
+    <span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="c1"># very critical to tune this hyper-parameter! (.25 - .5)</span>
+    <span class="n">MaxPooling1D</span><span class="p">(</span><span class="mi">35</span><span class="p">),</span>
+    <span class="n">Flatten</span><span class="p">(),</span>
+<span class="p">]:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+          <span class="s2">"input:"</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">input_shape</span><span class="p">,</span>
+          <span class="s2">"- output:"</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">output_shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>conv1d_13 input: (None, 1000, 100) - output: (None, 996, 100)
+max_pooling1d_13 input: (None, 996, 100) - output: (None, 199, 100)
+conv1d_14 input: (None, 199, 100) - output: (None, 195, 100)
+max_pooling1d_14 input: (None, 195, 100) - output: (None, 39, 100)
+conv1d_15 input: (None, 39, 100) - output: (None, 35, 100)
+dropout_5 input: (None, 35, 100) - output: (None, 35, 100)
+max_pooling1d_15 input: (None, 35, 100) - output: (None, 1, 100)
+flatten_5 input: (None, 1, 100) - output: (None, 100)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that to get to the <code>1 x EMBEDDING_DIM</code> final size, the <code>MAX_SEQ_LEN</code> needs to be <code>1000</code> (so you <em>might</em> need/want to fiddle with the parameters of the max-pooled convolutions if you change <code>MAX_SEQ_LEN</code>). For <code>MAX_SEQ_LEN = 1000</code>, the final output tensor from the convolusions is <code>1 x EMBEDDING_DIM</code> due to:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [43]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># for conv layers, subtract kernel size minus one to get the output size</span>
+<span class="c1"># for max pool layers, divide by the pool size</span>
+<span class="p">(((</span><span class="mi">1000</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="o">//</span><span class="mi">35</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[43]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>1</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On the final output - a vector with <code>EMBEDDING_DIM</code> numbers - we apply a softmax transformation down to the number of category lables, thereby giving us the propabilities for each category:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [44]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_cats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">n_cats</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we place the layers into a proper <a href="https://keras.io/models/model/">Keras model</a>, using multi-class cross-entropy training handled by an <a href="http://sebastianruder.com/optimizing-gradient-descent/index.html#rmsprop">RMS-prop gradient descent optimizer</a>. Here, typically, I get asked: Why am I not using Adam? Because of Occams razor: Using Adam instead of RMS-prop makes hardly any difference on this example. And we ask Keras to report the current (training and validation) accuracy at each epoch.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [45]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">sequence_input</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'categorical_crossentropy'</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="s1">'rmsprop'</span><span class="p">,</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">'acc'</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_4 (InputLayer)         (None, 1000)              0         
+_________________________________________________________________
+embedding_3 (Embedding)      (None, 1000, 100)         1000000   
+_________________________________________________________________
+conv1d_10 (Conv1D)           (None, 996, 100)          50100     
+_________________________________________________________________
+max_pooling1d_10 (MaxPooling (None, 199, 100)          0         
+_________________________________________________________________
+conv1d_11 (Conv1D)           (None, 195, 100)          50100     
+_________________________________________________________________
+max_pooling1d_11 (MaxPooling (None, 39, 100)           0         
+_________________________________________________________________
+conv1d_12 (Conv1D)           (None, 35, 100)           50100     
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 35, 100)           0         
+_________________________________________________________________
+max_pooling1d_12 (MaxPooling (None, 1, 100)            0         
+_________________________________________________________________
+flatten_4 (Flatten)          (None, 100)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 20)                2020      
+=================================================================
+Total params: 1,152,320
+Trainable params: 1,152,320
+Non-trainable params: 0
+_________________________________________________________________
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Model-training">Model training<a class="anchor-link" href="#Model-training">¶</a></h2><p>Now, we train... Note that we here actually commit another crime: We evaluate the model on the test data! Instead, if done properly, you should be evaluating on a subset of the <em>training</em> data, and only once your entire model is build, evaluate it on the official test data.
+But that would leave our model with even less training data to work with...</p>
+<p>At the end of the day, we can probably assume that no researcher gets stuff published without that "cheat" [1], we will just do the same: Evaluate training progress directly against (aka. "by overfitting the model on") the test data.</p>
+<p>[1] And that explains why community evaluations exist: To tell you the "real truth"! Because only then nobody gets access to the test data before the final evaluation. That is, community evaluations are like (IMO: far) more serious versions of the now popular Kaggle tasks.</p>
+<p><strong>WARNING</strong>: This step can take <em>a <strong>very long</strong> time</em> unless you have a (or more...) GPU[s] (just see how long you wait for the next Epoch and multiply by n. epochs to estimate the overall runtime). Using 100 (or 300) dimensional embeddings and training them makes the epochs take much longer.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [46]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+model.fit(x_train, y_train,
+          batch_size=128,
+          epochs=20,
+          validation_data=(x_val, y_val))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Train on 11314 samples, validate on 7532 samples
+Epoch 1/20
+11314/11314 [==============================] - 175s - loss: 2.6601 - acc: 0.1409 - val_loss: 2.3280 - val_acc: 0.2411
+Epoch 2/20
+11314/11314 [==============================] - 177s - loss: 1.9916 - acc: 0.3037 - val_loss: 1.8654 - val_acc: 0.3828
+Epoch 3/20
+11314/11314 [==============================] - 181s - loss: 1.5137 - acc: 0.4449 - val_loss: 1.4921 - val_acc: 0.5133
+Epoch 4/20
+11314/11314 [==============================] - 182s - loss: 1.1167 - acc: 0.6070 - val_loss: 1.3270 - val_acc: 0.5593
+Epoch 5/20
+11314/11314 [==============================] - 180s - loss: 0.8647 - acc: 0.7036 - val_loss: 1.1327 - val_acc: 0.6518
+Epoch 6/20
+11314/11314 [==============================] - 180s - loss: 0.6720 - acc: 0.7757 - val_loss: 1.0200 - val_acc: 0.6887
+Epoch 7/20
+11314/11314 [==============================] - 181s - loss: 0.5374 - acc: 0.8269 - val_loss: 0.8951 - val_acc: 0.7260
+Epoch 8/20
+11314/11314 [==============================] - 181s - loss: 0.4317 - acc: 0.8632 - val_loss: 0.8843 - val_acc: 0.7339
+Epoch 9/20
+11314/11314 [==============================] - 185s - loss: 0.3440 - acc: 0.8906 - val_loss: 0.8010 - val_acc: 0.7600
+Epoch 10/20
+11314/11314 [==============================] - 184s - loss: 0.2688 - acc: 0.9156 - val_loss: 0.7563 - val_acc: 0.7666
+Epoch 11/20
+11314/11314 [==============================] - 178s - loss: 0.2184 - acc: 0.9334 - val_loss: 0.7849 - val_acc: 0.7689
+Epoch 12/20
+11314/11314 [==============================] - 180s - loss: 0.1740 - acc: 0.9473 - val_loss: 0.8139 - val_acc: 0.7604
+Epoch 13/20
+11314/11314 [==============================] - 180s - loss: 0.1367 - acc: 0.9570 - val_loss: 0.9951 - val_acc: 0.7179
+Epoch 14/20
+11314/11314 [==============================] - 182s - loss: 0.1044 - acc: 0.9683 - val_loss: 0.7785 - val_acc: 0.7900
+Epoch 15/20
+11314/11314 [==============================] - 180s - loss: 0.0877 - acc: 0.9725 - val_loss: 0.8641 - val_acc: 0.7828
+Epoch 16/20
+11314/11314 [==============================] - 184s - loss: 0.0769 - acc: 0.9775 - val_loss: 0.9341 - val_acc: 0.7637
+Epoch 17/20
+11314/11314 [==============================] - 188s - loss: 0.0551 - acc: 0.9847 - val_loss: 0.8329 - val_acc: 0.7963
+Epoch 18/20
+11314/11314 [==============================] - 183s - loss: 0.0521 - acc: 0.9860 - val_loss: 0.8523 - val_acc: 0.7997
+Epoch 19/20
+11314/11314 [==============================] - 178s - loss: 0.0590 - acc: 0.9861 - val_loss: 1.0596 - val_acc: 0.7645
+Epoch 20/20
+11314/11314 [==============================] - 183s - loss: 0.0479 - acc: 0.9883 - val_loss: 0.9919 - val_acc: 0.7821
+CPU times: user 1h 32min 3s, sys: 6min 59s, total: 1h 39min 2s
+Wall time: 1h 43s
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[46]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre><keras.callbacks.history at 0x12f748b70></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Geat! So we've built a neural network that learns to classify documents.
+Yet, as we can see, it takes <em>ages</em> to train (and even with a GPU: a lot more time) compared to all former models. Worse, it does not achieve the accuracy of the best models from day 1, either. The above model can be made to achieve around 80% max. accuracy if you can use 300- or 100-dimensional word-embeddings and train the model long enough (15-20 epochs). With 50d embeddings and no embedding layer training, you need to run for about 20-30 epochs to converge on around 67% accuracy. So these results are a long shot from the 90% SOTA accuracy that is possible on this dataset and even the 85% we can achieve with <a href="http://scikit-learn.org/stable/auto_examples/text/document_classification_20newsgroups.html#sphx-glr-auto-examples-text-document-classification-20newsgroups-py">a very ad-hoc "blitz-classification-experiment" with SciKit-Learn itself</a>.</p>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>Overall, I wrote this "tutorial" mostly to demonstrate that you should probably focus on simple things first, before you dive head-first into Deep Learning:</p>
+<ul>
+<li>Learn your own embeddings (ideally from a text collection matching your target domain), and make sure to add those mission-critical collocations that Mikolov points out in his famous word2vec NIPS paper (all of which is trivial when working with Gensim).</li>
+<li>It is cool that we now can replace old-school TF-IDF vectors with modern-day neural word embeddings; But do use them in an "old school" ML model first, because its simple and fast; If for nothing else than to make sure you need or even can expect more performance from a Deep Learning classifier at an <em>econmically viable</em> expense.</li>
+</ul>
+<p>And so, the challenge remains: How to actually beat the state-of-the-art in text classification with Deep Learning?
+At the very least: "Its tricky"!
+Very <a href="https://link.springer.com/chapter/10.1007/978-3-662-44851-9_28">well-designed conv nets</a>, and rather <a href="https://link.springer.com/article/10.1007/s00521-016-2401-x">recent research on belief networks</a> only in the most recent years managed to achieve the same ballpark results as the state-of-the-art results with "old school" ML models. But most of even the <a href="https://arxiv.org/pdf/1601.02733.pdf">current Deep Learning research</a> does not actually beat those "old" models on these two datasets.
+(Which is not to say that stuff like VAEs are very cool though - and probalby would unfold their "full beauty" if you had a much larger dataset - see next.)
+And probably by using LSTMs, GRU-RNNs, and (IMO: in particular) CharCNNs, to train sequence models might get you even beyond the state-of-the-art - if you have the resources and the data to even think of that, and an extensive amount of time to develop your specialized classifier/system.
+(And the resources to run the inference on that mega-model in production, too, by the way...)</p>
+<p>That is to say, yes, Deep Learning can claim it beats standard ML methods on this task (text classification), but the effort to do so is highly disproptionate if compared to "traditional" ML methods: You need very large datasets, designing the model is incredibly complex and time consuming, and training and using them is several orders of magnitude more costly.</p>
+<h2 id="Take-home-message">Take-home message<a class="anchor-link" href="#Take-home-message">¶</a></h2><p>In my opinion, the Deep Learning literature is <em>littered</em> with evaluation results that claim to beat all former state-of-the-art, but indeed are quite frequently not much better (or ex-aequo, and often even worse). However, computer vision, machine translation, and dependency parsing being the now famous cases where Deep Learning indeed has "pushed the envelope" by a substantial margin <em>on the <strong>same</strong>, <strong>public</strong> (and often, small) community datasets</em> for evaluating the approach and comparing it to existing methods. And nearly no paper at all discusses how much more resources go into setting up, developing, training, and using Deep Learning models as opposed to traditional Machine Learning.</p>
+<p>That being said, many other applications (apart from CV, MT, and DP) can profit from Deep Learning for the following reason:
+<em>Iff</em> you have much more training data (thousands, or even millions of examples per label), then, because Deep Learning can easily be scaled to work on such gigantic datasets, it indeed beats other methods (Support Vector Machines, Random Forrests, Nearest Neighbours, Gradient Boosting, etc.).</p>
+<p>At the end of the day, I think Deep Learning is a <em>very exciting</em> technology you should learn to master, but you should take much of it with a <em>very large</em> grain of salt due to how much time and money you will need to invest.</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html" rel="bookmark"
+                           title="Permalink to A quick reference for working with TensorFlow">A quick reference for working with TensorFlow</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-02-15T00:00:00+01:00">
                 Published: Thu 15 February 2018
@@ -36,359 +1933,13 @@
                 By                         <a class="url fn" href="http://fnl.es/author/florian-leitner.html">Florian Leitner</a>
         </address>
 <p>In <a href="http://fnl.es/category/machine-learning.html">Machine Learning</a>.</p>
-<p>tags: <a href="http://fnl.es/tag/tensorflow.html">tensorflow</a> <a href="http://fnl.es/tag/machine-learning.html">machine learning</a> </p>
-</footer><!-- /.post-info --><div class="section" id="introduction">
+<p>tags: <a href="http://fnl.es/tag/tensorflow.html">tensorflow</a> <a href="http://fnl.es/tag/deep-learning.html">deep learning</a> </p>
+</footer><!-- /.post-info -->                <div class="section" id="introduction">
 <h2>Introduction</h2>
-<p>Given the last few years of hype around Deep Learning, knowing one of those frameworks is probably no longer an option, at least if you are a professional Machine Learning engineer. Personally, I always favor free, open source solutions, so Apache MXNet would be the natural fit. However, I must admit that for research &amp; development, Facebook's PyTorch is probably the nicer API, and for operations &amp; production, Google's TensorFlow is beyond doubt the best fit right now. And, as I've mostly moved out of academia/research lately, and am pretty dedicated to consulting by now (and loving it!), I am mostly interested in a tooling that I can put to good use in my day-to-day work. Hence, I have been - not without remorse - focusing on TensorFlow and want to share my personal notes with you, to use as a quick reference when setting up a new tensor graph.</p>
-<p>I mostly learned how to use TensorFlow from Aurélien Géron's book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; So if you are familiar with it and my notes below remind you of it, that is not by accident: These are my modified excerpts, all taken from that book. In fact, if you really are interested in using TensorFlow, I cannot emphasize enough how much I recommend reading this book. And, if you are not familiar with the SciKit-Learn world, or simply want to learn how you can combine these two essential Machine Learning frameworks into &quot;one ring to rule them all&quot;, you need to read this book. Full-stop. In fact, if you are a serious Machine Learning practitioner, you either should have read it, or at least make sure you know the techniques presented in it already. Beyond just giving you tips, the book is chock-a-block full of up-to-date examples and highly relevant exercises. Aurélien even recently <a class="reference external" href="https://github.com/ageron/handson-ml/blob/master/extra_capsnets.ipynb">released more example code</a>, to produce G. E. Hinton's Capsule Network architecture (using dynamic routing) with TensorFlow, and generally ensures the practical material is very much up to date with the latest TensorFlow releases. (Disclaimer: I am in no way affiliated with Aurélien, O'Reilly, or would otherwise benefit from sales of this book!)</p>
-<p>That being said, let's dive right in!</p>
-</div>
-<div class="section" id="setup">
-<h2>Setup</h2>
-<div class="section" id="miniconda">
-<h3>Miniconda</h3>
-<p>I strongly recommend using the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a> distribution to set up TensorFlow, and Python in general. And, for the more expert users, do go directly to <a class="reference external" href="https://conda.io/miniconda.html">miniconda</a> (&quot;don't go over Anaconda, and don't collect 200MB of (irrelevant) bytes&quot;). The packages you want to install (and that will also fetch all other, relevant dependencies, like Jupyter, SciPy, or NumPy) are:</p>
-<div class="highlight"><pre><span></span>conda install -c conda-forge tensorflow
-conda install -c conda-forge scikit-learn
-conda install -c conda-forge matplotlib
-conda install -c conda-forge jupyter_contrib_nbextensions
-</pre></div>
-</div>
-</div>
-<div class="section" id="graph-design">
-<h2>Graph Design</h2>
-<div class="section" id="back-propagation-basics">
-<h3>Back-propagation Basics</h3>
-<p>Input is feed into TensorFlow's (static) computational graphs via <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/placeholder">tf.placeholder</a> (<strong>placeholder</strong>) nodes. Typically, those placeholders will be accepting a tensor <tt class="docutils literal">X</tt> and some array or matrix of labels <tt class="docutils literal">y</tt>. Input is part of the <a class="reference external" href="https://www.tensorflow.org/api_guides/python/io_ops">io_ops</a> package; Input values for placeholders must be provided (see &quot;Feeding the Graph&quot;) during graph evaluation, or cause exceptions if left unset.</p>
-<p><strong>Weights</strong> <tt class="docutils literal">W</tt> and <strong>bias</strong> <tt class="docutils literal">B</tt> tensors are represented by <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/Variable">tf.Variable</a> nodes, via the <a class="reference external" href="https://www.tensorflow.org/api_guides/python/state_ops">state_ops</a> package; <strong>Variables</strong> are stateful, that is, they maintain their values across session runs.
-<strong>Operations</strong> are defined by either applying standard Python operators (+, -, /, *) to nodes, or by using the <tt class="docutils literal">tf.add</tt>, <tt class="docutils literal">tf.matmul</tt>, etc. functions from the TF <a class="reference external" href="https://www.tensorflow.org/api_guides/python/math_ops">math_ops</a> packages.</p>
-<p>The final operation typically evaluates the error or cost between the predicted <tt class="docutils literal">y_hat</tt>, modeled as a state node, and [minus] the true <tt class="docutils literal">y</tt>, modeled as an io node, as shown above.
-Common loss functions for this task are found in TensorFlow's <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/losses">losses</a> package.
-The outcome of this operation (by following Aurélien nomenclature, the <tt class="docutils literal">cost_op</tt> node) is the one you typically want to plot on your TensorBoard (more on that at the end of this post).</p>
-<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="c1"># n variables + 1 constant bias input</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
-<span class="c1"># ... graph setup with tf.Variables ...</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="c1"># some last step...</span>
-<span class="n">cost_op</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
-</pre></div>
-<p>The final touch is to create and append the optimizer (e.g, <tt class="docutils literal">tf.train.GradientDescentOptimizer</tt>):
-That creates the <tt class="docutils literal">training_op</tt> (for minimizing the cost/error), which typically will be the node that gets sent to evaluations of a TensorFlow graph via a <strong>Session</strong> (<tt class="docutils literal">sess.run</tt>):</p>
-<div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">()</span>
-<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">)</span>
-<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="section" id="placeholder-nodes">
-<h3>Placeholder Nodes</h3>
-<p>As discussed already, to supply data to your TF graph you designed, you insert <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/placeholder">tf.placeholder</a> nodes in the graph (e.g., in the bottom-most layer of your net). Placeholders don’t perform any computation, they just output any data you tell them to, during the graph evaluation (&quot;execution&quot;) phase. Optionally, you can also specify the node's <tt class="docutils literal">shape</tt> , if you want to enforce it: And, if you furthermore specify <tt class="docutils literal">None</tt> for any tensor dimension, that dimension will adapt to any size (according to the next node's input).</p>
-<p>In the example shown below, the placeholder <tt class="docutils literal">A</tt> must be of rank 2 (i.e., two-dimensional), and the tensor must have three columns, but it can have any number of rows (which typically will be the current batch' examples).</p>
-<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="section" id="reassignable-variables">
-<h3>Reassignable Variables</h3>
-<p>Note that it is possible to feed values into variables, too, not just to placeholders, even if it is a tad unusual.
-To set a variable to some value during graph evaluation, use the <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/assign">tf.assign</a> state operator:</p>
-<div class="highlight"><pre><span></span><span class="c1"># sample a random variable:</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
-<span class="c1"># or feed a variable:</span>
-<span class="n">x_new_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">x_assign</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_new_val</span><span class="p">)</span>
-
-<span class="c1"># now, you can feed new values into X:</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">():</span>
-    <span class="n">x_assign</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x_new_val</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">})</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span> <span class="c1"># always 0.5</span>
-</pre></div>
-</div>
-<div class="section" id="optimizing-the-graph">
-<h3>Optimizing the Graph</h3>
-<p>The <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/gradients">tf.gradients</a> function takes a cost operator (e.g., to calculate the MSE) and a list of variables to optimize, and creates a list of ops (one per variable) to compute the gradients of each op with regard to each variable, returning the desired list of gradients (aka. performa <em>reverse-mode autodiff</em>):</p>
-<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">var1grad</span><span class="p">,</span> <span class="n">var2grad</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">cost_op</span><span class="p">,</span> <span class="p">[</span><span class="n">var1</span><span class="p">,</span> <span class="n">var2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
-</pre></div>
-<p>However, TensorFlow provides a good number of <a class="reference external" href="https://www.tensorflow.org/api_guides/python/train#Optimizers">optimizers</a> right out of the box, for example, the Adam optimizer, saving you the need to explicitly calculate gradients or update variables yourself:</p>
-<div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">()</span>
-<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="adding-regularization">
-<h3>Adding Regularization</h3>
-<p>Regularization (typically, L1 or L2) prevents overfitting and therefore allows you to train your model for more epochs. Simply add the appropriate operations to your graph, to get to a regularized cost (or <tt class="docutils literal">loss</tt>):</p>
-<div class="highlight"><pre><span></span><span class="o">...</span> <span class="c1"># construct the neural network</span>
-<span class="n">base_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">xentropy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;avg_xentropy&quot;</span><span class="p">)</span>
-<span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights1</span><span class="p">))</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights2</span><span class="p">))</span> <span class="c1"># L1</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">base_loss</span><span class="p">,</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-</pre></div>
-<p>However, if you have many layers, this approach quickly becomes inconvenient. Instead,
-most TensorFlow functions in the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers">tf.contrib.layers</a> package that create variables accept a <tt class="docutils literal"><span class="pre">..._regularizer</span></tt> argument for their weights and biases.
-Those arguments need to be functions that takes the weights as their argument, and return the regularization losses of that layer.</p>
-<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">arg_scope</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">fully_connected</span><span class="p">],</span>
-        <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">l1_regularizer</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)):</span>
-    <span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden1&quot;</span><span class="p">)</span>
-    <span class="n">hidden2</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden2&quot;</span><span class="p">)</span>
-    <span class="n">logits</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">activation_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
-</pre></div>
-<p>TensorFlow automatically adds these nodes to a special collection containing all the regularization losses.
-Then, when calculating the final loss, you add them up to find your overall, final loss:</p>
-<div class="highlight"><pre><span></span><span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">REGULARIZATION_LOSSES</span><span class="p">)</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">([</span><span class="n">base_loss</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-</pre></div>
-<p><strong>Max-norm regularization</strong> (clipping the L2-norm at some threshold) has become quite popular, yet TensorFlow does not provide an off-the-shelf max-norm regularizer. The following code creates a node <tt class="docutils literal">clip_weights</tt> that will clip your <tt class="docutils literal">weights</tt> along their second axis ( <tt class="docutils literal">axes=1</tt> ), so that every resulting row vector will have a max-norm of 1.0:</p>
-<div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">clipped_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clip_norm</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">clip_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clipped_weights</span><span class="p">)</span>
-</pre></div>
-<p>The issue then becomes accessing the weights of a <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers">tf.contrib.layers</a> module; A better solution therefore is to create a function equivalent to the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/contrib/layers/l1_regularizer">l1_regularizer</a> found in the layers module:</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_norm_regularizer</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;max_norm&quot;</span><span class="p">,</span>
-                         <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;max_norm&quot;</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">max_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
-        <span class="n">clipped</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_norm</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clip_norm</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
-        <span class="n">clip_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clipped</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">clip_weights</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">None</span>  <span class="c1"># there is no regularization loss term</span>
-    <span class="k">return</span> <span class="n">max_norm</span>
-</pre></div>
-<p>Now, this regularization function can be used as an argument like any other regularizer would be:</p>
-<div class="highlight"><pre><span></span><span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden1&quot;</span><span class="p">,</span>
-                          <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">max_norm_regularizer</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
-</pre></div>
-<p>And to actually clip weights using max-norm during session evaluation, finally, add this to your execution phase:</p>
-<div class="highlight"><pre><span></span><span class="n">clip_all_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;max_norm&quot;</span><span class="p">)</span> <span class="c1"># note we used &quot;max_norm&quot; above</span>
-
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
-        <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_batches</span><span class="p">,</span> <span class="n">y_batches</span><span class="p">):</span>
-            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
-            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">clip_all_weights</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="scopes-modules-and-shared-variables">
-<h3>Scopes, Modules, and Shared Variables</h3>
-<p>Variables and nodes created within a named scope are prefixed with the scopes' name, and such scopes are collapsed into single nodes on the TensorBoard:</p>
-<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
-    <span class="n">mse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mse&quot;</span><span class="p">)</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">loss</span><span class="o">/</span><span class="n">sub</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">mse</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">loss</span><span class="o">/</span><span class="n">mse</span>
-</pre></div>
-<p>E.g., to define a ReLU within a named scope (just in case: normally, you would use <tt class="docutils literal">tf.nn.relu</tt> ):</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">):</span>
-        <span class="n">w_shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">w_shape</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weights&quot;</span><span class="p">)</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bias&quot;</span><span class="p">)</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span>
-</pre></div>
-<p>If you want to share a variable between various components of your graph, (e.g., thresholds, biases, etc.), TensorFlow provides the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> function, that creates a shared variable if it does not exist, or reuses it, if it does. The desired behavior (creating or reusing) is controlled by an attribute of the current <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/variable_scope">tf.variable_scope</a>, <tt class="docutils literal">reuse</tt> . Note that <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> raises an exception if <tt class="docutils literal">reuse</tt> is <tt class="docutils literal">False</tt> or <tt class="docutils literal">scope.reuse_variables()</tt> has not been set.</p>
-<div class="highlight"><pre><span></span><span class="c1"># as attribute:</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-    <span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
-
-<span class="c1"># as function:</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
-    <span class="n">scope</span><span class="o">.</span><span class="n">reuse_variables</span><span class="p">()</span>
-    <span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="xavier-and-he-initialization-of-model-weights">
-<h3>Xavier and He Initialization of Model Weights</h3>
-<p>You need to use an initializer to avoid the uniform initialization of weights to all the same values.</p>
-<p>By default, TensorFlow's layers are initialized using Xavier initialization: The fully connected layers in <tt class="docutils literal">tf.contrib.layers</tt> use Xavier initialization, with a normal dist. using µ = <tt class="docutils literal">0</tt>, sigma = <tt class="docutils literal">sqrt[ 2 / (n_in + n_out) ]</tt> or a uniform dist. using <tt class="docutils literal">+/- sqrt[ 6 / (n_in + n_out) ]</tt> , where the <tt class="docutils literal">n</tt>'s are the sizes of the input/output connections.</p>
-<p>To use He initialization instead (which is mostly a matter of preference, but has been made popular with ResNet), you can use variance scaling initialization:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tf.contrib.layers</span> <span class="kn">import</span> <span class="n">fully_connected</span><span class="p">,</span> <span class="n">variance_scaling_initializer</span>
-<span class="n">initializer</span> <span class="o">=</span> <span class="n">variance_scaling_initializer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;FAN_AVG&quot;</span><span class="p">)</span>
-<span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">weights_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;h1&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="implementing-a-learning-rate-scheduler">
-<h3>Implementing a Learning Rate Scheduler</h3>
-<p>Normally, it is not necessary to add a learning rate scheduler, because the AdaGrad, RMSProp, and Adam optimizers automatically reduce the learning rate for you during training. Yet, implementing a learning rate scheduler is fairly straightforward with TensorFlow; Typically, exponential decay is recommended, because it is easy to tune and will converge (slightly) faster than the optimal solution. Here, we adapt Momentum to use a dynamic learning rate: Note how the decay depends on the current global step that is set by the optimizer's minimization function.</p>
-<div class="highlight"><pre><span></span><span class="n">initial_learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">decay_steps</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="n">decay_rate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span>
-<span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="n">learning_rate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">exponential_decay</span><span class="p">(</span><span class="n">initial_learning_rate</span><span class="p">,</span> <span class="n">global_step</span><span class="p">,</span>
-                                           <span class="n">decay_steps</span><span class="p">,</span> <span class="n">decay_rate</span><span class="p">)</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">MomentumOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
-<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost_op</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">global_step</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="interactive-sessions">
-<h2>Interactive Sessions</h2>
-<p>Before we get to the actual evaluation of TF graphs with sessions, let me add in a few tips that come in handy when working in interactive Python sessions.</p>
-<div class="section" id="resetting-the-default-graph">
-<h3>Resetting the Default Graph</h3>
-<div class="highlight"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span>
-</pre></div>
-<p>In Jupyter (or if using TF in a Python shell), it is common to run the same commands more than once while you are experimenting. As a result, you may end up with a <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_default_graph">default graph</a> containing many duplicate nodes. One solution is to restart the Jupyter kernel (or the Python shell), but a more convenient solution is to just reset the default graph by running:</p>
-<div class="highlight"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
-</pre></div>
-<p>In single-process TensorFlow, multiple sessions do not share any state, even if they reuse the same graph (and each session gets its own copy of every variable). Beware though, that in distributed TensorFlow, variable state is stored on the servers, not in the sessions, so multiple sessions can <em>share</em> the same <em>variables</em> (actually, that is a good, desired thing, obviously).</p>
-</div>
-<div class="section" id="using-tensorflow-s-interactive-sessions">
-<h3>Using TensorFlow's [Interactive] Sessions</h3>
-<p>Use <tt class="docutils literal">InteractiveSession</tt> in notebooks to automatically set a default session, relieving you from the need of a <tt class="docutils literal">with</tt> block for the evaluation/execution phase. But do remember to close the session manually when you are done with it!</p>
-<div class="highlight"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">()</span>
-<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-<span class="o">...</span> <span class="c1"># do graph setup</span>
-<span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="o">...</span> <span class="c1"># do evaluation</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-<p>When running TensorFlow <strong>locally</strong>, the sessions manage your variable values. So if you create a graph, then start two threads, and open a local session in either thread, both will use the same graph, yet each session will have its <em>own</em> copy of the variables.</p>
-<p>However, in <strong>distributed</strong> TensorFlow sessions, variable values are stored in containers managed by the TF cluster (see <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a>). So if both sessions connect to the same cluster and use the same container, then they will share the same variable value for w.</p>
-</div>
-</div>
-<div class="section" id="model-evaluation">
-<h2>Model Evaluation</h2>
-<div class="section" id="scaling-variables">
-<h3>Scaling Variables</h3>
-<p>When using a Gradient Descent method, remember that it is important to <strong>normalize</strong> the input feature vectors, or else training may progress much slower.
-You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any other solution you prefer. In fact, with NumPy arrays, this is pretty straightforward:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">scaled</span> <span class="o">=</span> <span class="n">data</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="running-the-graph">
-<h3>Running the Graph</h3>
-<p>Once the graph has been designed (incl. a <tt class="docutils literal">training_op</tt> node) and the initializer (an <tt class="docutils literal">init</tt> node) has been set up (see Graph Design), a typical snippet for the (batched) executing of the training phase is:</p>
-<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_examples</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">):</span>
-            <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">next_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
-            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
-</pre></div>
-</div>
-<div class="section" id="feeding-the-graph-with-data">
-<h3>Feeding the Graph with Data</h3>
-<p>When you evaluate the graph, you pass a feed dictionary (<tt class="docutils literal">feed_dict</tt>) to the target (&quot;output&quot;) node's <tt class="docutils literal">eval()</tt> method. And you specify the value of the placeholder (input) node by using the node itself as the key of the feed dictionary.</p>
-<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="o">...</span> <span class="c1"># more graph setup, down to the training_op</span>
-<span class="n">training_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">A</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>  <span class="c1"># &lt;- feeding</span>
-</pre></div>
-<p>Note that you can feed data into <em>any</em> kind of node, not just placeholders. Note that when using other nodes, TensorFlow will not evaluate their operations; If fed to, TF uses the values you feed to that node, only (see Reassignable Variables in Graph Design for more info).</p>
-</div>
-<div class="section" id="mini-batching-with-tensorflow">
-<h3>Mini-batching with TensorFlow</h3>
-<p>Instead of feeding all data at once, you typically will mini-batch your data as follows:</p>
-<ol class="arabic simple">
-<li>Create a session (<tt class="docutils literal">with tf.Session() as sess</tt>)</li>
-<li>Run the variable initializer (<tt class="docutils literal">sess.run(init)</tt>)</li>
-<li>Loop over the epochs and batches, feeding each mini-batch to the session (<tt class="docutils literal">sess.run(training_op, <span class="pre">feed_dict={X:</span> X_batch, y: y_batch})</tt>)</li>
-<li>Optionally: Write a summary every n mini-batches, to visualize the progress on your TensorBoard.</li>
-</ol>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
-    <span class="c1"># somehow fetch data and labels (numpy arrays) to feed...</span>
-    <span class="k">return</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span>
-
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">batch_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
-        <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">get_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
-        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
-</pre></div>
-</div>
-<div class="section" id="saving-and-restoring-models">
-<h3>Saving and Restoring Models</h3>
-<p>Create a Saver node at the end of the construction phase (after all variable nodes are created); Then, during the execution phase, call the node's <tt class="docutils literal">save()</tt> method whenever you want to save the model, passing it the session and path of the <strong>checkpoint</strong> file to create:</p>
-<div class="highlight"><pre><span></span><span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
-<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s2">&quot;/tmp/my_classifier.tfckpt&quot;</span>
-<span class="n">checkpoint_epoch_path</span> <span class="o">=</span> <span class="n">checkpoint_path</span> <span class="o">+</span> <span class="s2">&quot;.tfepoch&quot;</span>
-<span class="n">final_model_path</span> <span class="o">=</span> <span class="s2">&quot;./my_classifier.tfmodel&quot;</span>
-<span class="n">best_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
-
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">):</span>
-        <span class="c1"># if the checkpoint file exists, restore the model and load the epoch number</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">start_epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training was interrupted. Continuing at epoch&quot;</span><span class="p">,</span> <span class="n">start_epoch</span><span class="p">)</span>
-        <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_epoch</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># checkpoint every 100 epochs</span>
-            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-
-        <span class="n">loss_val</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">loss_val</span> <span class="o">&lt;</span> <span class="n">best_loss</span><span class="p">:</span>
-            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">final_model_path</span><span class="p">)</span>
-            <span class="n">best_loss</span> <span class="o">=</span> <span class="n">loss_val</span>
-            <span class="c1"># best_parameters = parameters.eval()</span>
-</pre></div>
-<p>To use a trained model <em>in production</em>, restoring a model is just as easy: You create a Saver node at the end of the graph, just like before, but then, when beginning the execution phase, instead of initializing the variables using the typical <tt class="docutils literal">init</tt> node, you call the <tt class="docutils literal">restore()</tt> method of the Saver object:</p>
-<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./my_model_final.ckpt&quot;</span><span class="p">)</span>
-    <span class="n">X_unseen</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># some unseen (scaled) data</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_unseen</span><span class="p">})</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="monitoring-with-tensorboard">
-<h2>Monitoring with TensorBoard</h2>
-<p>One of the biggest advantages of TensorFlow over many other frameworks is the TensorBoard. It allows you to visualize the progression of any variable in your graph.</p>
-<div class="section" id="writing-session-summaries">
-<h3>Writing Session Summaries</h3>
-<p>To provide TensorBoard with data, you need to write TF's graph definition and some training stats (like the cost/loss) to a log directory that TensorBoard reads from. You need to use a different log directory on every run, to avoid that TensorBoard will merge the output of different runs. The solution to this here will be to include a timestamp in the log directory name.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="n">root_logdir</span> <span class="o">=</span> <span class="s2">&quot;tf_logs&quot;</span>
-<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
-<span class="n">logdir</span> <span class="o">=</span> <span class="s2">&quot;{}/run-{}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">root_logdir</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
-</pre></div>
-<p>Next, add a <strong>summary node</strong> and attach a <strong>file writer</strong> to the node you wish to visualize on your TensorBoard; The <tt class="docutils literal">FileWriter</tt> shown below will create any missing directories for you:</p>
-<div class="highlight"><pre><span></span><span class="n">mse_summary</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span>
-<span class="n">file_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">logdir</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">())</span>
-</pre></div>
-<p>The first line creates a node in the graph that will evaluate the MSE value and write it to a TensorBoard-compatible binary log string called a <strong>summary</strong>. The second line creates a <tt class="docutils literal">FileWriter</tt> that you will use to write summaries into the log directory. The second (optional) parameter is the graph you want to visualize. Upon creation, the FileWriter creates the directory path if it does not exist, and writes the graph definition in a binary log file called an <strong>events</strong> file.</p>
-<p>Next, you need to update the execution phase, to evaluate the summary node regularly during training, and you should not forget to close the writer after training:</p>
-<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-    <span class="n">update_summary</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">batch_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
-        <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">fetch_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">update_summary</span><span class="p">(</span><span class="n">batch_index</span><span class="p">):</span>
-            <span class="n">summary_str</span> <span class="o">=</span> <span class="n">mse_summary</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
-            <span class="n">step</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">*</span> <span class="n">n_batches</span> <span class="o">+</span> <span class="n">batch_index</span>
-            <span class="n">file_writer</span><span class="o">.</span><span class="n">add_summary</span><span class="p">(</span><span class="n">summary_str</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
-        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
-    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-
-<span class="n">file_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-<p>Finally, you now can visualize the stats you are recording by starting the TensorBoard server and pointing it at the log directory:</p>
-<div class="highlight"><pre><span></span>$ tensorboard --logdir tf_logs/
-</pre></div>
-</div>
-</div>
-<div class="section" id="epilogue">
-<h2>Epilogue</h2>
-<p>As I already advised in the beginning, if you want to learn more, I can warmly recommend you get Aurélien Géron's fantastic book &quot;<a class="reference external" href="http://shop.oreilly.com/product/0636920052289.do">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a>&quot;; The more advanced topics covered (and that would explode this blog post...) are transfer learning, distributed training, designing Recurrent Networks and Auto-encoders, and even a &quot;beginner's guide&quot; to Deep Reinforcement Learning. Yet, I hope, this tiny taste of the book's contents, spiced up with a bit of my own &quot;opinionated&quot; modifications, will provide you with  a handy quick-reference when building and using TensorFlow graphs. (And, that I don't get sued by him or O'Reilly for plagiarism! :-) Please just contact me if this post is an issue -- I have no problem taking the post down again, if it is problematic.)</p>
-</div>
-                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Given the last few years of hype around Deep Learning, knowing one of those frameworks is probably no longer an option, at least if you are a professional Machine Learning engineer. Personally, I always favor free, open source solutions, so Apache MXNet would be the natural fit. However, I …</p></div>
+                <a class="readmore" href="http://fnl.es/a-quick-reference-for-working-with-tensorflow.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
