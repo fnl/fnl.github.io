@@ -15,7 +15,7 @@
                     <li><a href="http://fnl.es/pages/projects.html">Projects</a></li>
                     <li><a href="http://fnl.es/category/machine-learning.html">Machine Learning</a></li>
                     <li><a href="http://fnl.es/category/miscellaneous.html">Miscellaneous</a></li>
-                    <li><a href="http://fnl.es/category/programming.html">Programming</a></li>
+                    <li><a href="http://fnl.es/category/programming.html">programming</a></li>
                     <li><a href="http://fnl.es/category/travelling.html">Travelling</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
@@ -61,8 +61,8 @@ conda install -c conda-forge jupyter_contrib_nbextensions
 <p>The final operation typically evaluates the error or cost between the predicted <tt class="docutils literal">y_hat</tt>, modeled as a state node, and [minus] the true <tt class="docutils literal">y</tt>, modeled as an io node, as shown above.
 Common loss functions for this task are found in TensorFlow's <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/losses">losses</a> package.
 The outcome of this operation (by following Aurélien nomenclature, the <tt class="docutils literal">cost_op</tt> node) is the one you typically want to plot on your TensorBoard (more on that at the end of this post).</p>
-<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="c1"># n variables + 1 constant bias input</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="c1"># n variables + 1 constant bias input</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
 <span class="c1"># ... graph setup with tf.Variables ...</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="c1"># some last step...</span>
 <span class="n">cost_op</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
@@ -78,7 +78,7 @@ That creates the <tt class="docutils literal">training_op</tt> (for minimizing t
 <h3>Placeholder Nodes</h3>
 <p>As discussed already, to supply data to your TF graph you designed, you insert <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/placeholder">tf.placeholder</a> nodes in the graph (e.g., in the bottom-most layer of your net). Placeholders don’t perform any computation, they just output any data you tell them to, during the graph evaluation (&quot;execution&quot;) phase. Optionally, you can also specify the node's <tt class="docutils literal">shape</tt> , if you want to enforce it: And, if you furthermore specify <tt class="docutils literal">None</tt> for any tensor dimension, that dimension will adapt to any size (according to the next node's input).</p>
 <p>In the example shown below, the placeholder <tt class="docutils literal">A</tt> must be of rank 2 (i.e., two-dimensional), and the tensor must have three columns, but it can have any number of rows (which typically will be the current batch' examples).</p>
-<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="section" id="reassignable-variables">
@@ -94,7 +94,7 @@ To set a variable to some value during graph evaluation, use the <a class="refer
 <span class="c1"># now, you can feed new values into X:</span>
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">():</span>
     <span class="n">x_assign</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x_new_val</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">})</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span> <span class="c1"># always 0.5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span> <span class="c1"># always 0.5</span>
 </pre></div>
 </div>
 <div class="section" id="optimizing-the-graph">
@@ -123,7 +123,7 @@ Those arguments need to be functions that takes the weights as their argument, a
         <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">l1_regularizer</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)):</span>
     <span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden1&quot;</span><span class="p">)</span>
     <span class="n">hidden2</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden2&quot;</span><span class="p">)</span>
-    <span class="n">logits</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">activation_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">activation_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
 </pre></div>
 <p>TensorFlow automatically adds these nodes to a special collection containing all the regularization losses.
 Then, when calculating the final loss, you add them up to find your overall, final loss:</p>
@@ -143,7 +143,7 @@ Then, when calculating the final loss, you add them up to find your overall, fin
         <span class="n">clip_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">clipped</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">clip_weights</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">None</span>  <span class="c1"># there is no regularization loss term</span>
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># there is no regularization loss term</span>
     <span class="k">return</span> <span class="n">max_norm</span>
 </pre></div>
 <p>Now, this regularization function can be used as an argument like any other regularizer would be:</p>
@@ -169,9 +169,9 @@ Then, when calculating the final loss, you add them up to find your overall, fin
     <span class="n">error</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span>
     <span class="n">mse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mse&quot;</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="n">loss</span><span class="o">/</span><span class="n">sub</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">mse</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">mse</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="n">loss</span><span class="o">/</span><span class="n">mse</span>
 </pre></div>
 <p>E.g., to define a ReLU within a named scope (just in case: normally, you would use <tt class="docutils literal">tf.nn.relu</tt> ):</p>
@@ -185,7 +185,7 @@ Then, when calculating the final loss, you add them up to find your overall, fin
 </pre></div>
 <p>If you want to share a variable between various components of your graph, (e.g., thresholds, biases, etc.), TensorFlow provides the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> function, that creates a shared variable if it does not exist, or reuses it, if it does. The desired behavior (creating or reusing) is controlled by an attribute of the current <a class="reference external" href="https://www.tensorflow.org/versions/master/api_docs/python/tf/variable_scope">tf.variable_scope</a>, <tt class="docutils literal">reuse</tt> . Note that <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/get_variable">tf.get_variable</a> raises an exception if <tt class="docutils literal">reuse</tt> is <tt class="docutils literal">False</tt> or <tt class="docutils literal">scope.reuse_variables()</tt> has not been set.</p>
 <div class="highlight"><pre><span></span><span class="c1"># as attribute:</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
 
 <span class="c1"># as function:</span>
@@ -210,7 +210,7 @@ Then, when calculating the final loss, you add them up to find your overall, fin
 <div class="highlight"><pre><span></span><span class="n">initial_learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">decay_steps</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">decay_rate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span>
-<span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">exponential_decay</span><span class="p">(</span><span class="n">initial_learning_rate</span><span class="p">,</span> <span class="n">global_step</span><span class="p">,</span>
                                            <span class="n">decay_steps</span><span class="p">,</span> <span class="n">decay_rate</span><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">MomentumOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
@@ -250,7 +250,7 @@ Then, when calculating the final loss, you add them up to find your overall, fin
 <h3>Scaling Variables</h3>
 <p>When using a Gradient Descent method, remember that it is important to <strong>normalize</strong> the input feature vectors, or else training may progress much slower.
 You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any other solution you prefer. In fact, with NumPy arrays, this is pretty straightforward:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">scaled</span> <span class="o">=</span> <span class="n">data</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -269,7 +269,7 @@ You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any
 <div class="section" id="feeding-the-graph-with-data">
 <h3>Feeding the Graph with Data</h3>
 <p>When you evaluate the graph, you pass a feed dictionary (<tt class="docutils literal">feed_dict</tt>) to the target (&quot;output&quot;) node's <tt class="docutils literal">eval()</tt> method. And you specify the value of the placeholder (input) node by using the node itself as the key of the feed dictionary.</p>
-<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="o">...</span> <span class="c1"># more graph setup, down to the training_op</span>
 <span class="n">training_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">A</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>  <span class="c1"># &lt;- feeding</span>
 </pre></div>
@@ -311,7 +311,7 @@ You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any
         <span class="c1"># if the checkpoint file exists, restore the model and load the epoch number</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint_epoch_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">start_epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training was interrupted. Continuing at epoch&quot;</span><span class="p">,</span> <span class="n">start_epoch</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training was interrupted. Continuing at epoch&quot;</span><span class="p">,</span> <span class="n">start_epoch</span><span class="p">)</span>
         <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
@@ -348,7 +348,7 @@ You can do this using TensorFlow, NumPy, Scikit-Learn’s StandardScaler, or any
 
 <span class="n">root_logdir</span> <span class="o">=</span> <span class="s2">&quot;tf_logs&quot;</span>
 <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
-<span class="n">logdir</span> <span class="o">=</span> <span class="s2">&quot;{}/run-{}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">root_logdir</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+<span class="n">logdir</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/run-</span><span class="si">{}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">root_logdir</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
 </pre></div>
 <p>Next, add a <strong>summary node</strong> and attach a <strong>file writer</strong> to the node you wish to visualize on your TensorBoard; The <tt class="docutils literal">FileWriter</tt> shown below will create any missing directories for you:</p>
 <div class="highlight"><pre><span></span><span class="n">mse_summary</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span>

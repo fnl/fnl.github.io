@@ -15,7 +15,7 @@
                     <li><a href="http://fnl.es/pages/projects.html">Projects</a></li>
                     <li class="active"><a href="http://fnl.es/category/machine-learning.html">Machine Learning</a></li>
                     <li><a href="http://fnl.es/category/miscellaneous.html">Miscellaneous</a></li>
-                    <li><a href="http://fnl.es/category/programming.html">Programming</a></li>
+                    <li><a href="http://fnl.es/category/programming.html">programming</a></li>
                     <li><a href="http://fnl.es/category/travelling.html">Travelling</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
@@ -214,7 +214,7 @@ To use them, just wrap your tokenizer with the preferred method:</p>
     <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">split_multi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">split_contractions</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">)):</span>
             <span class="k">yield</span> <span class="n">token</span>
-        <span class="k">yield</span> <span class="bp">None</span>  <span class="c1"># None to signal sentence terminals</span>
+        <span class="k">yield</span> <span class="kc">None</span>  <span class="c1"># None to signal sentence terminals</span>
 
 
 <span class="c1"># An even shorter usage example:</span>

@@ -1,5 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl en España - Miscellaneous</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/miscellaneous.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2009-05-26T00:00:00+02:00</updated><entry><title>MobileMe vs. SugarSync vs. DropBox</title><link href="http://fnl.es/mobileme-vs-sugarsync-vs-dropbox.html" rel="alternate"></link><published>2009-05-26T00:00:00+02:00</published><updated>2009-05-26T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-05-26:/mobileme-vs-sugarsync-vs-dropbox.html</id><summary type="html">&lt;p&gt;I now have tested MobileMe, SugarSync, and DropBox for quite a while to
+<feed xmlns="http://www.w3.org/2005/Atom"><title>fnl en España - Miscellaneous</title><link href="http://fnl.es/" rel="alternate"></link><link href="http://fnl.es/feeds/miscellaneous.atom.xml" rel="self"></link><id>http://fnl.es/</id><updated>2021-10-04T00:00:00+02:00</updated><entry><title>Lean, generative cultures and how to probe for them</title><link href="http://fnl.es/lean-generative-cultures-and-how-to-probe-for-them.html" rel="alternate"></link><published>2021-10-04T00:00:00+02:00</published><updated>2021-10-04T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2021-10-04:/lean-generative-cultures-and-how-to-probe-for-them.html</id><summary type="html">&lt;p&gt;Performance-oriented organizations that value transparency and empower
+their workforce were baptized &lt;a class="reference external" href="https://qualitysafety.bmj.com/content/13/suppl_2/ii22"&gt;generative
+cultures&lt;/a&gt; by
+Ron Westrum in 2004. This article will describe why
+&lt;a class="reference external" href="https://www.lean.org/explore-lean/what-is-lean/"&gt;lean&lt;/a&gt;, generative
+cultures might interest the reader and point out the &amp;quot;secrete sauce&amp;quot; in
+creating them: transforming &lt;a class="reference external" href="https://cdn.csu.edu.au/__data/assets/pdf_file/0008/917018/Eight-Behaviors-for-Smarter-Teams-2.pdf"&gt;behavior and
+communication&lt;/a&gt;.
+Note that despite having &amp;quot;lean&amp;quot; in the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Performance-oriented organizations that value transparency and empower
+their workforce were baptized &lt;a class="reference external" href="https://qualitysafety.bmj.com/content/13/suppl_2/ii22"&gt;generative
+cultures&lt;/a&gt; by
+Ron Westrum in 2004. This article will describe why
+&lt;a class="reference external" href="https://www.lean.org/explore-lean/what-is-lean/"&gt;lean&lt;/a&gt;, generative
+cultures might interest the reader and point out the &amp;quot;secrete sauce&amp;quot; in
+creating them: transforming &lt;a class="reference external" href="https://cdn.csu.edu.au/__data/assets/pdf_file/0008/917018/Eight-Behaviors-for-Smarter-Teams-2.pdf"&gt;behavior and
+communication&lt;/a&gt;.
+Note that despite having &amp;quot;lean&amp;quot; in the title, the text will deliberately
+ignore Lean's &amp;quot;customer value&amp;quot; aspect, focusing on the soft skills
+(respect and teamwork) and &lt;strong&gt;Kaizen&lt;/strong&gt; (continuous improvement) instead.
+Finally, this post concludes with a reasonable way to probe if an
+organization has adopted such a culture, no matter if you are inside or
+outside that org.&lt;/p&gt;
+&lt;p&gt;According to Westrum, generative cultures place their utmost value on
+the flow of information. One might say they value &lt;strong&gt;transparency&lt;/strong&gt; above
+all else. The &lt;a class="reference external" href="https://openstax.org/books/principles-management/pages/3-3-the-industrial-revolution"&gt;industrial
+revolution&lt;/a&gt;
+came around by ensuring that data flows from the edges (workers/actors)
+to the centers (leaders). Even Napoleon's success as a military leader
+&lt;a class="reference external" href="https://core.ac.uk/download/pdf/36698436.pdf"&gt;has been attributed&lt;/a&gt;
+to Napoleon creating an efficient flow of intelligence back to central
+command and control.&lt;/p&gt;
+&lt;p&gt;Generative cultures ensure the &lt;em&gt;reverse&lt;/em&gt; flow of information back to the
+edges, too: In a self-evident example, imagine workers having access to
+real-time data about the sale of each type of product made in their
+factory. That would allow those workers to make &lt;strong&gt;Agile&lt;/strong&gt; production
+decisions (i.e., swiftly and independently) without including a long and
+tedious communication chain through company silos and hierarchies. The
+&lt;a class="reference external" href="https://hbr.org/1990/11/how-i-learned-to-let-my-workers-lead"&gt;(sausage) factory
+example&lt;/a&gt;
+also highlights the lean, bottom-up nature of such cultures: Namely, an
+organization's ability to build a workforce that can make decisions at
+the edges instead of relying on centralized decision-making structures.
+That requires that critical information gets to those workers who might
+be taking corrective actions based on it without impediment.&lt;/p&gt;
+&lt;p&gt;Beyond transparency, to cite Westrum, generative cultures exhibit high
+cooperation and teamwork with shared accountability, encourage bridging
+across organizational silos, follow the practice of Kaizen (continuous
+improvement), and provide fertile grounds for novel ideas to thrive. It
+requires an organization with high levels of trust among its people and
+leaders able to coach their teams on handling disagreements and conflict
+to unlock these benefits, thereby &lt;a class="reference external" href="https://itrevolution.com/agile-conversations/"&gt;transforming the organization's
+culture&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Therefore, the &amp;quot;secret sauce&amp;quot; is all about building engagement and
+dependability by gradually giving the workforce more decision-making
+authority. Information gets &amp;quot;stuck&amp;quot; if any manager in the company's
+reporting chain first has to &amp;quot;call the shots&amp;quot;: Every time that happens,
+in the best case, a delay is introduced - and in the worst case,
+information is lost. Ultimately, an organization's ability to make the
+most optimal decisions and therefore reach the best possible &lt;em&gt;business
+outcomes&lt;/em&gt; depends on surfacing the relevant data in time at those places
+where a change needs to transpire (which is, most often, at the edges).&lt;/p&gt;
+&lt;p&gt;Building such an enabled workforce requires a leadership team that
+trusts and respects its people.
+&lt;a class="reference external" href="https://www.leanblog.org/2013/02/toyota-respect-for-people-or-humanity-and-lean/"&gt;Respect&lt;/a&gt;
+refers to one of the five Lean values: Having a psychologically safe
+environment where leaders coach their teams in decision-making while
+providing all the necessary data. And &lt;a class="reference external" href="https://www.tablegroup.com/the-five-dysfunctions-of-a-team-trust/"&gt;(Lencioni's vulnerability-based)
+trust&lt;/a&gt;,
+among other things, implies that the leader is willing to rely on the
+team to make the right decisions instead of the leader making those
+decisions unilaterally. In other words, it requires leaders to face
+their ego and overcome inner fears by &lt;a class="reference external" href="https://www.youtube.com/watch?v=uOiP4mJwqE0"&gt;conceding decision-making powers
+to their reports (&amp;quot;Brave New
+Work&amp;quot;)&lt;/a&gt;. Furthermore, it
+requires a leadership behavior that allows curiosity and collaboration
+to foster. That, in turn, needs managers with a broad range of abilities
+and a coaching mindset:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The ability to create a psychologically safe learning environment and
+teach &lt;a class="reference external" href="http://www-personal.umich.edu/~mrother/The_Improvement_Kata.html"&gt;continual
+self-improvement&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;The ability to coach people on how to approach problems in a
+data-driven way to generate optimal solutions &lt;em&gt;as a team&lt;/em&gt;;&lt;/li&gt;
+&lt;li&gt;Making all relevant information available while eradicating &amp;quot;the
+undiscussable&amp;quot; (Anything that a team should talk about but only
+get addressed in hallways, 1on1s, or among smaller groups.)&lt;/li&gt;
+&lt;li&gt;Plus all the &lt;a class="reference external" href="https://rework.withgoogle.com/guides/managers-identify-what-makes-a-great-manager/steps/learn-about-googles-manager-research/"&gt;&amp;quot;standard&amp;quot;
+ingredients&lt;/a&gt;
+that make up a great manager, such as providing structure &amp;amp;
+clarity, accountability, meaning, and impact.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;While the reader might agree with all of the above, it can be a long
+path for an untrained person to acquire those skills. When I first
+encountered these ideas, I believed that I was practicing them already,
+only to discover that I was (and in some areas very much still am)
+nowhere close after a more detailed introspection of my behavior.
+Anyhow, the above description and links should provide the interested
+reader with more than sufficient material to take that path. Instead, in
+this blog post, I would like to conclude with an exciting way to probe
+if you, your team, your company, or even the company you are
+interviewing with is building a lean, generative culture.&lt;/p&gt;
+&lt;p&gt;The test is a short set of questions that you can ask, in any context,
+as a self-test, when talking to your future manager or out of general
+curiosity:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;strong&gt;Transparency&lt;/strong&gt; and information flow: People should be willing to
+disagree when they see things differently and openly share how
+they come to their views. Can you give some examples of how your
+team navigates disagreements and makes decisions? Can you explain
+how you increase teamwork among your reports?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Curiosity&lt;/strong&gt; and continuous improvement: Teams should have a mutual
+learning mindset and be eager to improve continually. Can you
+provide concrete examples of how your team improves itself and
+learns together? What is the most exciting thing your team worked
+on or researched recently, and what did you learn?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Accountability&lt;/strong&gt; and dependability: Everyone on the team should be
+encouraged to take full responsibility for their words, actions,
+and results. Can you give me examples of how you ensure that your
+people can depend on each other? How do you motivate people to
+participate in meetings, take on responsibilities, and grow?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Core values&lt;/strong&gt; and more Kaizen: What do you see as the
+organization's most significant strengths and weaknesses, and how
+are you acting on those insights?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The above questions are the &amp;quot;probes&amp;quot; I have designed to keep asking
+myself and track if I am improving as a leader. While I at least believe
+that the remaining core lean, generative culture values (compassion,
+respect, and trust) must be present if you can answer the above
+questions satisfactorily. I am sure the questions are not pixel perfect,
+so I would greatly welcome all constructive criticism if you see
+cleverer ways to design this test.&lt;/p&gt;
+</content><category term="Miscellaneous"></category><category term="management"></category></entry><entry><title>MobileMe vs. SugarSync vs. DropBox</title><link href="http://fnl.es/mobileme-vs-sugarsync-vs-dropbox.html" rel="alternate"></link><published>2009-05-26T00:00:00+02:00</published><updated>2009-05-26T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-05-26:/mobileme-vs-sugarsync-vs-dropbox.html</id><summary type="html">&lt;p&gt;I now have tested MobileMe, SugarSync, and DropBox for quite a while to
 decide which service to buy for syncing my “electronic life” between my
 Macs (soon I’ll be managing two OSX Server blades, one Mini, and two
 MBPs!). After this period, there is no doubt to me: I …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I now have tested MobileMe, SugarSync, and DropBox for quite a while to
@@ -37,7 +168,7 @@ gigs of data to my 50 GB DropBox, and I hardly notice it happening!&lt;/p&gt;
 &lt;p&gt;Oh, if you get yourself an account for DropBox, either the free 2 GB or
 a full Pro account, I would appreciate if you register via &lt;a class="reference external" href="https://www.getdropbox.com/referrals/NTE0NTA0OTk"&gt;this link&lt;/a&gt;,
 as it creates me some 500 MB extra space for referring you :o).&lt;/p&gt;
-</content><category term="apple"></category><category term="cloud storage"></category></entry><entry><title>News, Swines &amp; Pigs</title><link href="http://fnl.es/news-swines-pigs.html" rel="alternate"></link><published>2009-04-30T00:00:00+02:00</published><updated>2009-04-30T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-04-30:/news-swines-pigs.html</id><summary type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
+</content><category term="Miscellaneous"></category><category term="apple"></category><category term="cloud storage"></category></entry><entry><title>News, Swines &amp; Pigs</title><link href="http://fnl.es/news-swines-pigs.html" rel="alternate"></link><published>2009-04-30T00:00:00+02:00</published><updated>2009-04-30T00:00:00+02:00</updated><author><name>Florian Leitner</name></author><id>tag:fnl.es,2009-04-30:/news-swines-pigs.html</id><summary type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
 even I have to accept a low level of &amp;quot;noise&amp;quot; if I want to know at least
 something about the most significant things going on. However, currently
 I get the overwhelming feeling that the whole news world is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Usually, I prefer to steer free from the day-to-day mainstream news, yet
@@ -159,4 +290,4 @@ propaganda crusades against a country nowadays have the same
 socioeconomic impact as the largest &amp;quot;real&amp;quot; war in decades if measured by
 the daily cost. Keep this in mind the next time you read news about
 swines from pigs.&lt;/p&gt;
-</content><category term="politics"></category></entry></feed>
+</content><category term="Miscellaneous"></category><category term="politics"></category></entry></feed>
